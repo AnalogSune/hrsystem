@@ -10,17 +10,24 @@ namespace API.Entities
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
+
+        public string FName { get; set; }
+
+        public string LName { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string Address { get; set; }
         
 #nullable enable
         public int? RoleId { get; set; }
-        public Role? EmployeeRole { get; set; }
-#nullable disable
+        public Role? Role { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
+        public Departments? Department { get; set; }
+#nullable disable
         
         public string ProfilePicture { get; set; }
-
-        public string Address { get; set; }
 
         public int DaysOffLeft { get; set; }
 

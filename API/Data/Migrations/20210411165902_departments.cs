@@ -3,12 +3,12 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace API.Data.Migrations
 {
-    public partial class Roles : Migration
+    public partial class departments : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "RoleId",
+                name: "DepartmentId",
                 table: "Users",
                 type: "int",
                 nullable: true,
@@ -16,28 +16,28 @@ namespace API.Data.Migrations
                 oldType: "int");
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "Departments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RoleName = table.Column<string>(type: "text", nullable: true)
+                    Department = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
+                name: "IX_Users_DepartmentId",
                 table: "Users",
-                column: "RoleId");
+                column: "DepartmentId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Roles_RoleId",
+                name: "FK_Users_Departments_DepartmentId",
                 table: "Users",
-                column: "RoleId",
-                principalTable: "Roles",
+                column: "DepartmentId",
+                principalTable: "Departments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.SetNull);
         }
@@ -45,18 +45,18 @@ namespace API.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Roles_RoleId",
+                name: "FK_Users_Departments_DepartmentId",
                 table: "Users");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Departments");
 
             migrationBuilder.DropIndex(
-                name: "IX_Users_RoleId",
+                name: "IX_Users_DepartmentId",
                 table: "Users");
 
             migrationBuilder.AlterColumn<int>(
-                name: "RoleId",
+                name: "DepartmentId",
                 table: "Users",
                 type: "int",
                 nullable: false,

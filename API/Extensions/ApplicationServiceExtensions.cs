@@ -1,4 +1,5 @@
 using API.Data;
+using API.Helper;
 using API.Interfaces;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,10 @@ namespace API.Extensions
     {
         public static IServiceCollection addApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseMySQL(config.GetConnectionString("DefaultConnection"));

@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-        public class DataContext : DbContext
+    public class DataContext : DbContext
     {
         public DataContext(DbContextOptions options) : base(options)
         {
+            
         }
 
         public DbSet<AppUser> Users { get; set; }
@@ -21,10 +22,16 @@ namespace API.Data
             base.OnModelCreating(builder);
 
             builder.Entity<AppUser>()
-            .HasOne(s => s.EmployeeRole)
-            .WithMany(e => e.Employees)
-            .HasForeignKey(k => k.RoleId)
-            .OnDelete(DeleteBehavior.SetNull);
+                .HasOne(s => s.Role)
+                .WithMany(e => e.Employees)
+                .HasForeignKey(k => k.RoleId)
+                .OnDelete(DeleteBehavior.SetNull);
+                
+            builder.Entity<AppUser>()
+                .HasOne(s => s.Department)
+                .WithMany(e => e.Employees)
+                .HasForeignKey(k => k.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Dashboard>()
                 .HasOne(s => s.Publisher)

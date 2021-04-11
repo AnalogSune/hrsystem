@@ -7,7 +7,7 @@ namespace API.Entities
         public int Id { get; set; }
 
         public int EmployeeId { get; set; }
-
+        public AppUser Employee { get; set; }
         public DateTime Date { get; set; }
 
         public int Status { get; set; }

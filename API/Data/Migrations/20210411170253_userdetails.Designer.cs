@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210410202948_Roles")]
-    partial class Roles
+    [Migration("20210411170253_userdetails")]
+    partial class userdetails
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,17 +31,26 @@ namespace API.Data.Migrations
                     b.Property<int>("DaysOffLeft")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FName")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("LName")
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(4000)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(4000)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("text");
@@ -56,6 +65,8 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("RoleId");
 
@@ -112,6 +123,20 @@ namespace API.Data.Migrations
                     b.ToTable("DaysOffRequests");
                 });
 
+            modelBuilder.Entity("API.Entities.Departments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("API.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -128,10 +153,17 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
+                    b.HasOne("API.Entities.Departments", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("API.Entities.Role", "EmployeeRole")
                         .WithMany("Employees")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Department");
 
                     b.Navigation("EmployeeRole");
                 });
@@ -163,6 +195,11 @@ namespace API.Data.Migrations
                     b.Navigation("DaysOffRequests");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("API.Entities.Departments", b =>
+                {
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("API.Entities.Role", b =>
