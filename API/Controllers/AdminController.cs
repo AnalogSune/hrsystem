@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
@@ -14,16 +16,50 @@ namespace API.Controllers
     public class AdminController : BaseApiController
     {
         private readonly IAdminRepository _adminRepository;
-        public AdminController(IAdminRepository adminRepository)
+        private readonly IAuthRepository _authRepository;
+        public AdminController(IAdminRepository adminRepository, IAuthRepository authRepository)
         {
+            _authRepository = authRepository;
             _adminRepository = adminRepository;
         }
 
-        [HttpPost("addDepartment")]
+        [HttpPost("department")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> AddDepartment(DepartmentDto department)
+        public async Task<ActionResult<bool>> AddDepartment(DepartmentDto department)
         {
-            return Ok(await _adminRepository.CreateDepartment(department));
+            int id = int.Parse(User.Claims.FirstOrDefault().Value);
+            if (await _authRepository.IsAdmin(id))
+                return Ok(await _adminRepository.CreateDepartment(department));
+            else
+                return Unauthorized("Only admin can do that you fucking asshole!");
+        }
+
+        [HttpPut("department/{id}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> UpdateDepartment(int id, DepartmentDto department)
+        {
+            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return Ok(await _adminRepository.UpdateDepartment(id, department));
+            }
+            else
+                return Unauthorized("Only admin can do that you fucking asshole!");
+        }
+
+        [HttpDelete("department/{id}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> DeleteDepartment(int id)
+        {
+            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            if (await _authRepository.IsAdmin(uid))
+            {
+                if (await _adminRepository.DeleteDepartment(id))
+                    return Ok("Department deleted!");
+                return BadRequest("Couldn't delete department!");
+            }
+            else
+                return Unauthorized("Only admin can do that you fucking asshole!");
         }
     }
 }

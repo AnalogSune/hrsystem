@@ -29,5 +29,24 @@ namespace API.Data
             return true;
         }
 
+        public async Task<bool> UpdateDepartment(int departmentId, DepartmentDto department)
+        {
+            var depToUpdate = _context.departments.Where(d => d.Id == departmentId).Include(d => d.DepartmentRoles).FirstOrDefault();
+            _mapper.Map(department, depToUpdate);
+
+            if (await _context.SaveChangesAsync() > 0)
+                return true;
+            
+            return false;
+        }
+
+        public async Task<bool> DeleteDepartment(int id)
+        {
+            Departments depToDelete = await _context.departments.Where(d => d.Id == id).FirstOrDefaultAsync();
+            _context.Remove<Departments>(depToDelete);
+            if (await _context.SaveChangesAsync() > 0)
+                return true;
+            return false;
+        }
     }
 }

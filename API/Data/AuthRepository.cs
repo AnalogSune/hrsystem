@@ -6,6 +6,7 @@ using API.DTOs;
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
+using System.Linq;
 
 namespace API.Data
 {
@@ -62,5 +63,6 @@ namespace API.Data
         }
 
         public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.Email == username.ToLower());
+        public async Task<bool> IsAdmin(int id) => (await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync()).IsAdmin == true;
     }
 }

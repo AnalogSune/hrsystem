@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,6 @@ namespace API.Controllers
 
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-
             if (await _authRepository.UserExists(registerDto.Email)) return BadRequest("Username is taken");
             
             return await _authRepository.Register(registerDto);
@@ -36,7 +36,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             if (!await _authRepository.UserExists(loginDto.Email)) return Unauthorized("Wrong Username");
-
+            
             UserDto user =  await _authRepository.Login(loginDto.Email, loginDto.Password);
 
             if (user == null) return Unauthorized("Wrong Password");
