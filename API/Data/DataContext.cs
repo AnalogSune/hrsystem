@@ -17,6 +17,10 @@ namespace API.Data
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<Departments> departments { get; set; }
+
+        public DbSet<Recruitment> recruitments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -43,6 +47,12 @@ namespace API.Data
                 .HasOne(s => s.Employee)
                 .WithMany(r => r.DaysOffRequests)
                 .HasForeignKey(k => k.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Role>()
+                .HasOne(d => d.Department)
+                .WithMany(r => r.DepartmentRoles)
+                .HasForeignKey(k => k.DepartmentId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

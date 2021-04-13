@@ -5,6 +5,7 @@ using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace API.Extensions
 {
@@ -15,10 +16,11 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseMySQL(config.GetConnectionString("DefaultConnection"));
+                options.UseMySql(config.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new System.Version(10, 4, 17)));
             });
 
             return services;

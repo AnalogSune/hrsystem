@@ -32,5 +32,26 @@ namespace API.Controllers
         {
             return await _userRepository.GetUser(id);
         }
+        
+        [Authorize]
+        [HttpGet("role/{id}")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithRole(int id)
+        {
+            return Ok(await _userRepository.GetUsersWithRole(id));
+        }
+
+        [Authorize]
+        [HttpGet("department/{id}")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithDepartment(int id)
+        {
+            return Ok(await _userRepository.GetUsersWithDepartment(id));
+        }
+        
+        [Authorize]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserFilterDto filter)
+        {
+            return Ok(await _userRepository.GetUsersWithParameters(filter));
+        }
     }
 }

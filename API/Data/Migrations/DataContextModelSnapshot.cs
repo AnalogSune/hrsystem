@@ -24,7 +24,7 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("DaysOffLeft")
                         .HasColumnType("int");
@@ -32,32 +32,32 @@ namespace API.Data.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("FName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("longblob");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("longblob");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("ProfilePicture")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
 
                     b.Property<int>("WorkedFromHome")
                         .HasColumnType("int");
@@ -78,13 +78,13 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeCreated")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("isAdmin")
                         .HasColumnType("tinyint(1)");
@@ -106,10 +106,10 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -128,11 +128,37 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Department")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("departments");
+                });
+
+            modelBuilder.Entity("API.Entities.Recruitment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AdminNote")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CV")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CandidateNote")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CoverLetter")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("recruitments");
                 });
 
             modelBuilder.Entity("API.Entities.Role", b =>
@@ -141,10 +167,15 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RoleName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Roles");
                 });
@@ -156,14 +187,14 @@ namespace API.Data.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("API.Entities.Role", "EmployeeRole")
+                    b.HasOne("API.Entities.Role", "Role")
                         .WithMany("Employees")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
 
-                    b.Navigation("EmployeeRole");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("API.Entities.Dashboard", b =>
@@ -188,6 +219,17 @@ namespace API.Data.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("API.Entities.Role", b =>
+                {
+                    b.HasOne("API.Entities.Departments", "Department")
+                        .WithMany("DepartmentRoles")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.Navigation("DaysOffRequests");
@@ -197,6 +239,8 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Departments", b =>
                 {
+                    b.Navigation("DepartmentRoles");
+
                     b.Navigation("Employees");
                 });
 

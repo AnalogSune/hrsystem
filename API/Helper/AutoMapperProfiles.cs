@@ -10,7 +10,8 @@ namespace API.Helper
         {
             CreateMap<AppUser, MemberDto>();
             CreateMap<RegisterDto, AppUser>()
-                .ForMember(r => r.UserName, opt => opt.MapFrom(src => src.Username.ToLower()));
+                .ForMember(r => r.Email, opt => opt.MapFrom(src => src.Email.ToLower()));
+            CreateMap<DepartmentDto, Departments>().ForMember(m => m.Department, opt => opt.MapFrom(src => src.Name));
         }
     }
 }

@@ -31,5 +31,49 @@ namespace API.Data
         {
             return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
+
+        public async Task<IEnumerable<MemberDto>> GetUsersWithRole(int roleId)
+        {
+            return await _context.Roles.Where(r => r.Id == roleId).Include(p => p.Employees)
+                .SelectMany(s => s.Employees).ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId)
+        {
+            return await _context.departments.Where(d => d.Id == departmentId).Include(p => p.Employees)
+                .SelectMany(s => s.Employees).ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+        
+        public async Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters)
+        {
+            var users = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filters.Address))
+            {
+                users = users.Where(u => u.Address.Contains(filters.Address));
+            }
+            
+            if (!string.IsNullOrEmpty(filters.FName))
+            {
+                users = users.Where(u => u.FName.Contains(filters.FName));
+            }
+            
+            if (!string.IsNullOrEmpty(filters.LName))
+            {
+                users = users.Where(u => u.LName.Contains(filters.LName));
+            }
+            
+            if (!string.IsNullOrEmpty(filters.PhoneNumber))
+            {
+                users = users.Where(u => u.PhoneNumber.Contains(filters.PhoneNumber));
+            }
+            
+            if (!string.IsNullOrEmpty(filters.Email))
+            {
+                users = users.Where(u => u.Email.Contains(filters.Email));
+            }
+
+            return await users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
 
-            if (await _authRepository.UserExists(registerDto.Username)) return BadRequest("Username is taken");
+            if (await _authRepository.UserExists(registerDto.Email)) return BadRequest("Username is taken");
             
             return await _authRepository.Register(registerDto);
         }
@@ -35,9 +35,9 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            if (!await _authRepository.UserExists(loginDto.Username)) return Unauthorized("Wrong Username");
+            if (!await _authRepository.UserExists(loginDto.Email)) return Unauthorized("Wrong Username");
 
-            UserDto user =  await _authRepository.Login(loginDto.Username, loginDto.Password);
+            UserDto user =  await _authRepository.Login(loginDto.Email, loginDto.Password);
 
             if (user == null) return Unauthorized("Wrong Password");
             

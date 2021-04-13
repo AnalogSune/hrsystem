@@ -23,7 +23,7 @@ namespace API.Data
         }
         public async Task<UserDto> Login(string username, string password)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == username);
 
             if (user == null) return null;
 
@@ -38,7 +38,7 @@ namespace API.Data
 
             return new UserDto
             {
-                Username = user.UserName,
+                Email = user.Email,
                 Token = _tokenService.CreateToken(user)
             };
         }
@@ -56,11 +56,11 @@ namespace API.Data
 
             return new UserDto
             {
-                Username = user.UserName,
+                Email = user.Email,
                 Token = _tokenService.CreateToken(user)
             };
         }
 
-        public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+        public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.Email == username.ToLower());
     }
 }

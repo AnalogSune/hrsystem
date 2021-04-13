@@ -9,5 +9,9 @@ namespace API.Entities
         public string RoleName { get; set; }
 
         public ICollection<AppUser> Employees { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public Departments Department { get; set; }
     }
 }
