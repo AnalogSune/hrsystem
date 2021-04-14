@@ -14,5 +14,6 @@ namespace API.Interfaces
 
         Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId);
         Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters);
+        Task<bool> UpdateUser(int id, UserEditDto userEdit);
     }
 }

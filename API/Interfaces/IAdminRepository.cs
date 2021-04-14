@@ -9,5 +9,7 @@ namespace API.Interfaces
         Task<bool> CreateDepartment(DepartmentDto department);
         Task<bool> UpdateDepartment(int departmentId, DepartmentDto department);
         Task<bool> DeleteDepartment(int id);
+
+        Task<bool> DeleteUser(int id);
     }
 }

@@ -11,7 +11,10 @@ namespace API.Helper
             CreateMap<AppUser, MemberDto>();
             CreateMap<RegisterDto, AppUser>()
                 .ForMember(r => r.Email, opt => opt.MapFrom(src => src.Email.ToLower()));
-            CreateMap<DepartmentDto, Departments>().ForMember(m => m.Department, opt => opt.MapFrom(src => src.Name));
+            CreateMap<DepartmentDto, Department>().ForMember(m => m.Name, opt => opt.MapFrom(src => src.Name));
+            CreateMap<UserEditDto, AppUser>();
+            CreateMap<RequestsDto, DaysOffRequest>();
+            CreateMap<RequestsDto, WorkHomeRequest>();
         }
     }
 }

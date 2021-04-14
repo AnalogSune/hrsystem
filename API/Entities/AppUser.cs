@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace API.Entities
@@ -15,16 +16,22 @@ namespace API.Entities
 
         public string LName { get; set; }
 
+        public DateTime DateOfBirth { get; set; }
+
         public string PhoneNumber { get; set; }
 
         public string Address { get; set; }
+
+        public string Country { get; set; }
+
+        public string Nationality { get; set; }
         
 #nullable enable
         public int? RoleId { get; set; }
         public Role? Role { get; set; }
 
         public int? DepartmentId { get; set; }
-        public Departments? Department { get; set; }
+        public Department? InDepartment { get; set; }
 #nullable disable
         
         public string ProfilePicture { get; set; }
@@ -39,5 +46,6 @@ namespace API.Entities
 
         public ICollection<DaysOffRequest> DaysOffRequests { get; set; }
         
+        public ICollection<WorkHomeRequest> WorkHomeRequests { get; set; }
     }
 }

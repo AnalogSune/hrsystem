@@ -12,6 +12,6 @@ namespace API.Entities
 
         public int DepartmentId { get; set; }
 
-        public Departments Department { get; set; }
+        public Department InDepartment { get; set; }
     }
 }

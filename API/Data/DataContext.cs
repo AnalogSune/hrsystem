@@ -11,15 +11,17 @@ namespace API.Data
         }
 
         public DbSet<AppUser> Users { get; set; }
-        public DbSet<Dashboard> dashboards { get; set; }
+        public DbSet<Dashboard> Dashboards { get; set; }
 
         public DbSet<DaysOffRequest> DaysOffRequests { get; set; }
 
+        public DbSet<WorkHomeRequest> WorkHomeRequests { get; set; }
+
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<Departments> departments { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
-        public DbSet<Recruitment> recruitments { get; set; }
+        public DbSet<Recruitment> Recruitments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,7 +34,7 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.SetNull);
                 
             builder.Entity<AppUser>()
-                .HasOne(s => s.Department)
+                .HasOne(s => s.InDepartment)
                 .WithMany(e => e.Employees)
                 .HasForeignKey(k => k.DepartmentId)
                 .OnDelete(DeleteBehavior.SetNull);
@@ -50,9 +52,15 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Role>()
-                .HasOne(d => d.Department)
+                .HasOne(d => d.InDepartment)
                 .WithMany(r => r.DepartmentRoles)
                 .HasForeignKey(k => k.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<WorkHomeRequest>()
+                .HasOne(d => d.Employee)
+                .WithMany(r => r.WorkHomeRequests)
+                .HasForeignKey(k => k.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

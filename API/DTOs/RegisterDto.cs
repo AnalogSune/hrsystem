@@ -22,11 +22,9 @@ namespace API.DTOs
         [Required]
         public string PhoneNumber { get; set; }
 
-        [Required]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
 
-        [Required]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         [Required]
         public bool isAdmin { get; set; }

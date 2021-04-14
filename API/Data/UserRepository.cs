@@ -24,25 +24,36 @@ namespace API.Data
 
         public async Task<MemberDto> GetUser(int id)
         {
-            return await _context.Users.Where(u => u.Id == id).ProjectTo<MemberDto>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
+            return await _context.Users.Where(u => u.Id == id).Select(u => _mapper.Map<MemberDto>(u)).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<MemberDto>> GetUsers()
         {
-            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.Users.Select(e => _mapper.Map<MemberDto>(e)).ToListAsync();
         }
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithRole(int roleId)
         {
             return await _context.Roles.Where(r => r.Id == roleId).Include(p => p.Employees)
-                .SelectMany(s => s.Employees).ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+                .SelectMany(s => s.Employees).Select(e => _mapper.Map<MemberDto>(e)).ToListAsync();
         }
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId)
         {
-            return await _context.departments.Where(d => d.Id == departmentId).Include(p => p.Employees)
-                .SelectMany(s => s.Employees).ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.Departments.Where(d => d.Id == departmentId).Include(p => p.Employees)
+                .SelectMany(s => s.Employees).Select(e => _mapper.Map<MemberDto>(e)).ToListAsync();
         }
+
+        public async Task<bool> UpdateUser(int id, UserEditDto userEdit)
+        {
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+
+            _mapper.Map(userEdit, user);
+            if (await _context.SaveChangesAsync() > 0)
+                return true;
+
+            return false;
+        } 
         
         public async Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters)
         {
@@ -73,7 +84,7 @@ namespace API.Data
                 users = users.Where(u => u.Email.Contains(filters.Email));
             }
 
-            return await users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return await users.Select(u => _mapper.Map<MemberDto>(u)).ToListAsync();
         }
     }
 }

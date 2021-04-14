@@ -61,5 +61,20 @@ namespace API.Controllers
             else
                 return Unauthorized("Only admin can do that you fucking asshole!");
         }
+
+        [HttpDelete("users/{id}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> DeleteUser(int id)
+        {
+            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            if (await _authRepository.IsAdmin(uid))
+            {
+                if (await _adminRepository.DeleteUser(id))
+                    return Ok("User deleted!");
+                return BadRequest("Couldn't delete user!");
+            }
+            else
+                return Unauthorized("Only admin can do that you fucking asshole!");
+        }
     }
 }

@@ -14,8 +14,10 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-        public UsersController(IUserRepository userRepository)
+        private readonly IAuthRepository _authRepository;
+        public UsersController(IUserRepository userRepository, IAuthRepository authRepository)
         {
+            _authRepository = authRepository;
             _userRepository = userRepository;
         }
 
@@ -32,7 +34,7 @@ namespace API.Controllers
         {
             return await _userRepository.GetUser(id);
         }
-        
+
         [Authorize]
         [HttpGet("role/{id}")]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithRole(int id)
@@ -46,12 +48,23 @@ namespace API.Controllers
         {
             return Ok(await _userRepository.GetUsersWithDepartment(id));
         }
-        
+
         [Authorize]
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserFilterDto filter)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> SearchUsers([FromQuery] UserFilterDto filter)
         {
             return Ok(await _userRepository.GetUsersWithParameters(filter));
         }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> UpdateUser(int id, UserEditDto userEdit)
+        {
+            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            if (id == uid || await _authRepository.IsAdmin(uid))
+                return await _userRepository.UpdateUser(id, userEdit);
+             return Unauthorized("You don't have the rights to edit this user!");
+        }
+
     }
 }

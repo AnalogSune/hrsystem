@@ -9,20 +9,20 @@ namespace API.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "departments",
+                name: "Departments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Department = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_departments", x => x.Id);
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "recruitments",
+                name: "Recruitments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -35,7 +35,7 @@ namespace API.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_recruitments", x => x.Id);
+                    table.PrimaryKey("PK_Recruitments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,9 +51,9 @@ namespace API.Data.Migrations
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Roles_departments_DepartmentId",
+                        name: "FK_Roles_Departments_DepartmentId",
                         column: x => x.DepartmentId,
-                        principalTable: "departments",
+                        principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -82,9 +82,9 @@ namespace API.Data.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_departments_DepartmentId",
+                        name: "FK_Users_Departments_DepartmentId",
                         column: x => x.DepartmentId,
-                        principalTable: "departments",
+                        principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -96,7 +96,7 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "dashboards",
+                name: "Dashboards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -108,9 +108,9 @@ namespace API.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_dashboards", x => x.Id);
+                    table.PrimaryKey("PK_Dashboards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_dashboards_Users_PublisherId",
+                        name: "FK_Dashboards_Users_PublisherId",
                         column: x => x.PublisherId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -139,9 +139,31 @@ namespace API.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WorkHomeRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkHomeRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkHomeRequests_Users_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_dashboards_PublisherId",
-                table: "dashboards",
+                name: "IX_Dashboards_PublisherId",
+                table: "Dashboards",
                 column: "PublisherId");
 
             migrationBuilder.CreateIndex(
@@ -163,18 +185,26 @@ namespace API.Data.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkHomeRequests_EmployeeId",
+                table: "WorkHomeRequests",
+                column: "EmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "dashboards");
+                name: "Dashboards");
 
             migrationBuilder.DropTable(
                 name: "DaysOffRequests");
 
             migrationBuilder.DropTable(
-                name: "recruitments");
+                name: "Recruitments");
+
+            migrationBuilder.DropTable(
+                name: "WorkHomeRequests");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -183,7 +213,7 @@ namespace API.Data.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "departments");
+                name: "Departments");
         }
     }
 }

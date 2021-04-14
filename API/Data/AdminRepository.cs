@@ -20,10 +20,10 @@ namespace API.Data
         }
         public async Task<bool> CreateDepartment(DepartmentDto department)
         {
-            if (await _context.departments.AnyAsync(d => d.Department == department.Name)) return false;
+            if (await _context.Departments.AnyAsync(d => d.Name == department.Name)) return false;
 
             await _context.Roles.AddRangeAsync(department.DepartmentRoles);
-            await _context.departments.AddAsync(_mapper.Map<Departments>(department));
+            await _context.Departments.AddAsync(_mapper.Map<Department>(department));
 
             await _context.SaveChangesAsync();
             return true;
@@ -31,7 +31,7 @@ namespace API.Data
 
         public async Task<bool> UpdateDepartment(int departmentId, DepartmentDto department)
         {
-            var depToUpdate = _context.departments.Where(d => d.Id == departmentId).Include(d => d.DepartmentRoles).FirstOrDefault();
+            var depToUpdate = _context.Departments.Where(d => d.Id == departmentId).Include(d => d.DepartmentRoles).FirstOrDefault();
             _mapper.Map(department, depToUpdate);
 
             if (await _context.SaveChangesAsync() > 0)
@@ -42,10 +42,25 @@ namespace API.Data
 
         public async Task<bool> DeleteDepartment(int id)
         {
-            Departments depToDelete = await _context.departments.Where(d => d.Id == id).FirstOrDefaultAsync();
-            _context.Remove<Departments>(depToDelete);
-            if (await _context.SaveChangesAsync() > 0)
-                return true;
+            Department depToDelete = await _context.Departments.Where(d => d.Id == id).FirstOrDefaultAsync();
+            if (depToDelete != null)
+            {
+                _context.Remove<Department>(depToDelete);
+                if (await _context.SaveChangesAsync() > 0)
+                    return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteUser(int id)
+        {
+            AppUser userToDelete = await _context.Users.Where(d => d.Id == id).FirstOrDefaultAsync();
+            if (userToDelete != null)
+            {
+                _context.Remove<AppUser>(userToDelete);
+                if (await _context.SaveChangesAsync() > 0)
+                    return true;
+            }
             return false;
         }
     }

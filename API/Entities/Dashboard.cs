@@ -15,6 +15,11 @@ namespace API.Entities
 
         public bool isAdmin { get; set; }
 
+        Dashboard()
+        {
+            if (TimeCreated == null)
+                TimeCreated = DateTime.Now;
+        }
 
     }
 }

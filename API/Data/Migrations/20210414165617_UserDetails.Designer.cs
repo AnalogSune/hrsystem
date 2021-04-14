@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210413165702_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210414165617_UserDetails")]
+    partial class UserDetails
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,12 @@ namespace API.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("Country")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("DaysOffLeft")
                         .HasColumnType("int");
 
@@ -44,6 +50,9 @@ namespace API.Data.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Nationality")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<byte[]>("PasswordHash")
@@ -95,7 +104,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("dashboards");
+                    b.ToTable("Dashboards");
                 });
 
             modelBuilder.Entity("API.Entities.DaysOffRequest", b =>
@@ -123,18 +132,18 @@ namespace API.Data.Migrations
                     b.ToTable("DaysOffRequests");
                 });
 
-            modelBuilder.Entity("API.Entities.Departments", b =>
+            modelBuilder.Entity("API.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Department")
+                    b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("departments");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("API.Entities.Recruitment", b =>
@@ -160,7 +169,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("recruitments");
+                    b.ToTable("Recruitments");
                 });
 
             modelBuilder.Entity("API.Entities.Role", b =>
@@ -182,9 +191,34 @@ namespace API.Data.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("API.Entities.WorkHomeRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("WorkHomeRequests");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.HasOne("API.Entities.Departments", "Department")
+                    b.HasOne("API.Entities.Department", "InDepartment")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -194,7 +228,7 @@ namespace API.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Department");
+                    b.Navigation("InDepartment");
 
                     b.Navigation("Role");
                 });
@@ -223,13 +257,24 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Role", b =>
                 {
-                    b.HasOne("API.Entities.Departments", "Department")
+                    b.HasOne("API.Entities.Department", "InDepartment")
                         .WithMany("DepartmentRoles")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.Navigation("InDepartment");
+                });
+
+            modelBuilder.Entity("API.Entities.WorkHomeRequest", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "Employee")
+                        .WithMany("WorkHomeRequests")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
@@ -237,9 +282,11 @@ namespace API.Data.Migrations
                     b.Navigation("DaysOffRequests");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("WorkHomeRequests");
                 });
 
-            modelBuilder.Entity("API.Entities.Departments", b =>
+            modelBuilder.Entity("API.Entities.Department", b =>
                 {
                     b.Navigation("DepartmentRoles");
 
