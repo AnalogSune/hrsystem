@@ -13,12 +13,15 @@ namespace API.Extensions
     {
         public static IServiceCollection addApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddScoped<IRequestsRepository, RequestsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseMySql(config.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new System.Version(10, 4, 17)));

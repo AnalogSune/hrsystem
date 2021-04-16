@@ -3,14 +3,16 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210415190528_MergedRequests")]
+    partial class MergedRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,10 +64,7 @@ namespace API.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("PictureId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("PictureUrl")
+                    b.Property<string>("ProfilePicture")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("RoleId")
@@ -120,31 +119,6 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("FileOwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("OriginalFileName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FileOwnerId");
-
-                    b.ToTable("personalFiles");
                 });
 
             modelBuilder.Entity("API.Entities.Recruitment", b =>
@@ -251,17 +225,6 @@ namespace API.Data.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
-                {
-                    b.HasOne("API.Entities.AppUser", "FileOwner")
-                        .WithMany("PersonalFiles")
-                        .HasForeignKey("FileOwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FileOwner");
-                });
-
             modelBuilder.Entity("API.Entities.Request", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "Employee")
@@ -286,8 +249,6 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.Navigation("PersonalFiles");
-
                     b.Navigation("Posts");
 
                     b.Navigation("Requests");

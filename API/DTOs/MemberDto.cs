@@ -7,7 +7,8 @@ namespace API.DTOs
     {
         public string Email { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public string PictureUrl { get; set; }
+        public string PictureId { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

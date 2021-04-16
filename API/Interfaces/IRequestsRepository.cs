@@ -1,14 +1,15 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 
 namespace API.Interfaces
 {
     public interface IRequestsRepository
     {
-        Task<bool> CreateWorkFromHomeRequest(RequestsDto requestsDto);
+        Task<bool> CreateRequest(RequestsDto requestsDto);
 
-        Task<bool> CreateDayOffRequest(RequestsDto requestsDto);
-        Task<bool> StatusDayOffRequest(int id, int status);
-        Task<bool> StatusWorkHomeRequest(int id, int status);
+        Task<bool> UpdateRequestStatus(int id, RequestStatus status);
+        Task<ICollection<RequestsDto>> GetRequests(int id, RequestType? type, RequestStatus? status);
     }
 }

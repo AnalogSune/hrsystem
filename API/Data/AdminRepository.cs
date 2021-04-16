@@ -12,9 +12,11 @@ namespace API.Data
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public AdminRepository(DataContext context, IMapper mapper)
+        public AdminRepository(DataContext context, IMapper mapper, IFileService fileService)
         {
+            _fileService = fileService;
             _mapper = mapper;
             _context = context;
         }
@@ -31,36 +33,50 @@ namespace API.Data
 
         public async Task<bool> UpdateDepartment(int departmentId, DepartmentDto department)
         {
-            var depToUpdate = _context.Departments.Where(d => d.Id == departmentId).Include(d => d.DepartmentRoles).FirstOrDefault();
+            var depToUpdate = _context.Departments
+                .Where(d => d.Id == departmentId)
+                .Include(d => d.DepartmentRoles)
+                .FirstOrDefault();
             _mapper.Map(department, depToUpdate);
 
             if (await _context.SaveChangesAsync() > 0)
                 return true;
-            
+
             return false;
         }
 
         public async Task<bool> DeleteDepartment(int id)
         {
-            Department depToDelete = await _context.Departments.Where(d => d.Id == id).FirstOrDefaultAsync();
+            Department depToDelete = await _context.Departments
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
             if (depToDelete != null)
             {
                 _context.Remove<Department>(depToDelete);
                 if (await _context.SaveChangesAsync() > 0)
                     return true;
             }
+
             return false;
         }
 
         public async Task<bool> DeleteUser(int id)
         {
-            AppUser userToDelete = await _context.Users.Where(d => d.Id == id).FirstOrDefaultAsync();
+            AppUser userToDelete = await _context.Users
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
             if (userToDelete != null)
             {
                 _context.Remove<AppUser>(userToDelete);
                 if (await _context.SaveChangesAsync() > 0)
+                {
+                    await _fileService.DeleteFolderAsync(userToDelete.Email);
                     return true;
+                }
             }
+
             return false;
         }
     }

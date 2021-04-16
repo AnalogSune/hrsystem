@@ -1,4 +1,5 @@
 using System;
+using API.Entities;
 
 namespace API.DTOs
 {
@@ -9,5 +10,6 @@ namespace API.DTOs
         public DateTime Date { get; set; }
 
         public int Duration { get; set; }
+        public RequestType requestType { get; set; }
     }
 }

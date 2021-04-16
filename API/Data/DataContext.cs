@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,15 +14,15 @@ namespace API.Data
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
 
-        public DbSet<DaysOffRequest> DaysOffRequests { get; set; }
-
-        public DbSet<WorkHomeRequest> WorkHomeRequests { get; set; }
+        public DbSet<Request> Requests { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<Department> Departments { get; set; }
 
         public DbSet<Recruitment> Recruitments { get; set; }
+
+        public DbSet<PersonalFiles> personalFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,11 +46,6 @@ namespace API.Data
                 .HasForeignKey(k => k.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<DaysOffRequest>()
-                .HasOne(s => s.Employee)
-                .WithMany(r => r.DaysOffRequests)
-                .HasForeignKey(k => k.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Role>()
                 .HasOne(d => d.InDepartment)
@@ -57,10 +53,16 @@ namespace API.Data
                 .HasForeignKey(k => k.DepartmentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<WorkHomeRequest>()
-                .HasOne(d => d.Employee)
-                .WithMany(r => r.WorkHomeRequests)
+            builder.Entity<Request>()
+                .HasOne(s => s.Employee)
+                .WithMany(r => r.Requests)
                 .HasForeignKey(k => k.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PersonalFiles>()
+                .HasOne(s => s.FileOwner)
+                .WithMany(p => p.PersonalFiles)
+                .HasForeignKey(k => k.FileOwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

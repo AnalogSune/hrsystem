@@ -34,7 +34,8 @@ namespace API.Entities
         public Department? InDepartment { get; set; }
 #nullable disable
         
-        public string ProfilePicture { get; set; }
+        public string PictureUrl { get; set; }
+        public string PictureId { get; set; }
 
         public int DaysOffLeft { get; set; }
 
@@ -44,8 +45,8 @@ namespace API.Entities
 
         public ICollection<Dashboard> Posts { get; set; }
 
-        public ICollection<DaysOffRequest> DaysOffRequests { get; set; }
-        
-        public ICollection<WorkHomeRequest> WorkHomeRequests { get; set; }
+        public ICollection<Request> Requests { get; set; }
+
+        public ICollection<PersonalFiles> PersonalFiles { get; set; }
     }
 }

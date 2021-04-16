@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -19,25 +20,17 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<bool> CreateDayOffRequest(RequestsDto requestsDto)
+        public async Task<bool> CreateRequest(RequestsDto requestsDto)
         {
-            await _context.DaysOffRequests.AddAsync(_mapper.Map<DaysOffRequest>(requestsDto));
+            await _context.Requests.AddAsync(_mapper.Map<Request>(requestsDto));
             if (await _context.SaveChangesAsync() > 0)
                 return true;
             return false;
         }
 
-        public async Task<bool> CreateWorkFromHomeRequest(RequestsDto requestsDto)
+        public async Task<bool> UpdateRequestStatus(int id, RequestStatus status)
         {
-            await _context.WorkHomeRequests.AddAsync(_mapper.Map<WorkHomeRequest>(requestsDto));
-            if (await _context.SaveChangesAsync() > 0)
-                return true;
-            return false;
-        }
-
-        public async Task<bool> StatusWorkHomeRequest(int id, int status)
-        {
-            var req = await _context.WorkHomeRequests.Where(r => r.Id == id).FirstOrDefaultAsync();
+            var req = await _context.Requests.Where(r => r.Id == id).FirstOrDefaultAsync();
             if (req == null) return false;
 
             req.Status = status;
@@ -46,17 +39,15 @@ namespace API.Data
 
             return false;
         }
-        
-        public async Task<bool> StatusDayOffRequest(int id, int status)
+
+         public async Task<ICollection<RequestsDto>> GetRequests(int id, RequestType? type, RequestStatus? status)
         {
-            var req = await _context.DaysOffRequests.Where(r => r.Id == id).FirstOrDefaultAsync();
-            if (req == null) return false;
-
-            req.Status = status;
-            if (await _context.SaveChangesAsync() > 0)
-                return true;
-
-            return false;
+            return await _context.Requests
+                .Where(u => u.EmployeeId == id)
+                .Where(s => (status == null ? true : s.Status == status))
+                .Where(t => (type == null ? true : t.requestType == type))
+                .Select(u => _mapper.Map<RequestsDto>(u))
+                .ToListAsync();
         }
     }
 }

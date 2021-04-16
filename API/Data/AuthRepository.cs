@@ -15,9 +15,11 @@ namespace API.Data
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public AuthRepository(DataContext context, ITokenService tokenService, IMapper mapper)
+        public AuthRepository(DataContext context, ITokenService tokenService, IMapper mapper, IFileService fileService)
         {
+            _fileService = fileService;
             _mapper = mapper;
             _context = context;
             _tokenService = tokenService;
