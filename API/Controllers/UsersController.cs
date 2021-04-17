@@ -69,7 +69,7 @@ namespace API.Controllers
     [HttpPut("{id}")]
     public async Task<ActionResult<bool>> UpdateUser(int id, UserEditDto userEdit)
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+        int uid = RetrieveUserId();
 
         if (id == uid || await _authRepository.IsAdmin(uid))
             return await _userRepository.UpdateUser(id, userEdit);
@@ -78,10 +78,10 @@ namespace API.Controllers
     }
 
     [Authorize]
-    [HttpPost("add-image")]
+    [HttpPost("image")]
     public async Task<ActionResult<string>> UploadPhoto(IFormFile image)
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+        int uid = RetrieveUserId();
 
         var user = await _userRepository.GetUser(uid);
         if (!string.IsNullOrEmpty(user.PictureId))
@@ -94,10 +94,10 @@ namespace API.Controllers
     }
 
     [Authorize]
-    [HttpPost("add-file")]
+    [HttpPost("file")]
     public async Task<ActionResult<string>> UploadFile(IFormFile file)
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+        int uid = RetrieveUserId();
         string email = (await _userRepository.GetUser(uid)).Email;
         var result = await _fileService.AddFileAsync(file, email);
         await _userRepository.UploadFile(uid, result, file.FileName);
@@ -108,7 +108,7 @@ namespace API.Controllers
     [HttpGet("file")]
     public async Task<ActionResult<IEnumerable<PersonalFilesDto>>> GetFiles()
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+        int uid = RetrieveUserId();
         return Ok(await _userRepository.GetFiles(uid));
     }
 
@@ -116,7 +116,7 @@ namespace API.Controllers
     [HttpDelete("file/{fileId}")]
     public async Task<ActionResult<IEnumerable<DeletionResult>>> DeleteFilei(int fileId)
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+        int uid = RetrieveUserId();
         var file = await _userRepository.GetFile(fileId);
         if (file == null) return Ok("Not found");
         var result = await _fileService.DeleteFileAsync(file.FileId, ResourceType.Raw);
@@ -125,11 +125,11 @@ namespace API.Controllers
     }
 
     [Authorize]
-    [HttpPut("rename-file")]
+    [HttpPut("file")]
 
     public async Task<ActionResult<bool>> RenameFile(PersonalFilesDto personalFilesDto)
     {
-        int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            int uid = RetrieveUserId();
         
         if (uid == personalFilesDto.FileOwnerId)
         {

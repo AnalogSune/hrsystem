@@ -27,8 +27,8 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> AddDepartment(DepartmentDto department)
         {
-            int id = int.Parse(User.Claims.FirstOrDefault().Value);
-            if (await _authRepository.IsAdmin(id))
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
                 return Ok(await _adminRepository.CreateDepartment(department));
             else
                 return Unauthorized("Only admin can do that you fucking asshole!");
@@ -38,7 +38,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> UpdateDepartment(int id, DepartmentDto department)
         {
-            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
                 return Ok(await _adminRepository.UpdateDepartment(id, department));
@@ -51,7 +51,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> DeleteDepartment(int id)
         {
-            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
                 if (await _adminRepository.DeleteDepartment(id))
@@ -66,7 +66,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> DeleteUser(int id)
         {
-            int uid = int.Parse(User.Claims.FirstOrDefault().Value);
+            int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
                 if (await _adminRepository.DeleteUser(id))

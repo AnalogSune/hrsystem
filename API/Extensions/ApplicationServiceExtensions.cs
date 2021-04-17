@@ -22,6 +22,8 @@ namespace API.Extensions
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
+            services.AddScoped<ICVRepository, CVRepository>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseMySql(config.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new System.Version(10, 4, 17)));

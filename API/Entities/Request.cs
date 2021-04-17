@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
@@ -8,7 +9,7 @@ namespace API.Entities
     }
     public enum RequestType
     {
-        DayOff, WorkHome
+        DayOff = 1, WorkHome = 2
     }
     public class Request
     {
@@ -16,6 +17,8 @@ namespace API.Entities
 
         public int EmployeeId { get; set; }
         public AppUser Employee { get; set; }
+
+        [Column(TypeName="Date")]
         public DateTime Date { get; set; }
 
         public DateTime DateCreated { get; set; }

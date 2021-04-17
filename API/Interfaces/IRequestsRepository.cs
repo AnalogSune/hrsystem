@@ -11,5 +11,6 @@ namespace API.Interfaces
 
         Task<bool> UpdateRequestStatus(int id, RequestStatus status);
         Task<ICollection<RequestsDto>> GetRequests(int id, RequestType? type, RequestStatus? status);
+        Task<RequestsDto> GetRequest(int requestId);
     }
 }

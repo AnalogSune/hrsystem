@@ -17,8 +17,7 @@ namespace API.Entities
 
         Dashboard()
         {
-            if (TimeCreated == null)
-                TimeCreated = DateTime.Now;
+            TimeCreated = DateTime.Now;
         }
 
     }

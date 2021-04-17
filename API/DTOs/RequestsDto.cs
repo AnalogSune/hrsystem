@@ -11,5 +11,9 @@ namespace API.DTOs
 
         public int Duration { get; set; }
         public RequestType requestType { get; set; }
+        public DateTime EndDate
+        {
+            get => Date.AddDays(Duration);
+        }
     }
 }

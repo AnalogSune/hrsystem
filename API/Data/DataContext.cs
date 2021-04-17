@@ -13,6 +13,7 @@ namespace API.Data
 
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
+        public DbSet<CalendarEntry> Calendar { get; set; }
 
         public DbSet<Request> Requests { get; set; }
 
@@ -20,13 +21,23 @@ namespace API.Data
 
         public DbSet<Department> Departments { get; set; }
 
-        public DbSet<Recruitment> Recruitments { get; set; }
+        public DbSet<CV> CVs { get; set; }
 
         public DbSet<PersonalFiles> personalFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Request>()
+                .Property(d => d.DateCreated)
+                .HasPrecision(0);
+
+            builder.Entity<CalendarEntry>()
+                .HasOne(e => e.Employee)
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AppUser>()
                 .HasOne(s => s.Role)
@@ -45,7 +56,6 @@ namespace API.Data
                 .WithMany(p => p.Posts)
                 .HasForeignKey(k => k.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
-
 
             builder.Entity<Role>()
                 .HasOne(d => d.InDepartment)

@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -14,7 +15,7 @@ namespace API.Data
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public RequestsRepository(DataContext context, ITokenService tokenService, IMapper mapper)
+        public RequestsRepository(DataContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
@@ -48,6 +49,10 @@ namespace API.Data
                 .Where(t => (type == null ? true : t.requestType == type))
                 .Select(u => _mapper.Map<RequestsDto>(u))
                 .ToListAsync();
+        }
+        public async Task<RequestsDto> GetRequest(int requestId)
+        {
+            return await _context.Requests.Where(r => r.Id == requestId).ProjectTo<RequestsDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
     }
 }
