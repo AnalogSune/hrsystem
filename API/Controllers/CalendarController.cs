@@ -29,5 +29,15 @@ namespace API.Controllers
             return Unauthorized("You dont have rights to do this!");
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CalendarEntryDto>>> GetEntries(CalendarSearchDto calendarEntry)
+        {
+            int uid = RetrieveUserId();
+            if(await _authRepository.IsAdmin(uid) || uid == calendarEntry.EmployeeId)
+                return Ok(await _calendarRepository.GetEntries(calendarEntry));
+            
+            return Unauthorized("You dont have rights to do this!");
+        }
     }
 }

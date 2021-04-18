@@ -10,10 +10,8 @@ namespace API.Controllers
     {
         private readonly IAuthRepository _authRepository;
         private readonly ICVRepository _cvRepository;
-        private readonly IFileService _fileService;
-        public CVController(IAuthRepository authRepository, ICVRepository cvRepository, IFileService fileService)
+        public CVController(IAuthRepository authRepository, ICVRepository cvRepository)
         {
-            _fileService = fileService;
             _cvRepository = cvRepository;
             _authRepository = authRepository;
         }
@@ -22,8 +20,31 @@ namespace API.Controllers
         public async Task<ActionResult<bool>> SendCV([FromForm] CVDto cvDto)
         {
 
-            var result = await _fileService.AddFileAsync(cvDto.CvFile, "CVs");
-            return Ok(await _cvRepository.AddCVEntry(cvDto, result.Url.ToString(), result.PublicId));
+            return Ok(await _cvRepository.AddCVEntry(cvDto));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> UpdateCV(UpdateCVDto updateCVDto)
+        {
+            var uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return Ok(await _cvRepository.UpdateCVEntry(updateCVDto));
+            }
+
+            return Unauthorized("You don't have the rights to do this!");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteCV(int id)
+        {
+            var uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return Ok(await _cvRepository.DeleteCVEntry(id));
+            }
+
+            return Unauthorized("You don't have the rights to do this!");
         }
     }
 }

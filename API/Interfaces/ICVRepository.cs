@@ -5,6 +5,10 @@ namespace API.Interfaces
 {
     public interface ICVRepository
     {
-        Task<bool> AddCVEntry(CVDto cvDto, string Url, string id);
+        Task<bool> AddCVEntry(CVDto cvDto);
+
+        Task<bool> UpdateCVEntry(UpdateCVDto updateCVDto);
+
+        Task<bool> DeleteCVEntry(int id);
     }
 }

@@ -1,0 +1,34 @@
+.rightbar {
+    background: none repeat scroll 0 0 rgb(231, 231, 226);
+    left: 0;
+    width: 200px;
+    margin-top: 56px;
+    position: absolute;
+    flex: 0 0 200px;
+    height: calc(100% - 56px);
+}
+.rightbar a:hover {
+    text-decoration: none;
+}
+.rightbar div {
+    background-color: darkgray;
+    margin: auto;
+    width: 100%;
+    padding-left: 20px;
+    line-height: 50px;
+}
+
+.rightbar div:hover {
+    color: white;
+    background-color: #00ff22;
+    cursor: pointer;
+}
+
+.rightbar div i {
+    padding-top: 15px;
+    transition:all 0.3s ease;
+        -webkit-transition:all 0.3s ease;
+        -moz-transition:all 0.3s ease;
+        -o-transition:all 0.3s ease;     
+        transition:all 0.3s ease;
+}

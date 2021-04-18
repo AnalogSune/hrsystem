@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
@@ -10,21 +11,49 @@ namespace API.Data
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public CVRepository(DataContext context, IMapper mapper)
+        public CVRepository(DataContext context, IMapper mapper, IFileService fileService)
         {
+            _fileService = fileService;
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<bool> AddCVEntry(CVDto cvDto, string Url, string id)
+        public async Task<bool> AddCVEntry(CVDto cvDto)
         {
+            var result = await _fileService.AddFileAsync(cvDto.CvFile, "CVs");
             var entry = _mapper.Map<CV>(cvDto);
-            entry.FileUrl = Url;
-            entry.FileId = id;
+            entry.FileUrl = result.Url.ToString();
+            entry.FileId = result.PublicId;
             await _context.CVs.AddAsync(entry);
             return await _context.SaveChangesAsync() > 0;
         }
-        
+
+        public async Task<bool> UpdateCVEntry(UpdateCVDto updateCVDto)
+        {
+            var cvEntry = _context.CVs
+                .Where(i => i.Id == updateCVDto.Id)
+                .FirstOrDefault();
+
+            cvEntry.AdminNote = updateCVDto.AdminNotes;
+            cvEntry.Status = updateCVDto.Status;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteCVEntry(int id)
+        {
+            var cvEntry = _context.CVs
+                .Where(i => i.Id == id)
+                .FirstOrDefault();
+
+            await _fileService.DeleteFileAsync(cvEntry.FileId, CloudinaryDotNet.Actions.ResourceType.Image);
+
+            _context.CVs.Remove(cvEntry);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
     }
 }

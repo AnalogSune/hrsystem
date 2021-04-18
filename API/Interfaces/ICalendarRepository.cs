@@ -8,5 +8,6 @@ namespace API.Interfaces
     public interface ICalendarRepository
     {
         Task<bool> AddEntry(CalendarEntryDto calendarEntry);
+        Task<IEnumerable<CalendarEntry>> GetEntries(CalendarSearchDto calendarEntry);
     }
 }

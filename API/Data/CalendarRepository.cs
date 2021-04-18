@@ -21,6 +21,20 @@ namespace API.Data
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<CalendarEntry>> GetEntries(CalendarSearchDto calendarEntry)
+        {
+            var entries = await _context.Calendar
+                .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
+                .Where(c => c.Type == calendarEntry.Type || calendarEntry.OnlyType == false)
+                .Where(c => 
+                    (c.StartDate.Date < calendarEntry.StartDate.Date && c.EndDate.Date >= calendarEntry.StartDate.Date) ||
+                    (c.StartDate.Date <= calendarEntry.EndDate.Date && c.EndDate.Date > calendarEntry.EndDate.Date) ||
+                    (c.StartDate.Date >= calendarEntry.StartDate.Date && c.EndDate.Date <= calendarEntry.EndDate.Date))
+                .ToListAsync();
+
+            return entries;
+        }
+
         public async Task<bool> AddEntry(CalendarEntryDto calendarEntry)
         {
             await CorrentDates(calendarEntry);

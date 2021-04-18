@@ -1,5 +1,10 @@
 namespace API.Entities
 {
+    public enum CVStatus 
+    {
+        Pending, Accepted, Declined, MaybeLater
+    }
+
     public class CV
     {
         public int Id { get; set; }
@@ -16,7 +21,7 @@ namespace API.Entities
 
         public string FileId { get; set; }
 
-        public int Status { get; set; }
+        public CVStatus Status { get; set; }
 
         public string AdminNote { get; set; }
     }

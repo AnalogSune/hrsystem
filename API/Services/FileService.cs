@@ -58,8 +58,6 @@ namespace API.Services
 
         public async Task<DeletionResult> DeleteFileAsync(string publicId, ResourceType type)
         {
-            Console.WriteLine("----fileId-----");
-            Console.WriteLine(publicId);
             var deleteParams = new DeletionParams(publicId);
             deleteParams.ResourceType = type;
             var result = await _cloudinary.DestroyAsync(deleteParams);

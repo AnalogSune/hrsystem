@@ -8,6 +8,7 @@ namespace API.DTOs
         public string Email { get; set; }
 
         [Required]
+        [StringLength(10, MinimumLength = 6)]
         public string Password { get; set; }
 
         [Required]
