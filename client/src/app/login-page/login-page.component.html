@@ -1,0 +1,8 @@
+<div class="login-window">
+  <div class="window-header">Login Page</div>
+  <form #loginForm="ngForm" (ngSubmit)="login()">
+    <input class="window-item" type="email" name="mail" id="" [(ngModel)]="loginInfo.email" required placeholder="Email">
+    <input class="window-item" type="password" name="pass" id="" [(ngModel)]="loginInfo.password" required placeholder="Password">
+    <button [disabled]="!loginForm.valid" class="btn btn-success window-item" type="submit">Login</button>
+  </form>
+</div>

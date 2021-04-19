@@ -8,5 +8,21 @@
     </ul>
 </div> -->
 
-<app-nav></app-nav>
+
+<!-- <img src="../assets/cool-background.png" class="bg"> -->
+<div *ngIf="this.isLoggedIn(); else loginPage">
+<app-nav>
+</app-nav>
+<div class="side-bar-container">
 <app-side-bar></app-side-bar>
+</div>
+<div class="content-container">
+    <router-outlet></router-outlet>
+</div>
+</div>
+<ng-template #loginPage>
+    <app-login-page></app-login-page>
+</ng-template>
+<!-- <div class="container">
+<router-outlet class="container mt-5"></router-outlet>
+</div> -->

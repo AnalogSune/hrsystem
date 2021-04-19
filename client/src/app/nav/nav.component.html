@@ -1,19 +1,28 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">HR System</a>
-
-    <div class="container " >
-        <div class="col-md-4 col-md-offset-3 mt-3">
-            <form action="" class="search-form">
-                <div class="form-group has-feedback">
-                    <label for="search" class="sr-only">Search</label>
-                    <input type="text" class="form-control" name="search" id="search" placeholder="search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-            </form>
+<nav class="hr-nav">
+    <!-- navbar navbar-expand-md navbar-dark fixed-top bg-dark -->
+        <!-- <div class="container mt-2"> -->
+        <a class="hr-nav-item" href="#">HR System</a>
+        <app-search-bar class="hr-nav-item"></app-search-bar>
+        <div class="hr-nav-item">
+        <a class="hr-nav-item" href="#">Periklis is here man</a>
+        <a class="hr-nav-item" href="#">Yeah eyah</a>
         </div>
-    </div>
-
+        <div class="hr-nav-item-right" >
+  
+            <div class="dropdown" dropdown>
+              <span class="mr-1">
+              </span>
+              <a class="dropdown-toggle" style="font-size: 140%;" dropdownToggle>
+                My profile {{username()}}
+              </a>
+              <div class="dropdown-menu mt-3" *dropdownMenu>
+                <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user mr-1"></i>Edit Profile</a>
+                <div class="dropdown-divider" ></div>
+                <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out mr-1"></i>Logout</a>
+              </div>
+            </div>
+        </div>
+        <!-- </div> -->
         <!-- <div class="dropdown" *ngIf="loggedIn" dropdown>
             <a class="dropdown-toggle text-light" dropdownToggle>Welcome user</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
@@ -41,5 +50,4 @@
                 placeholder="Password">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
         </form> -->
-    </div>
 </nav>

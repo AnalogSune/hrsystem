@@ -1,34 +1,43 @@
 .rightbar {
-    background: none repeat scroll 0 0 rgb(231, 231, 226);
+    /* width: 200px;
+    position:absolute;
     left: 0;
-    width: 200px;
-    margin-top: 56px;
-    position: absolute;
-    flex: 0 0 200px;
-    height: calc(100% - 56px);
+    background-color:rgb(66, 66, 66);
+    min-height: 100%; */
+    display:flex;
+    flex-direction: column;
+    /* background: none repeat scroll 0 0 rgb(231, 231, 226);
+    flex-direction: column;
+    flex: auto; */
+}
+.rightbar a {
+    color: white;
 }
 .rightbar a:hover {
     text-decoration: none;
 }
 .rightbar div {
-    background-color: darkgray;
+    background-color: rgb(38, 37, 48);
     margin: auto;
     width: 100%;
+    border-bottom: 1px solid rgb(22, 22, 27);
     padding-left: 20px;
     line-height: 50px;
+    -webkit-transition:all 0.3s ease;
+    -moz-transition:all 0.3s ease;
+    -o-transition:all 0.3s ease;     
+    transition:all 0.3s ease;
+    color: rgb(184, 179, 179);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: medium;
 }
 
 .rightbar div:hover {
-    color: white;
-    background-color: #00ff22;
+    color:rgb(255, 255, 255);
+    background-color: rgb(40, 179, 35);
     cursor: pointer;
 }
 
 .rightbar div i {
     padding-top: 15px;
-    transition:all 0.3s ease;
-        -webkit-transition:all 0.3s ease;
-        -moz-transition:all 0.3s ease;
-        -o-transition:all 0.3s ease;     
-        transition:all 0.3s ease;
 }

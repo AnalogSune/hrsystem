@@ -11,16 +11,12 @@ namespace API.DTOs
         [StringLength(10, MinimumLength = 6)]
         public string Password { get; set; }
 
-        [Required]
         public string FName { get; set; }
 
-        [Required]
         public string LName { get; set; }
 
-        [Required]
         public string Address { get; set; }
 
-        [Required]
         public string PhoneNumber { get; set; }
 
         public int? DepartmentId { get; set; }
