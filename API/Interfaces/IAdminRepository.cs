@@ -6,8 +6,9 @@ namespace API.Interfaces
 {
     public interface IAdminRepository
     {
-        Task<bool> CreateDepartment(DepartmentDto department);
-        Task<bool> UpdateDepartment(int departmentId, DepartmentDto department);
+        Task<bool> DepartmentExists(DepartmentDto department);
+        Task<Department> CreateDepartment(DepartmentDto department);
+        Task<Department> UpdateDepartment(int departmentId, DepartmentDto department);
         Task<bool> DeleteDepartment(int id);
 
         Task<bool> DeleteUser(int id);

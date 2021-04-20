@@ -20,18 +20,23 @@ namespace API.Data
             _mapper = mapper;
             _context = context;
         }
-        public async Task<bool> CreateDepartment(DepartmentDto department)
+        public async Task<bool> DepartmentExists(DepartmentDto department)
         {
-            if (await _context.Departments.AnyAsync(d => d.Name == department.Name)) return false;
-
+            return await _context.Departments.AnyAsync(d => d.Name == department.Name);
+        }
+        public async Task<Department> CreateDepartment(DepartmentDto department)
+        {
             await _context.Roles.AddRangeAsync(department.DepartmentRoles);
-            await _context.Departments.AddAsync(_mapper.Map<Department>(department));
+            Department newDepartment = _mapper.Map<Department>(department);
+            await _context.Departments.AddAsync(newDepartment);
 
-            await _context.SaveChangesAsync();
-            return true;
+            if (await _context.SaveChangesAsync()>0)
+                return newDepartment;
+
+            return null;
         }
 
-        public async Task<bool> UpdateDepartment(int departmentId, DepartmentDto department)
+        public async Task<Department> UpdateDepartment(int departmentId, DepartmentDto department)
         {
             var depToUpdate = _context.Departments
                 .Where(d => d.Id == departmentId)
@@ -40,9 +45,9 @@ namespace API.Data
             _mapper.Map(department, depToUpdate);
 
             if (await _context.SaveChangesAsync() > 0)
-                return true;
+                return depToUpdate;
 
-            return false;
+            return null;
         }
 
         public async Task<bool> DeleteDepartment(int id)

@@ -4,8 +4,8 @@
 }
 
 .search-form .search-bar {
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 28px;
     transition: all 0.35s;
 }
 
@@ -18,20 +18,18 @@ input[type=search] {
   display:block;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.24) inset;
   border: solid 1px #ccc;
-  border-radius: 32px;
+  border-radius: 64px;
   transition: all 0.35s;
 }
 
 input[type=search]::placeholder,
 input[type=search]::content{
-  text-indent: 12px;
-  text-decoration: wavy;
+  text-indent: 16px;
 }
 
 input[type=search]:focus {
     width: 196px !important;
-    text-indent: 12px;
-    text-decoration: wavy;
+    text-indent: 16px;
 }
 
 .search-bar:hover,
@@ -42,7 +40,7 @@ input[type=search]:focus {
 .search-bar .search-img {
   position: absolute;
   display: block;
-  width: 28px;
+  width: 38px;
   height: 28px;
   line-height: 28px;
   text-align: center;

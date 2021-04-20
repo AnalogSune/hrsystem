@@ -25,18 +25,18 @@ namespace API.Controllers
 
         [HttpPost("department")]
         [Authorize]
-        public async Task<ActionResult<bool>> AddDepartment(DepartmentDto department)
+        public async Task<ActionResult<Department>> AddDepartment(DepartmentDto department)
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
                 return Ok(await _adminRepository.CreateDepartment(department));
             else
-                return Unauthorized("Only admin can do that you fucking asshole!");
+                return Unauthorized();
         }
 
         [HttpPut("department/{id}")]
         [Authorize]
-        public async Task<ActionResult<bool>> UpdateDepartment(int id, DepartmentDto department)
+        public async Task<ActionResult<Department>> UpdateDepartment(int id, DepartmentDto department)
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
@@ -44,7 +44,7 @@ namespace API.Controllers
                 return Ok(await _adminRepository.UpdateDepartment(id, department));
             }
             else
-                return Unauthorized("Only admin can do that you fucking asshole!");
+                return Unauthorized();
         }
 
         [HttpDelete("department/{id}")]

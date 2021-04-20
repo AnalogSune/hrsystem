@@ -1,12 +1,12 @@
 .login-window {
-    background-color: rgb(142, 140, 175);
-    border: 1px solid rgba(70, 67, 67, 0.527);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgba(221, 218, 218, 0.527);
     position: fixed;
     display: flex; 
-    border-radius: 4px;
-    width: 40%;
+    border-radius: 32px;
+    width: 24%;
     height: 50%;
-    margin-left: 30%;
+    margin-left: 38%;
     margin-top: 5%;
     align-items: center;
     flex-direction: column;
@@ -15,19 +15,25 @@
 
 .login-window form {
     display: flex; 
-    align-items: center;
+    align-items: stretch;
     flex-direction: column;
+    width: 50%;
+    height: 50%;
+    margin-top: 10%;
 }
 
 .window-header {
     width: 100%;
-    top: 0;
+    top: 0px;
     position:relative;
-    background-color: rgb(70, 64, 99);
+    background-color: rgb(61, 58, 82);
     text-align: center;
-    font-size: large;
+    font-size: larger;
+    height: 32px;
     font-weight: bold;
     color: white;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
 }
 
 .window-item {
@@ -39,4 +45,5 @@
     box-shadow: 2px 2px rgba(0, 0, 0, 0.24);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: rgb(67, 64, 71);
+    background-color: rgb(228, 226, 224);
 }
