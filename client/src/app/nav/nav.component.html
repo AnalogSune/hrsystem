@@ -1,14 +1,11 @@
 <nav class="hr-nav">
-    <!-- navbar navbar-expand-md navbar-dark fixed-top bg-dark -->
-        <!-- <div class="container mt-2"> -->
         <a class="hr-nav-item" href="#">HR System</a>
         <app-search-bar class="hr-nav-item"></app-search-bar>
         <div class="hr-nav-item">
-        <a class="hr-nav-item" href="#">Periklis is here man</a>
-        <a class="hr-nav-item" href="#">Yeah eyah</a>
+        <!-- <a class="hr-nav-item" href="#">Periklis is here man</a> -->
+        <!-- <a class="hr-nav-item" href="#">Yeah eyah</a> -->
         </div>
         <div class="hr-nav-item-right" >
-  
             <div class="dropdown" dropdown>
               <span class="mr-1">
               </span>
@@ -16,38 +13,10 @@
                 My profile {{username()}}
               </a>
               <div class="dropdown-menu mt-3" *dropdownMenu>
-                <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user mr-1"></i>Edit Profile</a>
+                <a class="dropdown-item" [routerLink]="['/member/edit']" style="color: black;"><i class="fa fa-user mr-1"></i>Edit Profile</a>
                 <div class="dropdown-divider" ></div>
-                <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out mr-1"></i>Logout</a>
+                <a class="dropdown-item" (click)="logout()" style="color: black;"><i class="fa fa-sign-out mr-1"></i>Logout</a>
               </div>
             </div>
         </div>
-        <!-- </div> -->
-        <!-- <div class="dropdown" *ngIf="loggedIn" dropdown>
-            <a class="dropdown-toggle text-light" dropdownToggle>Welcome user</a>
-            <div class="dropdown-menu mt-3" *dropdownMenu>
-                <a class="dropdown-item">Edit Profile</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" (click)="logout()">Logout</a>
-            </div>
-        </div> -->
-
-
-
-        <!-- <form *ngIf="!loggedIn" #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
-            <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user mr-1"></i>Edit Profile</a>
-            <input
-                name = "username"
-                [(ngModel)]="model.email"
-                class="form-control mr-sm-2"
-                type="text" 
-                placeholder="Username">
-            <input
-                name = "password"
-                [(ngModel)]="model.password"
-                class="form-control mr-sm-2" 
-                type="password" 
-                placeholder="Password">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-        </form> -->
 </nav>
