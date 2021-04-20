@@ -2,7 +2,7 @@
     position: absolute; 
     left: 0; 
     width: 200px; 
-    height: calc(100vh - 56px); 
+    height: calc(100vh - 70px); 
     background-color: rgb(38, 37, 48);
 }
 
@@ -17,7 +17,7 @@
     position: absolute; 
     left: 200px; 
     width: calc(100vw - 200px); 
-    height: calc(100vh - 56px);
+    height: calc(100vh - 70px);
     display: block; 
     background-color: rgb(255, 255, 255);
     overflow: scroll;
@@ -34,15 +34,15 @@
   
   /* Works on Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
-    width: 12px;
+    width: 13px;
   }
   
   *::-webkit-scrollbar-track {
-    background: rgb(129, 115, 89);
+    background: transparent;
   }
   
   *::-webkit-scrollbar-thumb {
-    background-color: rgb(255, 255, 255);
-    border-radius: 20px;
-    border: 3px solid rgb(129, 115, 89);
+    background-color: rgb(107, 103, 124);
+    border-radius: 12px;
+    border: 2px solid rgb(129, 115, 89);
   }

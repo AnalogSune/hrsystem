@@ -24,13 +24,13 @@ export class NavComponent implements OnInit {
     })
   }
 
-  username()
+  email()
   {
-    return localStorage.getItem('username');
+    return localStorage.getItem('email');
   }
 
   logout(){
-    localStorage.removeItem('username');
+    localStorage.removeItem('email');
     localStorage.removeItem('token');
   }
 

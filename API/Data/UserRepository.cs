@@ -123,7 +123,7 @@ namespace API.Data
         public async Task<PersonalFiles> GetFile(int fileId)
         {
             return await _context.personalFiles.Where(f => f.Id == fileId).FirstOrDefaultAsync();
-        }   
+        }  
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters)
         {

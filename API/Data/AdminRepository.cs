@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -24,6 +25,7 @@ namespace API.Data
         {
             return await _context.Departments.AnyAsync(d => d.Name == department.Name);
         }
+
         public async Task<Department> CreateDepartment(DepartmentDto department)
         {
             await _context.Roles.AddRangeAsync(department.DepartmentRoles);
@@ -83,6 +85,26 @@ namespace API.Data
             }
 
             return false;
+        }
+
+        public async Task<bool> AddPost(DashboardDto dashboardDto)
+        {
+            await _context.Dashboards.AddAsync(_mapper.Map<Dashboard>(dashboardDto));
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<Dashboard>> GetPosts()
+        {
+           return await _context.Dashboards.OrderByDescending(d => d.TimeCreated).ToListAsync();
+        }
+
+        public async Task<bool> DeletePost(int id)
+        {
+            var entry = await _context.Dashboards.Where(i => i.Id == id).FirstOrDefaultAsync();
+            _context.Dashboards.Remove(entry);
+
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

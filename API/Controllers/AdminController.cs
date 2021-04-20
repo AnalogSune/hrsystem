@@ -43,8 +43,8 @@ namespace API.Controllers
             {
                 return Ok(await _adminRepository.UpdateDepartment(id, department));
             }
-            else
-                return Unauthorized();
+            
+            return Unauthorized();
         }
 
         [HttpDelete("department/{id}")]
@@ -58,8 +58,8 @@ namespace API.Controllers
                     return Ok("Department deleted!");
                 return BadRequest("Couldn't delete department!");
             }
-            else
-                return Unauthorized("Only admin can do that you fucking asshole!");
+            
+            return Unauthorized("Only admin can do that you fucking asshole!");
         }
 
         [HttpDelete("users/{id}")]
@@ -73,9 +73,40 @@ namespace API.Controllers
                     return Ok("User deleted!");
                 return BadRequest("Couldn't delete user!");
             }
-            else
-                return Unauthorized("Only admin can do that you fucking asshole!");
+            
+            return Unauthorized("Only admin can do that you fucking asshole!");
+        }
+
+        [Authorize]
+        [HttpPost("dashboard")]
+
+        public async Task<ActionResult<bool>> AddPost(DashboardDto dashboardDto)
+        {
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return await _adminRepository.AddPost(dashboardDto);
+            }
+
+            return Unauthorized("Only admin can do that you fucking asshole!");
+        }
+
+        [Authorize]
+        [HttpGet("dashboard")]
+
+        public async Task<ActionResult<IEnumerable<Dashboard>>> GetPosts()
+        {
+            return Ok(await _adminRepository.GetPosts());
+        }
+
+        [Authorize]
+        [HttpDelete("dashboard/{id}")]
+
+        public async Task<ActionResult<IEnumerable<Dashboard>>> DeletePost(int id)
+        {
+            return Ok(await _adminRepository.DeletePost(id));
         }
 
     }
+
 }

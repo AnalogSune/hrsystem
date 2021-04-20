@@ -10,7 +10,7 @@ import { AppUser } from '../_models/appuser';
 export class AccountService {
 
   jwtHelper = new JwtHelperService();
-  baseUrl = 'http://localhost:5000/api/';
+  baseUrl = 'https://localhost:5001/api/';
   user: AppUser;
 
   constructor(private http: HttpClient) { this.updateCurrentUser() }
@@ -19,9 +19,9 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/login/', model)
     .pipe(
       map((response: any) => {
-        const user = response;
-        if (user) {
-          localStorage.setItem('token', user.token);
+        if (response) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('email', response.email);
         }
       })
     );

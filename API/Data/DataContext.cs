@@ -33,6 +33,10 @@ namespace API.Data
                 .Property(d => d.DateCreated)
                 .HasPrecision(0);
 
+            builder.Entity<Dashboard>()
+                .Property(d => d.TimeCreated)
+                .HasPrecision(0);
+
             builder.Entity<CalendarEntry>()
                 .HasOne(e => e.Employee)
                 .WithMany()

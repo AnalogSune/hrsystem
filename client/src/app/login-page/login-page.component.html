@@ -1,8 +1,12 @@
 <div class="login-window">
-  <div class="window-header">Login Page</div>
+  <!-- <div class="window-header">Login Page</div> -->
   <form #loginForm="ngForm" (ngSubmit)="login()">
-    <input class="window-item" type="email" name="mail" id="" [(ngModel)]="loginInfo.email" required placeholder="Email">
-    <input class="window-item" type="password" name="pass" id="" [(ngModel)]="loginInfo.password" required placeholder="Password">
+    <div class="window-label">EMAIL</div>
+    <input class="window-item" type="email" name="mail" id="" [(ngModel)]="loginInfo.email" required email>
+    <div class="window-label">PASSWORD</div>
+    <input class="window-item" type="password" name="pass" id="" [(ngModel)]="loginInfo.password" required>
     <button [disabled]="!loginForm.valid" class="btn btn-success window-item" type="submit">Login</button>
+    <div class="window-item text-small window-tooltip" data-toggle="tooltip" data-placement="right" 
+      title="Contact your administrator in order to change your password">Forgot your password?</div>
   </form>
 </div>

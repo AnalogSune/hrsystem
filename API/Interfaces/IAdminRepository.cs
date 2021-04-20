@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
@@ -12,5 +13,9 @@ namespace API.Interfaces
         Task<bool> DeleteDepartment(int id);
 
         Task<bool> DeleteUser(int id);
+
+        Task<bool> AddPost(DashboardDto dashboardDto);
+        Task<IEnumerable<Dashboard>> GetPosts();
+        Task<bool> DeletePost(int id);
     }
 }
