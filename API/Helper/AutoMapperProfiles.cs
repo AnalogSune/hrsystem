@@ -18,6 +18,8 @@ namespace API.Helper
             CreateMap<CalendarEntryDto, CalendarEntry>();
             CreateMap<PersonalFiles, PersonalFilesDto>();
             CreateMap<DashboardDto, Dashboard>();
+            CreateMap<Dashboard, DashboardReturnDto>()
+            .ForMember(m => m.PublisherName, opt => opt.MapFrom(a => a.Publisher.FName));
             CreateMap<CVDto, CV>();
             CreateMap<RequestsDto, CalendarEntryDto>()
                 .ForMember(m => m.StartDate, opt => opt.MapFrom(src => src.Date))

@@ -15,7 +15,7 @@ namespace API.Interfaces
         Task<bool> DeleteUser(int id);
 
         Task<bool> AddPost(DashboardDto dashboardDto);
-        Task<IEnumerable<Dashboard>> GetPosts();
+        Task<IEnumerable<DashboardReturnDto>> GetPosts();
         Task<bool> DeletePost(int id);
     }
 }

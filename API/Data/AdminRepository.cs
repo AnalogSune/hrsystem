@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -93,10 +94,14 @@ namespace API.Data
 
             return await _context.SaveChangesAsync() > 0;
         }
-
-        public async Task<IEnumerable<Dashboard>> GetPosts()
+        
+        public async Task<IEnumerable<DashboardReturnDto>> GetPosts()
         {
-           return await _context.Dashboards.OrderByDescending(d => d.TimeCreated).ToListAsync();
+            return await _context.Dashboards
+                .Include(d => d.Publisher)
+                .OrderByDescending(d => d.TimeCreated)
+                .ProjectTo<DashboardReturnDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<bool> DeletePost(int id)

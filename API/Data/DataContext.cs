@@ -28,7 +28,7 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)
                 .HasPrecision(0);
@@ -57,7 +57,7 @@ namespace API.Data
 
             builder.Entity<Dashboard>()
                 .HasOne(s => s.Publisher)
-                .WithMany(p => p.Posts)
+                .WithMany()
                 .HasForeignKey(k => k.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -69,7 +69,7 @@ namespace API.Data
 
             builder.Entity<Request>()
                 .HasOne(s => s.Employee)
-                .WithMany(r => r.Requests)
+                .WithMany()
                 .HasForeignKey(k => k.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
 

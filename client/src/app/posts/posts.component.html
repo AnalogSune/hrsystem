@@ -1,0 +1,14 @@
+<div class="post-container">
+  <div *ngFor="let post of this.postsMade" >
+    <div class="post">
+      {{post.content}}
+      <div class="post-info">{{post.publishername || "Unnamed"}}: {{post.timeCreated | time}}</div>
+    </div>
+  </div>
+</div>
+<div class="make-post-container">
+  <form class="mt-2" (ngSubmit)="this.submitPost()">  
+    <textarea type="text" placeholder="Write a post" name="content" [(ngModel)]="this.postContent"></textarea>
+    <button type="submit" class="ml-2">POST</button>
+  </form>
+</div>

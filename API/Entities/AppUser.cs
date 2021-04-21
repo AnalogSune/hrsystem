@@ -42,11 +42,7 @@ namespace API.Entities
         public int WorkedFromHome { get; set; }
 
         public bool IsAdmin { get; set; }
-
-        public ICollection<Dashboard> Posts { get; set; }
-
-        public ICollection<Request> Requests { get; set; }
-
+        
         public ICollection<PersonalFiles> PersonalFiles { get; set; }
     }
 }

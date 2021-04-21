@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from '../_services/account.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -9,14 +9,14 @@ import { AccountService } from '../_services/account.service';
 })
 export class LoginPageComponent implements OnInit {
   loginInfo: any = {}
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
   login()
   {
-    this.accountService.login(this.loginInfo).subscribe(next => {
+    this.authService.login(this.loginInfo).subscribe(next => {
       console.log('Yey');
     }, error => {
       console.error('Nay')

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../_services/account.service';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -10,20 +10,11 @@ export class NavComponent implements OnInit {
   model: any = {}
   loggedIn: boolean;
 
-  constructor(private accountService: AccountService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
-
-  login() {
-    this.accountService.login(this.model).subscribe(response => {
-      console.log(response);
-      this.loggedIn = true;
-    }, error => {
-      console.log();
-    })
-  }
-
+  
   email()
   {
     return localStorage.getItem('email');

@@ -15,6 +15,9 @@ import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { PostsComponent } from './posts/posts.component';
+import { TimePipe } from './_pipes/time.pipe';
 
 export function getToken()
 {
@@ -22,13 +25,16 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [				
+  declarations: [						
     AppComponent,
     NavComponent,
     SideBarComponent,
       HomeComponent,
       SearchBarComponent,
-      LoginPageComponent
+      LoginPageComponent,
+      CalendarComponent,
+      PostsComponent,
+      TimePipe
    ],
   imports: [
     BrowserModule,
@@ -41,8 +47,8 @@ export function getToken()
     JwtModule.forRoot({
       config: {
         tokenGetter: getToken,
-        allowedDomains: ['localhost:5001'],
-        disallowedRoutes: ['localhost:5001/api/auth']
+        allowedDomains: ['localhost:5000'],
+        disallowedRoutes: ['localhost:5000/api/auth']
       }
     }
     )

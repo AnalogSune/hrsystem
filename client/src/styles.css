@@ -5,3 +5,51 @@
 body {
     background-color: rgb(121, 122, 139);
 }
+
+.db-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.db-box {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    align-items: center;
+    min-width: 100px;
+    min-height: 100px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, 0.534);
+    margin-top: 5px;
+}
+
+.db-row {
+    flex-direction: row;
+}
+
+.db-col {
+    flex-direction: column;
+}
+
+.db-mc-1 > * {
+    margin: 1px;
+}
+
+.db-mc-2 > * {
+    margin: 2px;
+}
+
+.db-mc-3 > * {
+    margin: 3px;
+}
+
+.db-mc-4 > * {
+    margin: 4px;
+}
+
+.db-mc-5 > * {
+    margin: 5px;
+}

@@ -1,0 +1,39 @@
+.post-container {
+    min-height: 250px;
+    min-width: 400px;
+    margin: 5px;
+    border-radius: 6px;
+    border: 1px solid rgba(102, 97, 117, 0.39);
+    max-height: 200px;
+    display: block;
+    overflow:auto;
+    max-width: 120px;
+    word-wrap: break-word;
+}
+
+.post {
+    box-shadow: 0px 1px rgba(0, 0, 0, 0.178);
+    user-select: none;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-overflow:clip;
+}
+
+.post-info {
+    font-size: smaller;
+    font-family: 'Courier New', Courier, monospace;
+    color:rgb(82, 104, 104);
+}
+
+.post:hover {
+    background-color: rgb(221, 221, 187);
+}
+
+.make-post-container {
+    min-height: 80px;
+    min-width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
