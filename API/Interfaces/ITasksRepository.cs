@@ -8,9 +8,9 @@ namespace API.Interfaces
     public interface ITasksRepository
     {
         Task<Tasks> AddTask(TaskDto taskDto);
-        Task<IEnumerable<Tasks>> GetTasks(TaskSearchDto taskDto);
+        Task<IEnumerable<TaskReturnDto>> GetTasks(TaskSearchDto taskDto);
 
-        Task<bool> UpdateTaskStatus(int employeeId, int taskId, int taskStatus);
+        Task<bool> UpdateTaskStatus(int taskId, int employeeId, int taskStatus);
 
         Task<bool> DeleteTask(int taskId);
 

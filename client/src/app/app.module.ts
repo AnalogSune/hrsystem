@@ -43,15 +43,13 @@ export function getToken()
     BrowserAnimationsModule,
     FormsModule,
     BsDropdownModule.forRoot(),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes),    
     JwtModule.forRoot({
       config: {
         tokenGetter: getToken,
         allowedDomains: ['localhost:5001'],
         disallowedRoutes: ['localhost:5001/api/auth']
-      }
-    }
-    )
+      }})
   ],
   providers: [],
   bootstrap: [AppComponent]

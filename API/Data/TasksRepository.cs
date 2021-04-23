@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -42,19 +43,19 @@ namespace API.Data
             return (await _context.SaveChangesAsync() > 0);
         }
 
-        public async Task<IEnumerable<Tasks>> GetTasks(TaskSearchDto taskDto)
+        public async Task<IEnumerable<TaskReturnDto>> GetTasks(TaskSearchDto taskDto)
         {
-           return await _context.EmployeesTasks
-                .Where(t => t.EmployeeId == taskDto.employeeId)
-                .Where(t => t.TaskId == taskDto.taskId)
-                .Where(t => t.Status == taskDto.status)
-                .Include(t => t.tasks)
-                .Select(t => t.tasks)
-                .Where(t => t.type == taskDto.taskType)
-                .ToListAsync();                
+           return (await _context.EmployeesTasks
+           .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
+           .Where(t => taskDto.taskId == null? true: t.TaskId == taskDto.taskId)
+           .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
+           .Include(t => t.Task)
+           .ProjectTo<TaskReturnDto>(_mapper.ConfigurationProvider)
+           .ToListAsync())
+           .Where(t => taskDto.taskType == null? true: t.Task.type == taskDto.taskType);
         }
 
-        public async Task<bool> UpdateTaskStatus(int employeeId, int taskId, int taskStatus)
+        public async Task<bool> UpdateTaskStatus(int taskId, int employeeId, int taskStatus)
         {
             var newTask = await _context.EmployeesTasks.Where(t => t.EmployeeId == employeeId && t.TaskId == taskId).FirstOrDefaultAsync();
             newTask.Status = (API.Entities.TaskStatus)taskStatus;

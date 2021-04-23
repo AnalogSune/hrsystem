@@ -20,6 +20,7 @@ namespace API.Helper
             CreateMap<DashboardDto, Dashboard>();
             CreateMap<TaskDto, Tasks>();
             CreateMap<Tasks, TaskDto>();
+            CreateMap<EmployeesTasks, TaskReturnDto>();
             CreateMap<Dashboard, DashboardReturnDto>()
             .ForMember(m => m.PublisherName, opt => opt.MapFrom(a => a.Publisher.FName));
             CreateMap<CVDto, CV>();

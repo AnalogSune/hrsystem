@@ -32,9 +32,21 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
+            // builder.Entity<Tasks>()
+            // .HasMany(t => t.ETasks)
+            // .WithOne()
+            // .HasForeignKey(g => g.TaskId)
+            // .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<EmployeesTasks>()
                 .HasKey(k => new {k.EmployeeId, k.TaskId});
+
+            builder.Entity<EmployeesTasks>()
+                .HasOne(t => t.Task)
+                .WithMany()
+                .HasForeignKey(t => t.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)

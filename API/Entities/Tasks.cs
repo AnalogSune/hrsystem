@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace API.Entities
 {
@@ -20,6 +21,8 @@ namespace API.Entities
         public int Duration { get; set; }
 
         public TaskType type { get; set; }
+
+        // public ICollection<EmployeesTasks> ETasks{ get; set; }
 
         public DateTime EndTime 
         {
