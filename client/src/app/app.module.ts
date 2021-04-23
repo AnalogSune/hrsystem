@@ -47,8 +47,8 @@ export function getToken()
     JwtModule.forRoot({
       config: {
         tokenGetter: getToken,
-        allowedDomains: ['localhost:5000'],
-        disallowedRoutes: ['localhost:5000/api/auth']
+        allowedDomains: ['localhost:5001'],
+        disallowedRoutes: ['localhost:5001/api/auth']
       }
     }
     )

@@ -3,14 +3,16 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210421184117_tasks2")]
+    partial class tasks2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,6 +203,24 @@ namespace API.Data.Migrations
                     b.ToTable("EmployeesTasks");
                 });
 
+            modelBuilder.Entity("API.Entities.EmployeesTraining", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "TrainingId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("EmployeesTraining");
+                });
+
             modelBuilder.Entity("API.Entities.PersonalFiles", b =>
                 {
                     b.Property<int>("Id")
@@ -283,24 +303,38 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("API.Entities.Training", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Training");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
@@ -359,6 +393,25 @@ namespace API.Data.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("tasks");
+                });
+
+            modelBuilder.Entity("API.Entities.EmployeesTraining", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Training", "TrainingSession")
+                        .WithMany()
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("TrainingSession");
                 });
 
             modelBuilder.Entity("API.Entities.PersonalFiles", b =>

@@ -3,14 +3,16 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210421182131_training3")]
+    partial class training3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,22 +185,19 @@ namespace API.Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
+            modelBuilder.Entity("API.Entities.EmployeesTraining", b =>
                 {
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TaskId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.HasKey("EmployeeId", "TrainingId");
 
-                    b.HasKey("EmployeeId", "TaskId");
+                    b.HasIndex("TrainingId");
 
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("EmployeesTasks");
+                    b.ToTable("EmployeesTraining");
                 });
 
             modelBuilder.Entity("API.Entities.PersonalFiles", b =>
@@ -277,30 +276,24 @@ namespace API.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("API.Entities.Tasks", b =>
+            modelBuilder.Entity("API.Entities.Training", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Training");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
@@ -342,7 +335,7 @@ namespace API.Data.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
+            modelBuilder.Entity("API.Entities.EmployeesTraining", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "Employee")
                         .WithMany()
@@ -350,15 +343,15 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.Tasks", "tasks")
+                    b.HasOne("API.Entities.Training", "TrainingSession")
                         .WithMany()
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
 
-                    b.Navigation("tasks");
+                    b.Navigation("TrainingSession");
                 });
 
             modelBuilder.Entity("API.Entities.PersonalFiles", b =>

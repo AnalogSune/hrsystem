@@ -25,10 +25,17 @@ namespace API.Data
 
         public DbSet<PersonalFiles> personalFiles { get; set; }
 
+        public DbSet<Tasks> Tasks { get; set; }
+
+        public DbSet<EmployeesTasks> EmployeesTasks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             
+            builder.Entity<EmployeesTasks>()
+                .HasKey(k => new {k.EmployeeId, k.TaskId});
+
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)
                 .HasPrecision(0);
