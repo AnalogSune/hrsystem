@@ -20,6 +20,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { PostsComponent } from './posts/posts.component';
 import { TimePipe } from './_pipes/time.pipe';
+import { SchedulerWindowComponent } from './scheduler-window/scheduler-window.component';
 
 export function getToken()
 {
@@ -27,7 +28,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [						
+  declarations: [							
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -36,7 +37,8 @@ export function getToken()
       LoginPageComponent,
       CalendarComponent,
       PostsComponent,
-      TimePipe
+      TimePipe,
+      SchedulerWindowComponent
    ],
   imports: [
     BrowserModule,

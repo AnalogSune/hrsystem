@@ -1,5 +1,4 @@
-<div class="d-flex flex-row justify-content-center p-2" style="background-color: gray;">
-    
+<div class="d-flex flex-row justify-content-center p-2" style="background-color: gray;">    
 <div class="dropdown mr-5" dropdown *ngIf="this.showViews">
     <span class="mr-1">
     </span>
@@ -16,8 +15,6 @@
 <button class="btn btn-primary mr-auto" (click)="prevMonth()">Previous</button>
 <div class="m-auto font-weight-bold" style="font-size: 180%;">{{this.dateRangeStr}}</div>
 <button class="btn btn-primary ml-auto " (click)='nextMonth()'>Next</button>
-
-
 </div>
 
 <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
@@ -39,3 +36,5 @@
     </ng-template>
     <ng-template #loading><h1>Loading...</h1></ng-template>
 </table>
+
+<app-scheduler-window #scheduleWindow></app-scheduler-window>
