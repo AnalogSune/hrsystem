@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost("get")]
         public async Task<ActionResult<IEnumerable<CalendarEntryDto>>> GetEntries(CalendarSearchDto calendarEntry)
         {
             int uid = RetrieveUserId();

@@ -13,9 +13,9 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
+        [ForeignKey("users")]
         public int EmployeeId { get; set; }
 
-        public AppUser Employee { get; set; }
         
         [Column(TypeName="Date")]
         public DateTime StartDate { get; set; }

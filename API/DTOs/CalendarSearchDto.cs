@@ -9,11 +9,9 @@ namespace API.DTOs
 
         public DateTime EndDate { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         
-        public CalendarType Type { get; set; }
-
-        public bool OnlyType { get; set; }
+        public CalendarType? Type { get; set; }
 
     }
 }

@@ -24,8 +24,8 @@ namespace API.Data
         public async Task<IEnumerable<CalendarEntry>> GetEntries(CalendarSearchDto calendarEntry)
         {
             var entries = await _context.Calendar
-                .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
-                .Where(c => c.Type == calendarEntry.Type || calendarEntry.OnlyType == false)
+                .Where(c => calendarEntry.EmployeeId == null? true: c.EmployeeId == calendarEntry.EmployeeId)
+                .Where(c => calendarEntry.Type == null? true : c.Type == calendarEntry.Type )
                 .Where(c => 
                     (c.StartDate.Date < calendarEntry.StartDate.Date && c.EndDate.Date >= calendarEntry.StartDate.Date) ||
                     (c.StartDate.Date <= calendarEntry.EndDate.Date && c.EndDate.Date > calendarEntry.EndDate.Date) ||

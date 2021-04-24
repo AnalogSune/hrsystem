@@ -1,0 +1,17 @@
+<button (click)="prevMonth()">Prev</button>
+<button (click)='nextMonth()'>Next</button>
+<div>{{this.startDate}}</div>
+
+<table class="table table-striped">
+    <thead *ngIf="this.scheduleEntries != undefined">
+        <tr >
+            <th>Employee</th>
+            <th style="background-color: white;" scope="col" *ngFor="let date of dates">{{date | date : 'EEEEEE'}}</th>
+        </tr>
+        
+        <tr *ngFor="let user of employees">
+            <th>{{user.fName}}</th>
+            <th scope="col" *ngFor="let date of dates" [ngStyle]="{'background-color': getColor(date, user.id)}">{{date | date : 'dd'}}</th>
+        </tr>
+    </thead>
+</table>

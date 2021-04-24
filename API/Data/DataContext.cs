@@ -56,11 +56,11 @@ namespace API.Data
                 .Property(d => d.TimeCreated)
                 .HasPrecision(0);
 
-            builder.Entity<CalendarEntry>()
-                .HasOne(e => e.Employee)
-                .WithMany()
-                .HasForeignKey(e => e.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // builder.Entity<CalendarEntry>()
+            //     .HasOne(e => e.Employee)
+            //     .WithMany()
+            //     .HasForeignKey(e => e.EmployeeId)
+            //     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AppUser>()
                 .HasOne(s => s.Role)

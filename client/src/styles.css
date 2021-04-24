@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css';
+@import '../node_modules/jqwidgets-ng/jqwidgets/styles/jqx.dark.css';
 
 body {
     background-color: rgb(121, 122, 139);

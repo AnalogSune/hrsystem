@@ -3,7 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CommonModule } from '@angular/common';
 import { JwtModule } from '@auth0/angular-jwt';
+import {LayoutModule} from '@angular/cdk/layout';
+import { jqxSchedulerModule } from 'jqwidgets-ng/jqxscheduler';
 
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -39,9 +42,12 @@ export function getToken()
   imports: [
     BrowserModule,
     AppRoutingModule,
+    LayoutModule,
     HttpClientModule,
+    CommonModule,
     BrowserAnimationsModule,
     FormsModule,
+    jqxSchedulerModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),    
     JwtModule.forRoot({
