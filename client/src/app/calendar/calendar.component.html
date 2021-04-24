@@ -1,17 +1,41 @@
-<button (click)="prevMonth()">Prev</button>
-<button (click)='nextMonth()'>Next</button>
-<div>{{this.startDate}}</div>
+<div class="d-flex flex-row justify-content-center p-2" style="background-color: gray;">
+    
+<div class="dropdown mr-5" dropdown *ngIf="this.showViews">
+    <span class="mr-1">
+    </span>
+    <a class="btn dropdown-toggle" style="font-size: 140%;" dropdownToggle>
+      {{this.view == 'week'? "Week":"Month"}}
+    </a>
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a class="dropdown-item" (click)="changeView('week')" style="color: black;">Week</a>
+      <div class="dropdown-divider" ></div>
+      <a class="dropdown-item" (click)="changeView('month')" style="color: black;">Month</a>
+    </div>
+  </div>
 
-<table class="table table-striped">
-    <thead *ngIf="this.scheduleEntries != undefined">
+<button class="btn btn-primary mr-auto" (click)="prevMonth()">Previous</button>
+<div class="m-auto font-weight-bold" style="font-size: 180%;">{{this.dateRangeStr}}</div>
+<button class="btn btn-primary ml-auto " (click)='nextMonth()'>Next</button>
+
+
+</div>
+
+<table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
+    <ng-template [ngIf]="this.scheduleEntries != undefined" [ngIfElse]="loading">
+    <thead >
         <tr >
             <th>Employee</th>
             <th style="background-color: white;" scope="col" *ngFor="let date of dates">{{date | date : 'EEEEEE'}}</th>
         </tr>
         
-        <tr *ngFor="let user of employees">
+        <tr *ngFor="let user of employees" >
             <th>{{user.fName}}</th>
-            <th scope="col" *ngFor="let date of dates" [ngStyle]="{'background-color': getColor(date, user.id)}">{{date | date : 'dd'}}</th>
+            <th scope="col" *ngFor="let date of dates" (click)="dateClicked(date, user.id)" 
+                [ngStyle]="{'background-color': getColor(date, user.id)}" >
+                {{date | date : 'dd'}}
+            </th>
         </tr>
     </thead>
+    </ng-template>
+    <ng-template #loading><h1>Loading...</h1></ng-template>
 </table>

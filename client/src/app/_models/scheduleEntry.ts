@@ -1,4 +1,4 @@
-export enum CalendarType 
+export enum ScheduleType 
 {
     Working, DayOff, WorkFromHome, SickDay
 }
@@ -8,11 +8,11 @@ export class ScheduleEntry {
     employeeId: number;
     startDate: Date;
     endDate: Date;
-    type: CalendarType;
+    type: ScheduleType;
 }
 
 export class ScheduleSearchDto {
-    constructor(startDate: Date, endDate: Date, employeeid?: number, type?: CalendarType) {
+    constructor(startDate: Date, endDate: Date, employeeid?: number, type?: ScheduleType) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.employeeId = employeeid;
@@ -21,5 +21,5 @@ export class ScheduleSearchDto {
     startDate: Date;
     endDate: Date;
     employeeId?: number;
-    type?: CalendarType;
+    type?: ScheduleType;
 }

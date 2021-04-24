@@ -3,11 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { JwtModule } from '@auth0/angular-jwt';
 import {LayoutModule} from '@angular/cdk/layout';
-import { jqxSchedulerModule } from 'jqwidgets-ng/jqxscheduler';
-
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,13 +40,13 @@ export function getToken()
    ],
   imports: [
     BrowserModule,
+    MatTooltipModule,
     AppRoutingModule,
     LayoutModule,
     HttpClientModule,
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
-    jqxSchedulerModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),    
     JwtModule.forRoot({
@@ -57,7 +56,7 @@ export function getToken()
         disallowedRoutes: ['localhost:5001/api/auth']
       }})
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
