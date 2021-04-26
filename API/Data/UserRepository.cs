@@ -168,5 +168,16 @@ namespace API.Data
                 .Select(u => _mapper.Map<MemberDto>(u))
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<MemberDto>> GetUsersWithSingleParameters(string searchParam)
+        {
+            var users = _context.Users.AsQueryable();
+
+            return await users
+                .Where(u => u.FName.Contains(searchParam) || u.LName.Contains(searchParam) || u.Email.Contains(searchParam))
+                .Select(u => _mapper.Map<MemberDto>(u))
+                .Take(5)
+                .ToListAsync();
+        }
     }
 }

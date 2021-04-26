@@ -9,7 +9,7 @@ namespace API.Entities
     }
     public enum RequestType
     {
-        DayOff = 1, WorkHome = 2
+        DayOff = 1, WorkHome = 2, SickDay = 3
     }
     public class Request
     {

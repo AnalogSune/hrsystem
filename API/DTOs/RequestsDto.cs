@@ -10,10 +10,12 @@ namespace API.DTOs
         public DateTime Date { get; set; }
 
         public int Duration { get; set; }
+        public int Status { get; set; }
         public RequestType requestType { get; set; }
         public DateTime EndDate
         {
             get => Date.AddDays(Duration);
+            set => Duration = (value - Date).Days;
         }
     }
 }

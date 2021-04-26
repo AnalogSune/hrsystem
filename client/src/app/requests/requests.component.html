@@ -1,0 +1,36 @@
+ <div>
+   <form #requestForm="ngForm" (ngSubmit)="submit()">
+    <input class="form-control" type="date" name="startDay" [(ngModel)]="formModel.startDay">
+    <input class="form-control" type="date" name="endDay" [(ngModel)]="formModel.endDay">
+      <select class="form-control" name="requestType" [(ngModel)]="formModel.requestType">
+        <option [ngValue]="1">Day off</option>
+        <option [ngValue]="2">Work From Home</option>
+        <option [ngValue]="3">Sick day</option>
+      </select>
+    <button type="submit" >Submit Request</button>
+  </form>
+ </div>
+ <button (click)="getHistory()">history</button>
+
+ <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
+  <ng-template [ngIf]="this.requestHistory != undefined" [ngIfElse]="loading">
+  <thead >
+      <tr >
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Type</th>
+          <th>Status</th>
+      </tr>
+      
+      <tr *ngFor="let request of requestHistory">
+        <ng-container *ngIf="request.requestType != 0">
+          <th>{{request.date | date: 'dd-MM-yyyy'}}</th>
+          <th>{{request.endDate | date: 'dd-MM-yyyy'}}</th>
+          <th>{{requestType(request.requestType)}}</th>
+          <th>{{status(request.status)}}</th>
+        </ng-container>
+      </tr>
+  </thead>
+  </ng-template>
+  <ng-template #loading><h1>Loading...</h1></ng-template>
+</table>

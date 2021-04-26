@@ -17,7 +17,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private userService: UserService) 
   { 
-    if (this.isLoggedIn() && this.currentUser == undefined) {
+    if (this.isLoggedIn()) {
       this.updateCurrentUser();
     }
   }

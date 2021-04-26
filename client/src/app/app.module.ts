@@ -6,6 +6,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CommonModule, DatePipe } from '@angular/common';
 import { JwtModule } from '@auth0/angular-jwt';
 import {LayoutModule} from '@angular/cdk/layout';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,7 +21,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { PostsComponent } from './posts/posts.component';
 import { TimePipe } from './_pipes/time.pipe';
-import { SchedulerWindowComponent } from './scheduler-window/scheduler-window.component';
+import { RequestsComponent } from './requests/requests.component';
+import { ProfileViewerComponent } from './profile-viewer/profile-viewer.component';
 
 export function getToken()
 {
@@ -28,7 +30,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [							
+  declarations: [									
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -38,7 +40,8 @@ export function getToken()
       CalendarComponent,
       PostsComponent,
       TimePipe,
-      SchedulerWindowComponent
+      RequestsComponent,
+      ProfileViewerComponent
    ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ export function getToken()
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
+    TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),    
     JwtModule.forRoot({

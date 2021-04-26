@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { SchedulerWindowComponent } from '../scheduler-window/scheduler-window.component';
 import { AppUser } from '../_models/appuser';
 import { ScheduleType, ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
 import { UserService } from '../_services/user.service';
@@ -16,8 +15,6 @@ export class CalendarComponent implements OnInit {
     dates: Date[];
     scheduleEntries: ScheduleEntry[];
     employees: AppUser[];
-
-    @ViewChild('scheduleWindow') scheduleWindow: SchedulerWindowComponent;
 
     @Input() view: 'week' | 'month' = 'week';
     @Input() startDate: Date = new Date();
@@ -119,6 +116,5 @@ export class CalendarComponent implements OnInit {
     
     dateClicked(date: Date, employeeId: number) {
         console.log(date + ', id:' + employeeId);
-        this.scheduleWindow.activate(date);
     }
 }

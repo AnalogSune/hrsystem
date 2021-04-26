@@ -66,6 +66,13 @@ namespace API.Controllers
     }
 
     [Authorize]
+    [HttpGet("search/{searchParam}")]
+    public async Task<ActionResult<IEnumerable<MemberDto>>> WideSearchUsers(string searchParam)
+    {
+        return Ok(await _userRepository.GetUsersWithSingleParameters(searchParam));
+    }
+
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<bool>> UpdateUser(int id, UserEditDto userEdit)
     {

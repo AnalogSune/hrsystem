@@ -3,6 +3,13 @@
     <div class="form-group search-bar">
         <label for="search" class="sr-only">Search</label>
         <span class="fa fa-search search-img"></span>
-        <input type="search" class="form-control" name="search" id="search" placeholder="Search...">
+        <input  [(ngModel)]="searchParam" 
+                [typeahead]="usersfound"
+                [isAnimated]="true"
+                type="search" (keyup)="search()" 
+                class="form-control" 
+                name="search" 
+                id="search" 
+                placeholder="Search...">
     </div>
 </form>

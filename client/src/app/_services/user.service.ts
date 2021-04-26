@@ -19,6 +19,9 @@ export class UserService {
     return this.http.get<AppUser[]>(this.baseUrl + 'users');
   }
 
+  searchUsers(param: string) {
+    return this.http.get<AppUser[]>(this.baseUrl + 'users/search/' + param);
+  }
 
   getSchedule(searchDto:ScheduleSearchDto) {
     let params = new HttpParams();
