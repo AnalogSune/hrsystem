@@ -42,8 +42,8 @@ namespace API.Data
         {
             return await _context.Roles
                 .Where(r => r.Id == roleId)
-                .Include(p => p.Employees)
-                .SelectMany(s => s.Employees)
+                // .Include(p => p.Employees)
+                // .SelectMany(s => s.Employees)
                 .Select(e => _mapper.Map<MemberDto>(e))
                 .ToListAsync();
         }

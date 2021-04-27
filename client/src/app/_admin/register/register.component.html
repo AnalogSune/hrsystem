@@ -1,0 +1,55 @@
+<div class="container">
+  <form #registerForm="ngForm" (ngSubmit)="register()">
+  <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
+    <thead >
+        <tr >
+            <th>Email</th>
+            <th><input type="text" name="email" required email [(ngModel)]="user.email"></th>
+        </tr>
+        <tr >
+            <th>Password</th>
+            <th><input type="password" name="password" required [(ngModel)]="user.password" ></th>
+        </tr>
+        <tr >
+            <th>Confirm Password</th>
+            <th><input type="password" name="passConfirm" required [(ngModel)]="passConfirm"></th>
+        </tr>
+        <tr >
+            <th>First Name</th>
+            <th><input type="text" name="fname" required [(ngModel)]="user.fname"></th>
+        </tr>
+        <tr >
+            <th>Last Name</th>
+            <th><input type="text" name="lname" required [(ngModel)]="user.lname"></th>
+        </tr>
+        <tr >
+            <th>Phone Number</th>
+            <th><input type="tel" name="phonenumber" [(ngModel)]="user.phonenumber"></th>
+        </tr>
+        <tr >
+            <th>Address</th>
+            <th><input type="text" name="address" [(ngModel)]="user.address"></th>
+        </tr>
+        <tr >
+            <th>Is Admin</th>
+            <th><input type="checkbox" name="isadmin" [(ngModel)]="user.isadmin"></th>
+        </tr>
+        <tr >
+            <th>Date of Birth</th>
+            <th><input type="date" name="dateofbirth"  [(ngModel)]="user.dateofbirth"></th>
+        </tr>
+        <tr >
+            <th>Country</th>
+            <th><input type="text" name="country" [(ngModel)]="user.country"></th>
+        </tr>
+        <tr >
+          <th>Nationality</th>
+          <th><input type="text" name="nationality" [(ngModel)]="user.nationality"></th>
+      </tr>
+    </thead>
+    <div class="container ">
+    <button type="submit" class="btn btn-success" [disabled]="!registerForm.valid">Register </button></div>
+  </table>
+</form>
+  
+</div>

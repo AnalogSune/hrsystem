@@ -62,17 +62,17 @@ namespace API.Data
             //     .HasForeignKey(e => e.EmployeeId)
             //     .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<AppUser>()
-                .HasOne(s => s.Role)
-                .WithMany(e => e.Employees)
-                .HasForeignKey(k => k.RoleId)
-                .OnDelete(DeleteBehavior.SetNull);
+            // builder.Entity<AppUser>()
+            //     .HasOne(s => s.Role)
+            //     .WithMany(e => e.Employees)
+            //     .HasForeignKey(k => k.RoleId)
+            //     .OnDelete(DeleteBehavior.SetNull);
                 
-            builder.Entity<AppUser>()
-                .HasOne(s => s.InDepartment)
-                .WithMany(e => e.Employees)
-                .HasForeignKey(k => k.DepartmentId)
-                .OnDelete(DeleteBehavior.SetNull);
+            // builder.Entity<AppUser>()
+            //     .HasOne(s => s.InDepartment)
+            //     .WithMany(e => e.Employees)
+            //     .HasForeignKey(k => k.DepartmentId)
+            //     .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Dashboard>()
                 .HasOne(s => s.Publisher)
@@ -80,11 +80,11 @@ namespace API.Data
                 .HasForeignKey(k => k.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Role>()
-                .HasOne(d => d.InDepartment)
-                .WithMany(r => r.DepartmentRoles)
-                .HasForeignKey(k => k.DepartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // builder.Entity<Role>()
+            //     .HasOne(d => d.InDepartment)
+            //     .WithMany(r => r.DepartmentRoles)
+            //     .HasForeignKey(k => k.DepartmentId)
+            //     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Request>()
                 .HasOne(s => s.Employee)

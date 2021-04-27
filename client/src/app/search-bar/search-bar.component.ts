@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -8,9 +9,13 @@ import { UserService } from '../_services/user.service';
 })
 export class SearchBarComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
   searchParam: string;
   usersfound : string[] = [""];
+  usersId:  Map<string, number> = new Map();
+
+  ngOnInit() {
+  }
 
   search() {
     this.userService.searchUsers(this.searchParam).subscribe(users => {
@@ -19,13 +24,15 @@ export class SearchBarComponent implements OnInit {
       {
         users.forEach(u => {
           this.usersfound.push(u.email);
+          this.usersId[u.email] = u.id;
         });
       }
 
     })
   }
 
-  ngOnInit() {
+  submit() {
+    this.router.navigate(['/profile'], {queryParams: {'userId': this.usersId[this.searchParam]}});
   }
 
 }

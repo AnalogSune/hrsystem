@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Entities
 {
@@ -6,12 +7,11 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
+        [MaxLength(50)]
         public string RoleName { get; set; }
-
-        public ICollection<AppUser> Employees { get; set; }
 
         public int DepartmentId { get; set; }
 
-        public Department InDepartment { get; set; }
+        // public Department InDepartment { get; set; }
     }
 }

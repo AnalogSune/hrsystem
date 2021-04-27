@@ -14,3 +14,16 @@ export class AuthGuard implements CanActivate {
   }
 
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminAuthGuard implements CanActivate {
+
+  constructor(private authService: AuthService) { }
+
+  canActivate(): boolean {
+    return this.authService.isLoggedIn() && this.authService.isAdmin();
+  }
+
+}

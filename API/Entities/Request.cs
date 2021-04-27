@@ -26,7 +26,9 @@ namespace API.Entities
         public int Duration { get; set; }
 
         public RequestStatus Status { get; set; }
+        
         public RequestType requestType { get; set; }
+
         public DateTime EndDate
         {
             get => Date.AddDays(Duration);

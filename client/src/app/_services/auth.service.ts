@@ -31,6 +31,10 @@ export class AuthService {
     });
   }
 
+  isAdmin(): boolean {
+    return this.decodedToken.isadmin == "True"? true: false;
+  }
+
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login/', model)
     .pipe(

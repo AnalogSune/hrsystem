@@ -15,9 +15,12 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
   }
   
-  email()
-  {
+  email() {
     return localStorage.getItem('email');
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
   }
 
   logout(){

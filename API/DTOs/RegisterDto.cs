@@ -14,16 +14,15 @@ namespace API.DTOs
         public string FName { get; set; }
 
         public string LName { get; set; }
+        
+        public string? Address { get; set; }
 
-        public string Address { get; set; }
-
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public int? DepartmentId { get; set; }
 
         public int? RoleId { get; set; }
 
-        [Required]
-        public bool isAdmin { get; set; }
+        public bool? isAdmin { get; set; }
     }
 }

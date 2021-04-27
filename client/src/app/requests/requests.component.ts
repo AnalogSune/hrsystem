@@ -1,9 +1,7 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { Request } from '../_models/requests';
 import { AuthService } from '../_services/auth.service';
 import { RequestService } from '../_services/request.service';
-import { UserService } from '../_services/user.service';
 
 class RequestForm
 {

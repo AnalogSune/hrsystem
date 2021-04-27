@@ -23,6 +23,8 @@ import { PostsComponent } from './posts/posts.component';
 import { TimePipe } from './_pipes/time.pipe';
 import { RequestsComponent } from './requests/requests.component';
 import { ProfileViewerComponent } from './profile-viewer/profile-viewer.component';
+import { RegisterComponent } from './_admin/register/register.component';
+import { DepartmentsComponent } from './_admin/departments/departments.component';
 
 export function getToken()
 {
@@ -34,14 +36,16 @@ export function getToken()
     AppComponent,
     NavComponent,
     SideBarComponent,
-      HomeComponent,
-      SearchBarComponent,
-      LoginPageComponent,
-      CalendarComponent,
-      PostsComponent,
-      TimePipe,
-      RequestsComponent,
-      ProfileViewerComponent
+    HomeComponent,
+    SearchBarComponent,
+    LoginPageComponent,
+    CalendarComponent,
+    PostsComponent,
+    TimePipe,
+    RequestsComponent,
+    ProfileViewerComponent,
+    RegisterComponent,
+    DepartmentsComponent
    ],
   imports: [
     BrowserModule,

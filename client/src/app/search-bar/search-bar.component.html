@@ -1,9 +1,10 @@
 
-<form action="" class="search-form">
+<form action="" class="search-form" (submit)="submit()">
     <div class="form-group search-bar">
         <label for="search" class="sr-only">Search</label>
         <span class="fa fa-search search-img"></span>
-        <input  [(ngModel)]="searchParam" 
+        <input  autocomplete="off"
+                [(ngModel)]="searchParam" 
                 [typeahead]="usersfound"
                 [isAnimated]="true"
                 type="search" (keyup)="search()" 

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, } from '@angular/router';
 import { AppUser } from '../_models/appuser';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
@@ -10,16 +11,26 @@ import { UserService } from '../_services/user.service';
 })
 export class ProfileViewerComponent implements OnInit {
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor(private authService: AuthService, private userService: UserService,
+    private routerParams: ActivatedRoute) { }
 
-  @Input() user: AppUser;
+  user: AppUser;
 
   ngOnInit() {
-    if (this.user == undefined)
-      this.userService.getUser(this.authService.decodedToken.nameid).subscribe(u => {
-        this.user = u;
-      });
+    this.routerParams.queryParams.subscribe(params => {
+      if (params.userId == undefined)
+      {
+        this.userService.getUser(this.authService.decodedToken.nameid).subscribe(u => {
+          this.user = u;
+        });
+      }
+      else
+      {
+        this.userService.getUser(params.userId).subscribe(u => {
+          this.user = u;
+        });
+      }
+    });
 
   }
-
 }

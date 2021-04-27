@@ -24,7 +24,6 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await _authRepository.UserExists(registerDto.Email)) return BadRequest("Username is taken");

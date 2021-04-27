@@ -1,9 +1,9 @@
 <nav class="hr-nav">
         <a class="hr-nav-item" href="#">HR System</a>
         <app-search-bar class="hr-nav-item"></app-search-bar>
-        <div class="hr-nav-item">
-        <!-- <a class="hr-nav-item" href="#">Periklis is here man</a> -->
-        <!-- <a class="hr-nav-item" href="#">Yeah eyah</a> -->
+        <div class="hr-nav-item" *ngIf="isAdmin()">
+          <a class="hr-nav-item" [routerLink]="['/admin/register']">Register an employee</a>
+          <a class="hr-nav-item" [routerLink]="['/admin/departments']">Manage departments</a>
         </div>
         <div class="hr-nav-item-right" >
             <div class="dropdown" dropdown>
@@ -14,7 +14,7 @@
               </a>
               <div class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item" [routerLink]="['/member/edit']" style="color: black;"><i class="fa fa-user mr-1"></i>Edit Profile</a>
-                <div class="dropdown-divider" ></div>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" (click)="logout()" style="color: black;"><i class="fa fa-sign-out mr-1"></i>Logout</a>
               </div>
             </div>

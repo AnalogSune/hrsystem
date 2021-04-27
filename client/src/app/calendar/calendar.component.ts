@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
+import { Inject } from '@angular/core';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppUser } from '../_models/appuser';
 import { ScheduleType, ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
 import { UserService } from '../_services/user.service';
 
-const calendarColors: string[] = ['green', 'red', 'yellow', 'blue']
 
 @Component({
   selector: 'app-calendar',
@@ -15,6 +15,8 @@ export class CalendarComponent implements OnInit {
     dates: Date[];
     scheduleEntries: ScheduleEntry[];
     employees: AppUser[];
+
+    calendarColors: string[] = ['green', 'red', 'yellow', 'blue']
 
     @Input() view: 'week' | 'month' = 'week';
     @Input() startDate: Date = new Date();
@@ -96,7 +98,7 @@ export class CalendarComponent implements OnInit {
     }
 
     getColor(date: Date, id: number): string {
-        return calendarColors[this.getScheduleType(date, id)];
+        return this.calendarColors[this.getScheduleType(date, id)];
     }
 
     getScheduleType(date: Date, id: number): ScheduleType {

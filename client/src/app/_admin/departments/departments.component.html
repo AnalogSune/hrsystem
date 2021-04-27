@@ -1,0 +1,22 @@
+<div class="container">
+  <form #registerForm="ngForm" (ngSubmit)="submit()">
+  <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
+    <thead >
+        <tr >
+            <th>Department Name</th>
+            <th><input type="text" name="name" required [(ngModel)]="department.name"></th>
+        </tr>
+        <tr>
+          <th><input type="text" name="name" [(ngModel)]="rolename"></th>
+          <th><button type="button" (click)="addRole()">Add Role</button></th>
+        </tr>
+        <tr *ngFor="let role of department.departmentroles">
+          <th>{{role.rolename}}</th>
+        </tr>
+    </thead>
+    <div class="container ">
+    <button type="submit" class="btn btn-success" [disabled]="!registerForm.valid">Register </button></div>
+  </table>
+</form>
+  
+</div>
