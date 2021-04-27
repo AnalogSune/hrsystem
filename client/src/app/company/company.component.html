@@ -1,0 +1,14 @@
+<ng-template class="container" [ngIf]="users!= undefined" [ngIfElse]="loading">
+<div class="row">
+<div *ngFor="let user of users" class="card row ml-4 mt-2" style="width: 18rem;">
+  <img *ngIf="user.pictureUrl==undefined" class="card-img-top" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
+  <img *ngIf="user.pictureUrl!=undefined" class="card-img-top" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
+  <div class="card-body">
+    <h5 class="card-title">{{user.fname}} {{user.lname}}</h5>
+    <p class="card-text">{{user.email}}</p>
+    <a href="#" class="btn btn-primary" [routerLink]="['/profile']" [queryParams]="{userId: user.id}">{{user.password}}</a>
+  </div>
+</div>
+</div>
+</ng-template>
+<ng-template #loading></ng-template>

@@ -28,4 +28,8 @@ export class PostsComponent implements OnInit {
     });
   }
 
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
 }

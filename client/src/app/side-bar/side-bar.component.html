@@ -6,4 +6,6 @@
   <a [routerLink]="['/company']"><div><i class="fa fa-users fa-fw mr-1"></i>COMPANY</div></a>
   <a [routerLink]="['/documents']"><div><i class="fa fa-folder-open fa-fw mr-1"></i>DOCUMENTS</div></a>
   <a [routerLink]="['/requests']"><div><i class="fa fa-plane fa-fw mr-1"></i>REQUESTS</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/register']"><div><i class="fa fa-plus fa-fw mr-1"></i>REGISTER</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/departments']"><div><i class="fa fa-building fa-fw mr-1"></i>DEPARTMENTS</div></a>
 </div>

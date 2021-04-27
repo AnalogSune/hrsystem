@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   register() {
     if (this.user.password == this.passConfirm)
       this.adminService.register(this.user).subscribe(res => {
+        console.log(this.user);
         console.log(res);
       }, error => {
         console.log(error);

@@ -25,6 +25,8 @@ namespace API.DTOs
 
         public string PhoneNumber { get; set; }
 
+        public int DaysOffLeft { get; set; }
+
         public Department InDepartment { get; set; }
 
         public Role Role { get; set; }

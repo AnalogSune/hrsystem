@@ -29,7 +29,7 @@ namespace API.Data
 
         public async Task<Department> CreateDepartment(DepartmentDto department)
         {
-            await _context.Roles.AddRangeAsync(department.DepartmentRoles);
+            // await _context.Roles.AddRangeAsync(department.DepartmentRoles);
             Department newDepartment = _mapper.Map<Department>(department);
             await _context.Departments.AddAsync(newDepartment);
 
@@ -45,6 +45,7 @@ namespace API.Data
                 .Where(d => d.Id == departmentId)
                 .Include(d => d.DepartmentRoles)
                 .FirstOrDefault();
+
             _mapper.Map(department, depToUpdate);
 
             if (await _context.SaveChangesAsync() > 0)
@@ -110,6 +111,11 @@ namespace API.Data
             _context.Dashboards.Remove(entry);
 
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<Department>> GetDepartments()
+        {
+            return await _context.Departments.Include(d => d.DepartmentRoles).ToListAsync();
         }
     }
 }

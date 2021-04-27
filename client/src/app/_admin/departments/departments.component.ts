@@ -9,17 +9,25 @@ import { AdminService } from 'src/app/_services/admin.service';
 })
 export class DepartmentsComponent implements OnInit {
 
-  department: Department = {name:"", departmentroles: []};
+  department: Department;
   rolename: string;
+
+  departments: Department[];
 
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
+    this.adminService.getDepartments().subscribe(deps => {
+      this.departments = deps;
+      if (deps[0] != undefined)
+        this.department = deps[0]; 
+      console.log(deps);
+    });
   }
 
   submit() {
     console.log(this.department);
-    if (this.department != undefined && this.department.departmentroles != undefined)
+    if (this.department != undefined && this.department.departmentRoles != undefined)
     this.adminService.createDepartment(this.department).subscribe(next => {
       console.log(next);
     }, error => {
@@ -28,8 +36,16 @@ export class DepartmentsComponent implements OnInit {
   }
 
   addRole() {
-    this.department.departmentroles.push({rolename: this.rolename});
+    this.department.departmentRoles.push({roleName: this.rolename});
     this.rolename = "";
+    this.adminService.updateDepartment(this.department).subscribe(dep => {
+      console.log(dep);
+    });
   }
+
+  selectedDep(dep: Department) {
+    this.department = dep;
+  }
+
 
 }

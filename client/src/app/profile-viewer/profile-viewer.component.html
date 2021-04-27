@@ -1,45 +1,62 @@
+<ng-template class="container" [ngIf]="user!= undefined" [ngIfElse]="loading">
+
+<img *ngIf="user.pictureUrl==undefined" class="" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
+<img *ngIf="user.pictureUrl!=undefined" class="" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
+
+<input #fileUpload type="file" class="file-upload" style="display: none;" (change)="uploadPhoto($event)">
+<button *ngIf="isUser()" (click)="fileUpload.click()">Change Profile Picture</button>
+
 <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
   <thead >
-      <tr >
-          <th>name</th>
-          <th *ngIf="user">{{user.fname || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.email || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.lname || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.nationality || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.phonenumber || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.workedfromhone || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.daysoffleft || ""}}</th>
-      </tr>
-      <tr >
-          <th>email</th>
-          <th *ngIf="user">{{user.dateofbirth || ""}}</th>
-      </tr>
+
+    <tr>
+        <th>Email</th>
+        <th *ngIf="user">{{user.email || ""}}</th>
+    </tr>
+
+    <tr >
+        <th>First Name</th>
+        <th *ngIf="user">{{user.fName || ""}}</th>
+    </tr>
+
+    <tr >
+        <th>Last Name</th>
+        <th *ngIf="user">{{user.lName || ""}}</th>
+    </tr>
+
+    <tr>
+        <th>Date Of Birth</th>
+        <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>
+    </tr>
+
+    <tr *ngIf="isUser()">
+        <th>Nationality</th>
+        <th *ngIf="user">{{user.nationality || ""}}</th>
+    </tr>
+
+    <tr *ngIf="isUser()">
+        <th>Phone Number</th>
+        <th *ngIf="user">{{user.phoneNumber || ""}}</th>
+    </tr>
       
-      <tr >
-        <th>email</th>
+    <tr *ngIf="isUser()">
+        <th>Address</th>
         <th *ngIf="user">{{user.address || ""}}</th>
     </tr>
-    <tr >
-      <th>email</th>
+
+    <tr *ngIf="isUser()">
+      <th>Country</th>
       <th *ngIf="user">{{user.country || ""}}</th>
-  </tr>
+    </tr>
+
+    <tr *ngIf="isUser()">
+        <th>Days Off Available</th>
+        <th *ngIf="user">{{user.daysOffLeft}}</th>
+    </tr>
+
   </thead>
 </table>
+
+</ng-template>
+
+<ng-template #loading>Loading..</ng-template>

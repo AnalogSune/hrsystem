@@ -25,6 +25,7 @@ import { RequestsComponent } from './requests/requests.component';
 import { ProfileViewerComponent } from './profile-viewer/profile-viewer.component';
 import { RegisterComponent } from './_admin/register/register.component';
 import { DepartmentsComponent } from './_admin/departments/departments.component';
+import { CompanyComponent } from './company/company.component';
 
 export function getToken()
 {
@@ -45,7 +46,8 @@ export function getToken()
     RequestsComponent,
     ProfileViewerComponent,
     RegisterComponent,
-    DepartmentsComponent
+    DepartmentsComponent,
+    CompanyComponent
    ],
   imports: [
     BrowserModule,

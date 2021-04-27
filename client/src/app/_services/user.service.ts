@@ -27,4 +27,12 @@ export class UserService {
     let params = new HttpParams();
     return this.http.post<ScheduleEntry[]>(this.baseUrl + 'calendar/get', searchDto);
   }
+
+  uploadPhoto(file: File)
+  {
+    const formData: FormData = new FormData();
+    formData.append('image', file);
+
+    return this.http.post(this.baseUrl + 'users/image', formData);
+  }
 }

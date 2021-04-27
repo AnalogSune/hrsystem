@@ -86,7 +86,7 @@ namespace API.Controllers
 
     [Authorize]
     [HttpPost("image")]
-    public async Task<ActionResult<string>> UploadPhoto(IFormFile image)
+    public async Task<ActionResult<bool>> UploadPhoto([FromForm] IFormFile image)
     {
         int uid = RetrieveUserId();
 
@@ -97,7 +97,7 @@ namespace API.Controllers
         var result = await _photoService.AddPhotoAsync(image);
         await _userRepository.ChangeImage(uid, result.Url.ToString(), result.PublicId);
         
-        return Ok(result.Url.ToString());
+        return Ok(true);
     }
 
     [Authorize]

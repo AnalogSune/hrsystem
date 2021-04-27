@@ -3,17 +3,17 @@ export interface AppUser
     id?: number;
     password?: string;
     email?: string;
-    fname?: string;
-    lname?: string;
-    phonenumber?: string;
+    fName?: string;
+    lName?: string;
+    phoneNumber?: string;
     address?: string;
-    roleid?: number;
-    departmentid?: number;
-    pictureurl?: string;
-    daysoffleft?: number;
-    workedfromhone?: number;
+    roleId?: number;
+    departmentId?: number;
+    pictureUrl?: string;
+    daysOffLeft?: number;
+    workedFromHome?: number;
     country?: string;
-    dateofbirth?: Date;
+    dateOfBirth?: Date;
     nationality?: string;
-    isadmin?: boolean;
+    isAdmin?: boolean;
 }

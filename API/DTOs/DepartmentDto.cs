@@ -7,6 +7,6 @@ namespace API.DTOs
     {
         public string Name { get; set; }
 
-        public ICollection<Role> DepartmentRoles { get; set; }
+        public ICollection<RoleDto> DepartmentRoles { get; set; }
     }
 }

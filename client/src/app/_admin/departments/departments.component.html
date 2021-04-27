@@ -1,22 +1,38 @@
-<div class="container">
+<div *ngIf="departments!=undefined;else loading" class="container">
+<div class="container row">
+  <div class="row">Departments</div>
+  <div class="dropdown row ml-5" dropdown>
+    <span class="mr-1">
+    </span>
+    <a class="dropdown-toggle" style="font-size: 140%;" dropdownToggle>
+      {{department.name}}
+    </a>
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a *ngFor="let d of departments" class="dropdown-item" (click)="selectedDep(d)" style="color: black;"><i class="fa fa-user mr-1"></i>{{d.name}}</a>
+    </div>
+  </div>
+</div>
   <form #registerForm="ngForm" (ngSubmit)="submit()">
   <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
     <thead >
-        <tr >
+        <!-- <tr >
             <th>Department Name</th>
             <th><input type="text" name="name" required [(ngModel)]="department.name"></th>
         </tr>
         <tr>
           <th><input type="text" name="name" [(ngModel)]="rolename"></th>
           <th><button type="button" (click)="addRole()">Add Role</button></th>
-        </tr>
-        <tr *ngFor="let role of department.departmentroles">
-          <th>{{role.rolename}}</th>
+        </tr> -->
+        <tr *ngFor="let role of department.departmentRoles">
+          <th>{{role.roleName}}</th>
         </tr>
     </thead>
-    <div class="container ">
-    <button type="submit" class="btn btn-success" [disabled]="!registerForm.valid">Register </button></div>
+    <div class="container row ml-1">
+    <button type="submit" class="btn btn-success row mr-5" (click)="addRole()">Add Role</button>
+    <input type="text" name="name" [(ngModel)]="rolename">
+    </div>
   </table>
 </form>
   
 </div>
+<ng-template #loading>Loading...</ng-template>

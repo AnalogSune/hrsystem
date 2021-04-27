@@ -1,8 +1,9 @@
 export interface Role {
-    rolename?: string;
+    roleName?: string;
 }
 
 export interface Department {
+    id: number;
     name?: string;
-    departmentroles?: Role[];
+    departmentRoles?: Role[];
 }

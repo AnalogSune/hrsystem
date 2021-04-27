@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
 import { Department } from '../_models/department';
@@ -26,6 +27,14 @@ register(user: AppUser) {
 
 createDepartment(department: Department) {
   return this.http.post(this.baseUrl + 'admin/department', department);
+}
+
+getDepartments(): Observable<Department[]> {
+  return this.http.get<Department[]>(this.baseUrl + 'admin/departments');
+}
+
+updateDepartment(department: Department) {
+  return this.http.put(this.baseUrl + "admin/department/" + department.id, department);
 }
 
 }

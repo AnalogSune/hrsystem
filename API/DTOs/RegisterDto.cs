@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
@@ -14,6 +15,7 @@ namespace API.DTOs
         public string FName { get; set; }
 
         public string LName { get; set; }
+        public DateTime DateOfBirth { get; set; }
         
         public string? Address { get; set; }
 
@@ -24,5 +26,9 @@ namespace API.DTOs
         public int? RoleId { get; set; }
 
         public bool? isAdmin { get; set; }
+
+        public string Country { get; set; }
+
+        public string Nationality { get; set; }
     }
 }

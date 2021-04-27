@@ -17,6 +17,15 @@ export class ProfileViewerComponent implements OnInit {
   user: AppUser;
 
   ngOnInit() {
+    this.fetchUser();
+
+  }
+
+  isUser(): boolean {
+    return this.authService.decodedToken.nameid == this.user.id;
+  }
+
+  fetchUser() {
     this.routerParams.queryParams.subscribe(params => {
       if (params.userId == undefined)
       {
@@ -28,9 +37,16 @@ export class ProfileViewerComponent implements OnInit {
       {
         this.userService.getUser(params.userId).subscribe(u => {
           this.user = u;
+          console.log(this.user);
         });
       }
     });
+  }
 
+  uploadPhoto(event) {
+    const file:File = event.target.files[0];
+    this.userService.uploadPhoto(file).subscribe(next=>{
+      this.fetchUser();
+    });
   }
 }

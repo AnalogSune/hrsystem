@@ -47,6 +47,20 @@ namespace API.Controllers
             return Unauthorized();
         }
 
+
+        [HttpGet("departments")]
+        [Authorize]
+        public async Task<ActionResult<Department>> GetDepartments()
+        {
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return Ok(await _adminRepository.GetDepartments());
+            }
+            
+            return Unauthorized();
+        }
+
         [HttpDelete("department/{id}")]
         [Authorize]
         public async Task<ActionResult<bool>> DeleteDepartment(int id)
