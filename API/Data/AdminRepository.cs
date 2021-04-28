@@ -39,17 +39,28 @@ namespace API.Data
             return null;
         }
 
-        public async Task<Department> UpdateDepartment(int departmentId, DepartmentDto department)
+        public async Task<Department> AddRole(int departmentId, string name)
         {
-            var depToUpdate = _context.Departments
-                .Where(d => d.Id == departmentId)
-                .Include(d => d.DepartmentRoles)
-                .FirstOrDefault();
+            await _context.Roles.AddAsync(new Role{
+                RoleName = name,
+                DepartmentId = departmentId
+            });
 
-            _mapper.Map(department, depToUpdate);
+            await _context.SaveChangesAsync();
+               
+            return await _context.Departments.Where(d => d.Id == departmentId).Include(d => d.DepartmentRoles).FirstOrDefaultAsync();
+        }
 
-            if (await _context.SaveChangesAsync() > 0)
-                return depToUpdate;
+        public async Task<Department> DeleteRole(int roleid)
+        {
+            var role = await _context.Roles.Where(r => r.Id == roleid).FirstOrDefaultAsync();
+            var dep = await _context.Departments.Where(d =>d.Id == role.DepartmentId).Include(d => d.DepartmentRoles).FirstOrDefaultAsync();
+            if (role != null)
+            {
+                _context.Roles.Remove(role);
+                await _context.SaveChangesAsync();
+                return dep;
+            }
 
             return null;
         }

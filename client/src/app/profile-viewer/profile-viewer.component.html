@@ -24,6 +24,16 @@
         <th *ngIf="user">{{user.lName || ""}}</th>
     </tr>
 
+    <tr >
+        <th>Department</th>
+        <th *ngIf="user">{{user.inDepartment?.name || ""}}</th>
+    </tr>
+
+    <tr >
+        <th>Role</th>
+        <th *ngIf="user">{{user.role?.roleName || ""}}</th>
+    </tr>
+
     <tr>
         <th>Date Of Birth</th>
         <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>
@@ -56,6 +66,11 @@
 
   </thead>
 </table>
+
+<form (ngSubmit)="changePassword(user.id)" #form="ngForm">
+<button *ngIf="isAdmin()" [disabled]="!form.valid || !form.dirty" type="submit">Change Password</button>
+<input *ngIf="isAdmin()" name="pass" minlength="6" type="password" [(ngModel)]="password">
+</form>
 
 </ng-template>
 

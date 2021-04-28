@@ -5,34 +5,30 @@
     <span class="mr-1">
     </span>
     <a class="dropdown-toggle" style="font-size: 140%;" dropdownToggle>
-      {{department.name}}
+      <div *ngIf="department != undefined">{{department.name || ""}}</div>
     </a>
+    <button type="button" class="btn btn-success row ml-2" (click)="deleteDepartment()">Delete</button>
     <div class="dropdown-menu mt-3" *dropdownMenu>
-      <a *ngFor="let d of departments" class="dropdown-item" (click)="selectedDep(d)" style="color: black;"><i class="fa fa-user mr-1"></i>{{d.name}}</a>
+      <a *ngFor="let d of departments" class="dropdown-item" (click)="selectedDepartment(d)" style="color: black;"><i class="fa fa-user mr-1"></i>{{d.name}}</a>
     </div>
   </div>
 </div>
-  <form #registerForm="ngForm" (ngSubmit)="submit()">
-  <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
-    <thead >
-        <!-- <tr >
-            <th>Department Name</th>
-            <th><input type="text" name="name" required [(ngModel)]="department.name"></th>
-        </tr>
-        <tr>
-          <th><input type="text" name="name" [(ngModel)]="rolename"></th>
-          <th><button type="button" (click)="addRole()">Add Role</button></th>
-        </tr> -->
-        <tr *ngFor="let role of department.departmentRoles">
-          <th>{{role.roleName}}</th>
-        </tr>
-    </thead>
-    <div class="container row ml-1">
-    <button type="submit" class="btn btn-success row mr-5" (click)="addRole()">Add Role</button>
-    <input type="text" name="name" [(ngModel)]="rolename">
-    </div>
-  </table>
-</form>
+<table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
+  <thead *ngIf="department != undefined">
+      <tr *ngFor="let role of department.departmentRoles">
+        <th>{{role.roleName}}</th>
+        <th><button type="button" class="btn btn-success row mr-5" (click)="deleteRole(role.id)">Delete</button></th>
+      </tr>
+  </thead>
+  <div class="container row ml-1">
+    <button type="button" class="btn btn-success row mr-5" (click)="addDepartment()">Add Department</button>
+  <input type="text" name="name" [(ngModel)]="departmentname">
+  </div>
+  <div class="container row ml-1">
+    <button type="button" class="btn btn-success row mr-5" (click)="addRole()">Add Role</button>
+  <input type="text" name="name" [(ngModel)]="rolename">
+  </div>
+</table>
   
 </div>
 <ng-template #loading>Loading...</ng-template>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { isEmpty } from 'rxjs/operators';
 import { Department, Role } from 'src/app/_models/department';
 import { AdminService } from 'src/app/_services/admin.service';
 
@@ -11,12 +12,16 @@ export class DepartmentsComponent implements OnInit {
 
   department: Department;
   rolename: string;
-
+  departmentname: string;
   departments: Department[];
 
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
+    this.update();
+  }
+
+  update() {
     this.adminService.getDepartments().subscribe(deps => {
       this.departments = deps;
       if (deps[0] != undefined)
@@ -25,27 +30,58 @@ export class DepartmentsComponent implements OnInit {
     });
   }
 
-  submit() {
-    console.log(this.department);
-    if (this.department != undefined && this.department.departmentRoles != undefined)
-    this.adminService.createDepartment(this.department).subscribe(next => {
-      console.log(next);
+  addRole() {
+    if (this.department != undefined && this.rolename)
+    {
+      this.adminService.addRole(this.department.id, this.rolename).subscribe(res => {
+        console.log(res);
+        this.department = res;
+      }, error => {
+        console.log(error);
+      });
+      this.rolename = ""
+    }
+  }
+
+  addDepartment() {
+    if (this.departmentname)
+    {
+      let newDepartment: Department = {name: ""};
+      newDepartment.name = this.departmentname;
+      this.adminService.createDepartment(newDepartment).subscribe(next => {
+        console.log(next);
+        this.update();
+      }, error => {
+        console.log(error);
+      });
+      this.departmentname = ""
+    }
+  }
+
+  selectedDepartment(dep: Department) {
+    this.department = dep;
+  }
+
+  deleteRole(id: number)
+  {
+
+    this.adminService.removeRole(id).subscribe(next => {
+      this.update();
     }, error => {
       console.log(error);
     });
   }
 
-  addRole() {
-    this.department.departmentRoles.push({roleName: this.rolename});
-    this.rolename = "";
-    this.adminService.updateDepartment(this.department).subscribe(dep => {
-      console.log(dep);
-    });
+  deleteDepartment()
+  {
+    if (this.department)
+    {
+      this.adminService.removeDepartment(this.department.id).subscribe(next => {
+        this.department = null;
+        this.update();
+      }, error => {
+        console.log(error);
+      });
+    }
   }
-
-  selectedDep(dep: Department) {
-    this.department = dep;
-  }
-
-
 }

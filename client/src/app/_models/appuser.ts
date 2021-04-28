@@ -1,3 +1,5 @@
+import { Department, Role } from "./department";
+
 export interface AppUser
 {
     id?: number;
@@ -7,8 +9,8 @@ export interface AppUser
     lName?: string;
     phoneNumber?: string;
     address?: string;
-    roleId?: number;
-    departmentId?: number;
+    role?: Role;
+    inDepartment?: Department;
     pictureUrl?: string;
     daysOffLeft?: number;
     workedFromHome?: number;

@@ -10,7 +10,6 @@ namespace API.Entities
         [MaxLength(20)]
         public string Name { get; set; }
 
-        public ICollection<AppUser> Employees { get; set; }
 
         public ICollection<Role> DepartmentRoles { get; set; }
     }

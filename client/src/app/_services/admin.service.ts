@@ -10,31 +10,47 @@ import { makePostDto } from '../_models/makePostDto';
   providedIn: 'root'
 })
 export class AdminService {
-baseUrl = environment.baseUrl;
-constructor(private http: HttpClient) { }
+  baseUrl = environment.baseUrl;
+  constructor(private http: HttpClient) { }
 
-makePost(post: makePostDto) {
-  return this.http.post(this.baseUrl + 'admin/dashboard', post);
-}
+  makePost(post: makePostDto) {
+    return this.http.post(this.baseUrl + 'admin/dashboard', post);
+  }
 
-getPosts() {
-  return this.http.get(this.baseUrl + 'admin/dashboard');
-}
+  getPosts() {
+    return this.http.get(this.baseUrl + 'admin/dashboard');
+  }
 
-register(user: AppUser) {
-  return this.http.post(this.baseUrl + 'account/register', user);
-}
+  register(user: AppUser) {
+    return this.http.post(this.baseUrl + 'account/register', user);
+  }
 
-createDepartment(department: Department) {
-  return this.http.post(this.baseUrl + 'admin/department', department);
-}
+  createDepartment(department: Department) {
+    return this.http.post(this.baseUrl + 'admin/department', department);
+  }
 
-getDepartments(): Observable<Department[]> {
-  return this.http.get<Department[]>(this.baseUrl + 'admin/departments');
-}
+  getDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>(this.baseUrl + 'admin/departments');
+  }
 
-updateDepartment(department: Department) {
-  return this.http.put(this.baseUrl + "admin/department/" + department.id, department);
-}
+  removeDepartment(id: number) {
+    return this.http.delete(this.baseUrl + "admin/department/" + id);
+  }
+
+  addRole(id: number, rolename: string) {
+    return this.http.post(this.baseUrl + "admin/role/" + id +'/' + rolename, {});
+  }
+
+  removeRole(id: number) {
+    return this.http.delete(this.baseUrl + "admin/role/" + id);
+  }
+
+  deleteUser(id: number) {
+    return this.http.delete(this.baseUrl + "admin/users/" + id);
+  }
+
+  changePassword(id: number, password: string) {
+    return this.http.post(this.baseUrl + "account/password/" + id + "/" + password, {});
+  }
 
 }

@@ -23,8 +23,8 @@ export class SearchBarComponent implements OnInit {
       if (users != undefined)
       {
         users.forEach(u => {
-          this.usersfound.push(u.email);
-          this.usersId[u.email] = u.id;
+          this.usersfound.push(u.fName + ' ' + u.lName);
+          this.usersId[u.fName + ' ' + u.lName] = u.id;
         });
       }
 

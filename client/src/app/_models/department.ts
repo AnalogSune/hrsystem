@@ -3,7 +3,7 @@ export interface Role {
 }
 
 export interface Department {
-    id: number;
+    id?: number;
     name?: string;
     departmentRoles?: Role[];
 }

@@ -9,7 +9,8 @@ namespace API.Interfaces
     {
         Task<bool> DepartmentExists(DepartmentDto department);
         Task<Department> CreateDepartment(DepartmentDto department);
-        Task<Department> UpdateDepartment(int departmentId, DepartmentDto department);
+        Task<Department> AddRole(int departmentId, string name);
+        Task<Department> DeleteRole(int roleid);
         Task<IEnumerable<Department>> GetDepartments();
         Task<bool> DeleteDepartment(int id);
 

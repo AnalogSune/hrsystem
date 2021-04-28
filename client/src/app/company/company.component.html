@@ -7,6 +7,7 @@
     <h5 class="card-title">{{user.fname}} {{user.lname}}</h5>
     <p class="card-text">{{user.email}}</p>
     <a href="#" class="btn btn-primary" [routerLink]="['/profile']" [queryParams]="{userId: user.id}">{{user.password}}</a>
+    <a *ngIf="isAdmin() && !isUser(user.id)" class="ml-3" (click)="deleteUser(user.id)">Delete User</a>
   </div>
 </div>
 </div>

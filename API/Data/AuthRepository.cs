@@ -64,6 +64,20 @@ namespace API.Data
             };
         }
 
+        public async Task<bool> ChangePassword(int id, string newPassword)
+        {
+            var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            if (user == null) return false;
+            
+            using (var hmac = new HMACSHA512())
+            {
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+                user.PasswordSalt = hmac.Key;
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        } 
+
         public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.Email == username.ToLower());
         public async Task<bool> IsAdmin(int id) => (await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync()).IsAdmin == true;
     }

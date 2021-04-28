@@ -7,6 +7,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,20 @@ namespace API.Controllers
             if (user == null) return Unauthorized("Wrong Password");
             
             return user;
+        }
+
+        [Authorize]
+        [HttpPost("password/{id}/{password}")]
+
+        public async Task<ActionResult<bool>> ChangePassword(int id, string password) {
+            
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return await _authRepository.ChangePassword(id, password);
+            }
+
+            return Unauthorized();
         }
         
     }

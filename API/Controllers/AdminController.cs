@@ -34,19 +34,31 @@ namespace API.Controllers
                 return Unauthorized();
         }
 
-        [HttpPut("department/{id}")]
+        [HttpPost("role/{id}/{rolename}")]
         [Authorize]
-        public async Task<ActionResult<Department>> UpdateDepartment(int id, DepartmentDto department)
+        public async Task<ActionResult<Department>> AddRole(int id, string rolename)
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
-                return Ok(await _adminRepository.UpdateDepartment(id, department));
+                return Ok(await _adminRepository.AddRole(id, rolename));
             }
             
             return Unauthorized();
         }
 
+        [HttpDelete("role/{id}")]
+        [Authorize]
+        public async Task<ActionResult<Department>> DeleteRole(int id)
+        {
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid))
+            {
+                return Ok(await _adminRepository.DeleteRole(id));
+            }
+            
+            return Unauthorized();
+        }
 
         [HttpGet("departments")]
         [Authorize]
@@ -68,12 +80,10 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
-                if (await _adminRepository.DeleteDepartment(id))
-                    return Ok("Department deleted!");
-                return BadRequest("Couldn't delete department!");
+                return (await _adminRepository.DeleteDepartment(id));
             }
             
-            return Unauthorized("Only admin can do that you fucking asshole!");
+            return Unauthorized();
         }
 
         [HttpDelete("users/{id}")]
@@ -83,12 +93,10 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
-                if (await _adminRepository.DeleteUser(id))
-                    return Ok("User deleted!");
-                return BadRequest("Couldn't delete user!");
+                return (await _adminRepository.DeleteUser(id));
             }
             
-            return Unauthorized("Only admin can do that you fucking asshole!");
+            return Unauthorized();
         }
 
         [Authorize]
