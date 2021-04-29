@@ -54,5 +54,15 @@ namespace API.Data
         {
             return await _context.Requests.Where(r => r.Id == requestId).ProjectTo<RequestsDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
+
+        public async Task<ICollection<RequestsDto>> GetRequests(RequestSearchDto searchDto)
+        {
+            return await _context.Requests
+                .Where(u => (searchDto.EmployeeId == null ? true : u.EmployeeId == searchDto.EmployeeId))
+                .Where(s => (searchDto.requestStatus == null ? true : s.Status == searchDto.requestStatus))
+                .Where(t => (searchDto.requestType == null ? true : t.requestType == searchDto.requestType))
+                .Select(u => _mapper.Map<RequestsDto>(u))
+                .ToListAsync();
+        }
     }
 }

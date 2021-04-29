@@ -42,7 +42,7 @@ namespace API.Controllers
         {
             int uid = RetrieveUserId();
             if (!await _authRepository.IsAdmin(uid))
-                return Unauthorized("You don't have the rights to do this!");
+                return Unauthorized();
 
             await _requestsRepository.UpdateRequestStatus(id, status);
             if (status == RequestStatus.Accepted)
@@ -51,7 +51,7 @@ namespace API.Controllers
                 await _calendarRepository.AddEntry(_mapper.Map<CalendarEntryDto>(newRequest));
             }
 
-            return Ok("Ola kala bro");
+            return Ok();
         }
 
         [Authorize]
@@ -63,6 +63,17 @@ namespace API.Controllers
                 return Ok(await _requestsRepository.GetRequests(id, type, status));
             else
                 return Unauthorized("You don't have the rights to do this!");
+        }
+
+        [Authorize]
+        [HttpPost("search")]
+        public async Task<ActionResult<ICollection<RequestsDto>>> GetRequests(RequestSearchDto searchDto)
+        {
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid) || uid == searchDto.EmployeeId)
+                return Ok(await _requestsRepository.GetRequests(searchDto));
+            else
+                return Unauthorized();
         }
     }
 }

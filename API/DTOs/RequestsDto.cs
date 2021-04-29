@@ -5,6 +5,7 @@ namespace API.DTOs
 {
     public class RequestsDto
     {
+        public int Id { get; set; }
         public int EmployeeId { get; set; }
 
         public DateTime Date { get; set; }

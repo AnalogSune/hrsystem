@@ -10,8 +10,28 @@
     <button type="submit" >Submit Request</button>
   </form>
  </div>
- <button (click)="getHistory()">history</button>
-
+ <tabset *ngIf="isAdmin()" >
+  <tab heading="My History" (selectTab)="getHistory()">
+  </tab>
+   <tab heading="Search" (selectTab)="requestHistory = []; search()">
+ <select *ngIf="isAdmin()" class="form-control" name="requestStatus" [(ngModel)]="requestSearch.employeeId" (ngModelChange)="search()">
+  <option [ngValue]="null">Any</option>
+  <option *ngFor="let user of users" [ngValue]="user.id">{{user.fName}}</option>
+</select>
+ <select *ngIf="isAdmin()"  class="form-control" name="requestStatus" [(ngModel)]="requestSearch.requestStatus" (ngModelChange)="search()">
+  <option [ngValue]="null" [selected]="true">All</option>
+  <option [ngValue]="0">Pending</option>
+  <option [ngValue]="1">Accepted</option>
+  <option [ngValue]="2">Declined</option>
+</select>
+ <select *ngIf="isAdmin()" class="form-control" name="requestType" [(ngModel)]="requestSearch.requestType" (ngModelChange)="search()">
+  <option [ngValue]="null">All</option>
+  <option [ngValue]="1">Day off</option>
+  <option [ngValue]="2">Work From Home</option>
+  <option [ngValue]="3">Sick day</option>
+</select>
+</tab>
+</tabset>
  <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
   <ng-template [ngIf]="this.requestHistory != undefined" [ngIfElse]="loading">
   <thead >
@@ -20,6 +40,7 @@
           <th>End Date</th>
           <th>Type</th>
           <th>Status</th>
+          <th *ngIf="isAdmin()"></th>
       </tr>
       
       <tr *ngFor="let request of requestHistory">
@@ -28,6 +49,10 @@
           <th>{{request.endDate | date: 'dd-MM-yyyy'}}</th>
           <th>{{requestType(request.requestType)}}</th>
           <th>{{status(request.status)}}</th>
+          <th *ngIf="isAdmin() && request.status == 0">
+            <button (click)="changeStatus(request.id, 1)">Accept</button>
+            <button (click)="changeStatus(request.id, 2)">Decline</button>
+          </th>
         </ng-container>
       </tr>
   </thead>

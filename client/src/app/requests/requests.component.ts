@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Request } from '../_models/requests';
+import { AppUser } from '../_models/appuser';
+import { Request, RequestSearch, RequestStatus } from '../_models/requests';
+import { AdminService } from '../_services/admin.service';
 import { AuthService } from '../_services/auth.service';
 import { RequestService } from '../_services/request.service';
 
@@ -18,12 +20,15 @@ class RequestForm
 })
 export class RequestsComponent implements OnInit {
 
-  constructor(private authService: AuthService, private requestService: RequestService) { }
+  constructor(private authService: AuthService, private requestService: RequestService, private adminService: AdminService) { }
   formModel: RequestForm = new RequestForm();
   requestHistory: Request[];
+  requestSearch: RequestSearch = {requestStatus: 0, employeeId: null, requestType: null};
+  users: AppUser[] = [];
 
   ngOnInit() {
     this.getHistory();
+    this.getUsers();
   }
 
   submit()
@@ -79,6 +84,37 @@ export class RequestsComponent implements OnInit {
     this.requestService.getRequests(this.authService.decodedToken.nameid).subscribe(res => {
       this.requestHistory = res;
     });
+  }
+
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
+
+  search() {
+    
+    console.log(this.requestSearch);
+    this.adminService.searchRequests(this.requestSearch).subscribe(reqs => {
+      this.requestHistory = reqs;
+      console.log(reqs);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getUsers() {
+    this.adminService.getUsersWithPending().subscribe(users => {
+      console.log(users);
+      this.users = users;
+    })
+  }
+
+  changeStatus(id: number, status: RequestStatus) {
+    this.adminService.updateRequest(id, status).subscribe(res => {
+      console.log(res);
+      this.search();
+    }, error => {
+      console.log(error);
+    })
   }
 
 }

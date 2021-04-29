@@ -50,6 +50,17 @@ namespace API.Data
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<MemberDto>> GetUsersWithPending()
+        {
+            return await _context.Requests
+                .Where(r => r.Status == RequestStatus.Pending)
+                .Include(r => r.Employee)
+                .Select(r => r.Employee)
+                .Distinct()
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId)
         {
             return await _context.Departments

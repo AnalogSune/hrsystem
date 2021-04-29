@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
 import { Department } from '../_models/department';
 import { makePostDto } from '../_models/makePostDto';
+import { RequestSearch, RequestStatus, Request } from '../_models/requests';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +54,15 @@ export class AdminService {
     return this.http.post(this.baseUrl + "account/password/" + id + "/" + password, {});
   }
 
+  updateRequest(id: number, status: RequestStatus) {
+    return this.http.post(this.baseUrl + "requests/" + id + "/" + status, {});
+  }
+
+  searchRequests(requestSearch: RequestSearch): Observable<Request[]> {
+    return this.http.post<Request[]>(this.baseUrl + "requests/search", requestSearch);
+  }
+
+  getUsersWithPending(): Observable<AppUser[]> {
+    return this.http.get<AppUser[]>(this.baseUrl + 'users/pending');
+  }
 }

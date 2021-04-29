@@ -45,6 +45,13 @@ namespace API.Controllers
     }
 
     [Authorize]
+    [HttpGet("pending")]
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithPending()
+    {
+        return Ok(await _userRepository.GetUsersWithPending());
+    }
+
+    [Authorize]
     [HttpGet("role/{id}")]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithRole(int id)
     {
@@ -81,7 +88,7 @@ namespace API.Controllers
         if (id == uid || await _authRepository.IsAdmin(uid))
             return await _userRepository.UpdateUser(id, userEdit);
 
-        return Unauthorized("You don't have the rights to edit this user!");
+        return Unauthorized();
     }
 
     [Authorize]
@@ -121,7 +128,7 @@ namespace API.Controllers
 
     [Authorize]
     [HttpDelete("file/{fileId}")]
-    public async Task<ActionResult<IEnumerable<DeletionResult>>> DeleteFilei(int fileId)
+    public async Task<ActionResult<IEnumerable<DeletionResult>>> DeleteFile(int fileId)
     {
         int uid = RetrieveUserId();
         var file = await _userRepository.GetFile(fileId);
@@ -143,7 +150,7 @@ namespace API.Controllers
             return await _userRepository.RenameFileAsync(personalFilesDto);
         }
 
-        return Unauthorized("You don't have the rights to do this!");
+        return Unauthorized();
     }
 }
 }
