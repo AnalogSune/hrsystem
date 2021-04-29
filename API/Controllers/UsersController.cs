@@ -92,6 +92,30 @@ namespace API.Controllers
     }
 
     [Authorize]
+    [HttpPut("department/{id}/{departmentId}")]
+    public async Task<ActionResult<bool>> ChangeDepartment(int id, int departmentId)
+    {
+        int uid = RetrieveUserId();
+
+        if (await _authRepository.IsAdmin(uid))
+            return await _userRepository.ChangeUserDepartment(id, departmentId);
+
+        return Unauthorized();
+    }
+
+    [Authorize]
+    [HttpPut("role/{id}/{roleId}")]
+    public async Task<ActionResult<bool>> ChangeRole(int id, int roleId)
+    {
+        int uid = RetrieveUserId();
+
+        if (await _authRepository.IsAdmin(uid))
+            return await _userRepository.ChangeUserRole(id, roleId);
+
+        return Unauthorized();
+    }
+
+    [Authorize]
     [HttpPost("image")]
     public async Task<ActionResult<bool>> UploadPhoto([FromForm] IFormFile image)
     {

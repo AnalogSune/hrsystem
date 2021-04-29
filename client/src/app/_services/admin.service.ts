@@ -65,4 +65,12 @@ export class AdminService {
   getUsersWithPending(): Observable<AppUser[]> {
     return this.http.get<AppUser[]>(this.baseUrl + 'users/pending');
   }
+
+  changeUserDepartment(userId: number, departmentId: number) {
+    return this.http.put(this.baseUrl + 'users/department/' + userId  + '/' + departmentId, {});
+  }
+
+  changeUserRole(userId: number, roleId: number) {
+    return this.http.put(this.baseUrl + 'users/role/' + userId  + '/' + roleId, {});
+  }
 }

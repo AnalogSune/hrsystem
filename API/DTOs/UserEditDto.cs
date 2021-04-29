@@ -1,4 +1,5 @@
 using System;
+using API.Entities;
 
 namespace API.DTOs
 {
@@ -19,5 +20,8 @@ namespace API.DTOs
         public string Nationality { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public Department InDepartment { get; set; }
+
     }
 }

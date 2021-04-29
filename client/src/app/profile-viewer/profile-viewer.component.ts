@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { AppUser } from '../_models/appuser';
+import { Department, Role } from '../_models/department';
 import { AdminService } from '../_services/admin.service';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
@@ -16,10 +17,18 @@ export class ProfileViewerComponent implements OnInit {
     private routerParams: ActivatedRoute, private adminService: AdminService) { }
 
   user: AppUser;
-    password: string;
+  password: string;
+  departments: Department[] = [];
+  userDepartment: Department = {};
+  userRole: Role = {};
+
+  public get roles(): Role[] {
+    return this.userDepartment.departmentRoles;
+  }  
+
   ngOnInit() {
     this.fetchUser();
-
+    this.getDepartments();
   }
 
   isUser(): boolean {
@@ -36,13 +45,16 @@ export class ProfileViewerComponent implements OnInit {
       {
         this.userService.getUser(this.authService.decodedToken.nameid).subscribe(u => {
           this.user = u;
+          this.userDepartment = u.inDepartment || {};
+          this.userRole = u.role || {};
         });
       }
       else
       {
         this.userService.getUser(params.userId).subscribe(u => {
           this.user = u;
-          console.log(this.user);
+          this.userDepartment = u.inDepartment || {};
+          this.userRole = u.role || {};
         });
       }
     });
@@ -61,5 +73,30 @@ export class ProfileViewerComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  updateDepartment() {
+    this.adminService.changeUserDepartment(this.user.id, this.userDepartment.id).subscribe(next => {
+      console.log(next);
+      this.fetchUser();
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  updateRole() {
+    this.adminService.changeUserRole(this.user.id, this.userRole.id).subscribe(next => {
+      console.log(next);
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  getDepartments() {
+    this.adminService.getDepartments().subscribe(deps => {
+      this.departments = deps;
+    }, error => {
+      console.log(error);
+    })
   }
 }

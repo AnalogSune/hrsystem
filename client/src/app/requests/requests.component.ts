@@ -75,7 +75,7 @@ export class RequestsComponent implements OnInit {
       case 1:
         return "Accepted";
       default:
-        return "decliened";
+        return "Declined";
     }
   }
 

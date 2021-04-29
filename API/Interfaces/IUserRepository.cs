@@ -14,6 +14,8 @@ namespace API.Interfaces
         Task<MemberDto> GetUser(int id);
         Task<IEnumerable<MemberDto>> GetUsersWithRole(int roleId);
         Task<IEnumerable<MemberDto>> GetUsersWithPending();
+        Task<bool> ChangeUserDepartment(int userId, int departmentId);
+        Task<bool> ChangeUserRole(int userId, int roleId);
         Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId);
         Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters);
         Task<IEnumerable<MemberDto>> GetUsersWithSingleParameters(string searchParam);

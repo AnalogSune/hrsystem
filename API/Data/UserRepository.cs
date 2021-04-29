@@ -28,6 +28,7 @@ namespace API.Data
             return await _context.Users
                 .Where(u => u.Id == id)
                 .Include(u => u.InDepartment)
+                .Include(u => u.InDepartment.DepartmentRoles)
                 .Include(u => u.Role)
                 .Select(u => _mapper.Map<MemberDto>(u))
                 .SingleOrDefaultAsync();
@@ -38,6 +39,28 @@ namespace API.Data
             return await _context.Users
                 .Select(e => _mapper.Map<MemberDto>(e))
                 .ToListAsync();
+        }
+
+        public async Task<bool> ChangeUserDepartment(int userId, int departmentId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync();
+
+            if (user==null) return false;
+            user.DepartmentId = departmentId;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+         public async Task<bool> ChangeUserRole(int userId, int roleId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync();
+
+            if (user==null) return false;
+            user.RoleId = roleId;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithRole(int roleId)

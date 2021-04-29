@@ -1,5 +1,12 @@
 <ng-template class="container" [ngIf]="user!= undefined" [ngIfElse]="loading">
 
+    
+<form (ngSubmit)="changePassword(user.id)" #form="ngForm">
+    <button *ngIf="isAdmin()" [disabled]="!form.valid || !form.dirty" type="submit">Change Password</button>
+    <input *ngIf="isAdmin()" name="pass" minlength="6" type="password" [(ngModel)]="password">
+</form>
+    
+
 <img *ngIf="user.pictureUrl==undefined" class="" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
 <img *ngIf="user.pictureUrl!=undefined" class="" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
 
@@ -24,15 +31,33 @@
         <th *ngIf="user">{{user.lName || ""}}</th>
     </tr>
 
-    <tr >
+    <tr *ngIf="!isAdmin() else adminDepartments">
         <th>Department</th>
-        <th *ngIf="user">{{user.inDepartment?.name || ""}}</th>
+        <th>{{user.inDepartment?.name || ""}}</th>
     </tr>
+    <ng-template #adminDepartments>
+    <tr>
+        <th>Department</th>
+        <select [(ngModel)]="userDepartment.id" (ngModelChange)="updateDepartment()">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let dep of departments" [ngValue]="dep.id">{{dep.name}}</option>
+        </select>
+    </tr>
+    </ng-template>
 
-    <tr >
+    <tr *ngIf="!isAdmin() else adminRoles">
         <th>Role</th>
-        <th *ngIf="user">{{user.role?.roleName || ""}}</th>
+        <th>{{user.role?.roleName || ""}}</th>
     </tr>
+    <ng-template #adminRoles>
+    <tr *ngIf="user.inDepartment">
+        <th>Role</th>
+        <select [(ngModel)]="userRole.id" (ngModelChange)="updateRole()">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
+        </select>
+    </tr>
+    </ng-template>
 
     <tr>
         <th>Date Of Birth</th>
@@ -66,11 +91,6 @@
 
   </thead>
 </table>
-
-<form (ngSubmit)="changePassword(user.id)" #form="ngForm">
-<button *ngIf="isAdmin()" [disabled]="!form.valid || !form.dirty" type="submit">Change Password</button>
-<input *ngIf="isAdmin()" name="pass" minlength="6" type="password" [(ngModel)]="password">
-</form>
 
 </ng-template>
 

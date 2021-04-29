@@ -3,12 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs'
 import { CommonModule, DatePipe } from '@angular/common';
 import { JwtModule } from '@auth0/angular-jwt';
 import {LayoutModule} from '@angular/cdk/layout';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -58,6 +60,7 @@ export function getToken()
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
+    TabsModule.forRoot(),
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),    
