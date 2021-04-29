@@ -35,30 +35,37 @@
         <th>Department</th>
         <th>{{user.inDepartment?.name || ""}}</th>
     </tr>
-    <ng-template #adminDepartments>
-    <tr>
+    <ng-template  #adminDepartments>
+    <tr *ngIf="departmentsExist()">
         <th>Department</th>
-        <select [(ngModel)]="userDepartment.id" (ngModelChange)="updateDepartment()">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let dep of departments" [ngValue]="dep.id">{{dep.name}}</option>
+        <select  [(ngModel)]="userDepartmentId" (ngModelChange)="updateDepartment()">
+            <option *ngFor="let dep of departments | keyvalue" [ngValue]="dep.value.id">{{dep.value.name}}</option>
         </select>
     </tr>
     </ng-template>
+    
+    <tr *ngIf="!departmentsExist()">
+        <th>Department</th>
+        <th>No departments Available</th>
+    </tr>
+
 
     <tr *ngIf="!isAdmin() else adminRoles">
         <th>Role</th>
         <th>{{user.role?.roleName || ""}}</th>
     </tr>
     <ng-template #adminRoles>
-    <tr *ngIf="user.inDepartment">
+    <tr *ngIf="user.inDepartment && hasRoles()">
         <th>Role</th>
-        <select [(ngModel)]="userRole.id" (ngModelChange)="updateRole()">
-            <option [ngValue]="null"></option>
+        <select [(ngModel)]="userRoleId" (ngModelChange)="updateRole()">
             <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
         </select>
     </tr>
     </ng-template>
-
+    <tr *ngIf="!departmentsExist() || !hasRoles()">
+        <th>Roles</th>
+        <th>No roles Available</th>
+    </tr>
     <tr>
         <th>Date Of Birth</th>
         <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>

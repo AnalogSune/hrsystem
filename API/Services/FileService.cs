@@ -59,7 +59,7 @@ namespace API.Services
         public async Task<DeletionResult> DeleteFileAsync(string publicId, ResourceType type)
         {
             var deleteParams = new DeletionParams(publicId);
-            deleteParams.ResourceType = type;
+            deleteParams.ResourceType = type;            
             var result = await _cloudinary.DestroyAsync(deleteParams);
             return result;
         }

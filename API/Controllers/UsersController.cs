@@ -138,7 +138,7 @@ namespace API.Controllers
         int uid = RetrieveUserId();
         string email = (await _userRepository.GetUser(uid)).Email;
         var result = await _fileService.AddFileAsync(file, email);
-        await _userRepository.UploadFile(uid, result, file.FileName);
+        await _userRepository.UploadFile(uid, result, file.FileName, file.ContentType);
         return true;
     }
     
@@ -152,14 +152,18 @@ namespace API.Controllers
 
     [Authorize]
     [HttpDelete("file/{fileId}")]
-    public async Task<ActionResult<bool>> DeleteFile(int fileId)
+    public async Task<IActionResult> DeleteFile(int fileId)
     {
         int uid = RetrieveUserId();
         var file = await _userRepository.GetFile(fileId);
         if (file == null) return Ok("Not found");
-        var result = await _fileService.DeleteFileAsync(file.FileId, ResourceType.Raw);
+        ResourceType type;
+        if (file.FileType.Contains("image")) type = ResourceType.Image;
+        else if (file.FileType.Contains("video")) type = ResourceType.Video;
+        else type = ResourceType.Raw;
+        var result = await _fileService.DeleteFileAsync(file.FileId, type);
         await _userRepository.DeleteFileAsync(fileId);
-        return true;
+        return Ok(result);
     }
 
     [Authorize]

@@ -117,13 +117,14 @@ namespace API.Data
            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UploadFile(int id, UploadResult file, string originalFilename)
+        public async Task<bool> UploadFile(int id, UploadResult file, string originalFilename, string contentType)
         {
             PersonalFiles newFile = new PersonalFiles
             {
                 FileOwnerId = id,
                 FileUrl = file.Url.ToString(),
                 FileId = file.PublicId,
+                FileType = contentType,
                 OriginalFileName = originalFilename
             };
 

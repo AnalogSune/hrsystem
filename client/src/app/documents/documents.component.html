@@ -7,7 +7,7 @@
           <th>{{doc.originalFileName}}</th>
           <button (click)="copyToCp(doc.fileUrl)">Copy Url</button>
           <button (click)="deleteDocument(doc.id)">Delete</button>
-          <button>Download</button>
+          <button (click)="downloadFile(doc.fileUrl, doc.originalFileName)">Download</button>
           <th>{{doc.fileUrl}}</th>
       </tr>
   </thead>

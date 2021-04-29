@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { Document } from '../_models/document';
 import { Clipboard } from '@angular/cdk/clipboard';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-documents',
@@ -48,6 +49,10 @@ export class DocumentsComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  downloadFile(url: string, name: string) {
+    FileSaver.saveAs(url, name);
   }
 
 }

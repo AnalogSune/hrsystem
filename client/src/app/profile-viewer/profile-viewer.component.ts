@@ -18,12 +18,12 @@ export class ProfileViewerComponent implements OnInit {
 
   user: AppUser;
   password: string;
-  departments: Department[] = [];
-  userDepartment: Department = {};
-  userRole: Role = {};
+  departments: Map<number, Department> = new Map<number, Department>();
+  userDepartmentId: number = -1;
+  userRoleId: number = -1;
 
   public get roles(): Role[] {
-    return this.userDepartment.departmentRoles;
+    return this.departments.get(this.userDepartmentId)?.departmentRoles;
   }  
 
   ngOnInit() {
@@ -45,16 +45,22 @@ export class ProfileViewerComponent implements OnInit {
       {
         this.userService.getUser(this.authService.decodedToken.nameid).subscribe(u => {
           this.user = u;
-          this.userDepartment = u.inDepartment || {};
-          this.userRole = u.role || {};
+          if (u.inDepartment)
+          {
+            this.userDepartmentId = u.inDepartment.id || -1;
+            this.userRoleId = u.role.id || -1;
+          }
         });
       }
       else
       {
         this.userService.getUser(params.userId).subscribe(u => {
           this.user = u;
-          this.userDepartment = u.inDepartment || {};
-          this.userRole = u.role || {};
+          if (u.inDepartment)
+          {
+            this.userDepartmentId = u.inDepartment.id || -1;
+            this.userRoleId = u.role.id || -1;
+          }
         });
       }
     });
@@ -76,7 +82,31 @@ export class ProfileViewerComponent implements OnInit {
   }
 
   updateDepartment() {
-    this.adminService.changeUserDepartment(this.user.id, this.userDepartment.id).subscribe(next => {
+    if (this.hasRoles())
+    {
+      this.adminService.changeUserDepartment(this.user.id, this.userDepartmentId).subscribe(next => {
+        console.log(next);
+        this.userRoleId = this.departments.get(this.userDepartmentId).departmentRoles[0].id;
+        this.updateRole();
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
+  hasRoles(): boolean {
+    if (this.userDepartmentId >= 0  && this.departmentsExist())
+      return this.departments.get(this.userDepartmentId)?.departmentRoles.length > 0;
+
+    return false;
+  }
+
+  departmentsExist(): boolean {
+    return this.departments.size > 0;
+  }
+
+  updateRole() {
+    this.adminService.changeUserRole(this.user.id, this.userRoleId).subscribe(next => {
       console.log(next);
       this.fetchUser();
     }, error => {
@@ -84,17 +114,12 @@ export class ProfileViewerComponent implements OnInit {
     })
   }
 
-  updateRole() {
-    this.adminService.changeUserRole(this.user.id, this.userRole.id).subscribe(next => {
-      console.log(next);
-    }, error => {
-      console.log(error);
-    })
-  }
-
   getDepartments() {
     this.adminService.getDepartments().subscribe(deps => {
-      this.departments = deps;
+      this.departments.clear();
+      deps.forEach(d => {
+        this.departments.set(d.id, d);
+      });
     }, error => {
       console.log(error);
     })

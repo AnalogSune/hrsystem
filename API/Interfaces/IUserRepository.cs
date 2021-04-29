@@ -21,7 +21,7 @@ namespace API.Interfaces
         Task<IEnumerable<MemberDto>> GetUsersWithSingleParameters(string searchParam);
         Task<bool> UpdateUser(int id, UserEditDto userEdit);
         Task<bool> ChangeImage(int id, string url, string publicId);
-        Task<bool> UploadFile(int id, UploadResult file, string originalFilename);
+        Task<bool> UploadFile(int id, UploadResult file, string originalFilename, string contentType);
 
         Task<bool> RenameFileAsync(PersonalFilesDto personalFilesDto);
         Task<IEnumerable<PersonalFilesDto>> GetFiles(int id);

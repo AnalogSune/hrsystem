@@ -9,14 +9,9 @@ namespace API.Entities
         public int FileOwnerId { get; set; }
 
         public AppUser FileOwner { get; set; }
-
-        [MaxLength(500)]
         public string FileUrl { get; set; }
-        
-        [MaxLength(50)]
+        public string FileType { get; set; }
         public string OriginalFileName { get; set; }
-
-        [MaxLength(500)]
         public string FileId { get; set; }
     }
 }

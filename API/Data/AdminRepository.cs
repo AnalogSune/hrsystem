@@ -71,6 +71,10 @@ namespace API.Data
                 .Where(d => d.Id == id)
                 .FirstOrDefaultAsync();
 
+            await _context.Users
+                .Where(u => u.DepartmentId == depToDelete.Id)
+                .ForEachAsync(u =>{ u.DepartmentId = null; u.RoleId = null;});
+
             if (depToDelete != null)
             {
                 _context.Remove<Department>(depToDelete);
