@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
+import { Document } from '../_models/document';
 import {ScheduleEntry, ScheduleSearchDto} from '../_models/scheduleEntry';
 
 @Injectable({
@@ -34,5 +36,19 @@ export class UserService {
     formData.append('image', file);
 
     return this.http.post(this.baseUrl + 'users/image', formData);
+  }
+
+  uploadDocument(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post(this.baseUrl + 'users/file', formData);
+  }
+
+  getDocuments(): Observable<Document[]> {
+    return this.http.get<Document[]>(this.baseUrl + 'users/file');
+  }
+
+  deleteDocuments(fileId: number) {
+    return this.http.delete(this.baseUrl + 'users/file/' + fileId);
   }
 }

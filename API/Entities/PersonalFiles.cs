@@ -10,13 +10,13 @@ namespace API.Entities
 
         public AppUser FileOwner { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(500)]
         public string FileUrl { get; set; }
         
         [MaxLength(50)]
         public string OriginalFileName { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(500)]
         public string FileId { get; set; }
     }
 }

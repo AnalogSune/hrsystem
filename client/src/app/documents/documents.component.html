@@ -1,0 +1,16 @@
+<input #fileUpload type="file" class="file-upload" style="display: none;" (change)="uploadDocument($event)">
+<button (click)="fileUpload.click()">Upload Document</button>
+<table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
+  <ng-template [ngIf]="this.documents" [ngIfElse]="loading">
+  <thead >
+      <tr *ngFor="let doc of documents">
+          <th>{{doc.originalFileName}}</th>
+          <button (click)="copyToCp(doc.fileUrl)">Copy Url</button>
+          <button (click)="deleteDocument(doc.id)">Delete</button>
+          <button>Download</button>
+          <th>{{doc.fileUrl}}</th>
+      </tr>
+  </thead>
+  </ng-template>
+</table>
+<ng-template #loading>Loading...</ng-template>

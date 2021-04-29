@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CompanyComponent } from './company/company.component';
+import { DocumentsComponent } from './documents/documents.component';
 import {HomeComponent} from './home/home.component'
 import { ProfileViewerComponent } from './profile-viewer/profile-viewer.component';
 import { RequestsComponent } from './requests/requests.component';
@@ -19,7 +20,8 @@ export const appRoutes: Routes = [
             {path: 'dashboard', component: HomeComponent},
             {path: 'requests', component: RequestsComponent},
             {path: 'profile', component: ProfileViewerComponent},
-            {path: 'company', component: CompanyComponent}
+            {path: 'company', component: CompanyComponent},
+            {path: 'documents', component: DocumentsComponent}
         ]
     },
     {

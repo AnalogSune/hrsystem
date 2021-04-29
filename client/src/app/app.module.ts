@@ -10,6 +10,7 @@ import {LayoutModule} from '@angular/cdk/layout';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { ProfileViewerComponent } from './profile-viewer/profile-viewer.componen
 import { RegisterComponent } from './_admin/register/register.component';
 import { DepartmentsComponent } from './_admin/departments/departments.component';
 import { CompanyComponent } from './company/company.component';
+import { DocumentsComponent } from './documents/documents.component';
 
 export function getToken()
 {
@@ -35,7 +37,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [									
+  declarations: [										
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -49,12 +51,14 @@ export function getToken()
     ProfileViewerComponent,
     RegisterComponent,
     DepartmentsComponent,
-    CompanyComponent
+    CompanyComponent,
+      DocumentsComponent
    ],
   imports: [
     BrowserModule,
     MatTooltipModule,
     AppRoutingModule,
+    ClipboardModule,
     LayoutModule,
     HttpClientModule,
     CommonModule,

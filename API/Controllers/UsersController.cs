@@ -133,13 +133,13 @@ namespace API.Controllers
 
     [Authorize]
     [HttpPost("file")]
-    public async Task<ActionResult<string>> UploadFile(IFormFile file)
+    public async Task<ActionResult<bool>> UploadFile([FromForm] IFormFile file)
     {
         int uid = RetrieveUserId();
         string email = (await _userRepository.GetUser(uid)).Email;
         var result = await _fileService.AddFileAsync(file, email);
         await _userRepository.UploadFile(uid, result, file.FileName);
-        return Ok(result.Url.ToString());
+        return true;
     }
     
     [Authorize]
@@ -152,14 +152,14 @@ namespace API.Controllers
 
     [Authorize]
     [HttpDelete("file/{fileId}")]
-    public async Task<ActionResult<IEnumerable<DeletionResult>>> DeleteFile(int fileId)
+    public async Task<ActionResult<bool>> DeleteFile(int fileId)
     {
         int uid = RetrieveUserId();
         var file = await _userRepository.GetFile(fileId);
         if (file == null) return Ok("Not found");
         var result = await _fileService.DeleteFileAsync(file.FileId, ResourceType.Raw);
         await _userRepository.DeleteFileAsync(fileId);
-        return Ok(result.Result);
+        return true;
     }
 
     [Authorize]
