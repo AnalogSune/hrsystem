@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
@@ -19,7 +20,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> SendCV([FromForm] CVDto cvDto)
         {
-
+            Console.Write("cvvvvvvvvvvvvvvv: ");
+            Console.WriteLine(cvDto.CvFile);
             return Ok(await _cvRepository.AddCVEntry(cvDto));
         }
 

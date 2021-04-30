@@ -11,20 +11,22 @@
 
 <img src="../assets/bg.jpg" class="bg">
 <div *ngIf="this.isLoggedIn(); else loginPage">
-<app-nav>
-</app-nav>
-<div class="side-bar-container">
-<app-side-bar></app-side-bar>
-</div>
-<div class="content-container">
-    <router-outlet></router-outlet>
-</div>
+    <app-nav>
+    </app-nav>
+    <div class="side-bar-container">
+        <app-side-bar></app-side-bar>
+    </div>
+    <div class="content-container">
+        <router-outlet></router-outlet>
+    </div>
 </div>
 <ng-template #loginPage>
-    <app-login-page></app-login-page>
+    <tabset>
+        <tab heading="Login">
+            <app-login-page></app-login-page>
+        </tab>
+        <tab heading="Send CV">
+            <app-cv></app-cv>
+        </tab>
+    </tabset>
 </ng-template>
-
-<router-outlet></router-outlet>
-<div class="container">
-<router-outlet class="container mt-5"></router-outlet>
-</div>

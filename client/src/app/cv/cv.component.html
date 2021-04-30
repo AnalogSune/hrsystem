@@ -1,0 +1,12 @@
+<form #cvForm="ngForm" class="container" style="max-width: 500px;" (ngSubmit)="submit()">
+  <div class="form-group col-xs-4 mt-5" >
+    <input type="text" class="form-control"  name="fName" placeholder="First Name" [(ngModel)]="cvModel.fName" minlength=2 required>
+    <input type="text" class="form-control"  name="lName" placeholder="Last Name" [(ngModel)]="cvModel.lName" minlength=2 required>
+    <textarea type="text" class="form-control" name="coverLetter" placeholder="Cover Letter (Min: 200 words)" 
+      [(ngModel)]="cvModel.coverLetter" required minlength=200></textarea>
+    <input type="email" class="form-control" name="email" placeholder="Email" email minlength=2 [(ngModel)]="cvModel.email" required>
+    <input #fileUpload type="file" class="file-upload" style="display: none;" name="cvFile" (change)="uploadCV($event)" required>
+    <button type="button" class="form-control" (click)="fileUpload.click()">Upload CV (Max: 2MB)</button>
+    <button type="submit" [disabled]="!cvForm.valid" class="form-control" >Send</button>
+  </div>
+</form>

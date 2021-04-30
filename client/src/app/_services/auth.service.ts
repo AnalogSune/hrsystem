@@ -32,7 +32,8 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.decodedToken.isadmin == "True"? true: false;
+    if (this.decodedToken) this.decodedToken.isadmin == "True"? true: false;
+    return false;
   }
 
   login(model: any) {
@@ -48,8 +49,10 @@ export class AuthService {
     );
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(token);
+    if (token != null)
+      return !this.jwtHelper.isTokenExpired(token);
+    return false;
   }
 }

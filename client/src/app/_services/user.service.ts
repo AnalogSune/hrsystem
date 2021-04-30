@@ -51,4 +51,6 @@ export class UserService {
   deleteDocuments(fileId: number) {
     return this.http.delete(this.baseUrl + 'users/file/' + fileId);
   }
+
+  
 }

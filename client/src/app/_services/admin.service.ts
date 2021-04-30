@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
+import { CV } from '../_models/CV';
 import { Department } from '../_models/department';
 import { makePostDto } from '../_models/makePostDto';
 import { RequestSearch, RequestStatus, Request } from '../_models/requests';
@@ -90,5 +91,15 @@ export class AdminService {
 
   addCalendarEntry(calendarEntry: ScheduleEntry) {
     return this.http.post(this.baseUrl + 'calendar', calendarEntry);
+  }
+
+  uploadCV(cv: CV) {
+    let formData = new FormData();
+    formData.append('fName', cv.fName);
+    formData.append('lName', cv.lName);
+    formData.append('email', cv.email);
+    formData.append('coverLetter', cv.coverLetter);
+    formData.append('cvFile', cv.cvFile);
+    return this.http.post(this.baseUrl + 'cv', formData);
   }
 }
