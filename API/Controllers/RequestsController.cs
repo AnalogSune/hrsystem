@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class RequestsController : BaseApiController
     {
         private readonly IAuthRepository _authRepository;
@@ -26,54 +27,58 @@ namespace API.Controllers
             _calendarRepository = calendarRepository;
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<bool>> CreateRequest(RequestsDto requestsDto)
+        public async Task<IActionResult> CreateRequest(RequestsDto requestsDto)
         {
             int uid = RetrieveUserId();
             if (requestsDto.EmployeeId == uid || await _authRepository.IsAdmin(uid))
-                return await _requestsRepository.CreateRequest(requestsDto);
+            {
+                if (await _requestsRepository.CreateRequest(requestsDto))
+                    return Ok();
+                return BadRequest("Unable to create the request!");
+            }
+            
             return Unauthorized("You don't have the rights to do this!");
         }
 
-        [Authorize]
         [HttpPost("{id}/{status}")]
-        public async Task<ActionResult<bool>> UpdateRequestStatus(int id, RequestStatus status)
+        public async Task<IActionResult> UpdateRequestStatus(int id, RequestStatus status)
         {
             int uid = RetrieveUserId();
             if (!await _authRepository.IsAdmin(uid))
-                return Unauthorized();
+                return Unauthorized("You need administrative rights!");
 
-            await _requestsRepository.UpdateRequestStatus(id, status);
+            if (!await _requestsRepository.UpdateRequestStatus(id, status))
+                return BadRequest("Unable to update the request");
+
             if (status == RequestStatus.Accepted)
             {
                 var newRequest = (await _requestsRepository.GetRequest(id));
-                await _calendarRepository.AddEntry(_mapper.Map<CalendarEntryDto>(newRequest));
+                if (await _calendarRepository.AddEntry(_mapper.Map<CalendarEntryDto>(newRequest)))
+                    return Ok();
             }
 
-            return Ok();
+            return BadRequest("Unable to add the entry to the calendar!");
         }
 
-        [Authorize]
         [HttpGet("history/{id}/{type?}/{status?}")]
-        public async Task<ActionResult<ICollection<RequestsDto>>> GetRequests(int id, RequestType? type, RequestStatus? status)
+        public async Task<IActionResult> GetRequests(int id, RequestType? type, RequestStatus? status)
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid) || uid == id)
                 return Ok(await _requestsRepository.GetRequests(id, type, status));
             else
-                return Unauthorized("You don't have the rights to do this!");
+                return Unauthorized("You need administrative rights!");
         }
 
-        [Authorize]
         [HttpPost("search")]
-        public async Task<ActionResult<ICollection<RequestsDto>>> GetRequests(RequestSearchDto searchDto)
+        public async Task<IActionResult> GetRequests(RequestSearchDto searchDto)
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid) || uid == searchDto.EmployeeId)
                 return Ok(await _requestsRepository.GetRequests(searchDto));
             else
-                return Unauthorized();
+                return Unauthorized("You need administrative rights!");
         }
     }
 }

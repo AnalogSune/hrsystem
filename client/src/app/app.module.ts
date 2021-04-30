@@ -12,7 +12,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {TimepickerModule} from 'ngx-bootstrap/timepicker';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

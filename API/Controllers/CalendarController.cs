@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class CalendarController : BaseApiController
     {
         private readonly ICalendarRepository _calendarRepository;
@@ -18,20 +19,22 @@ namespace API.Controllers
             _calendarRepository = calendarRepository;
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddEntry(CalendarEntryDto calendarEntry)
         {
             int uid = RetrieveUserId();
             if(await _authRepository.IsAdmin(uid))
-                return Ok(await _calendarRepository.AddEntry(calendarEntry));
+            {
+                if (await _calendarRepository.AddEntry(calendarEntry))
+                    return Ok();
+                return BadRequest("Unable to to add the entry to the calendar!");
+            }
             
             return Unauthorized("You dont have rights to do this!");
         }
 
-        [Authorize]
         [HttpPost("get")]
-        public async Task<ActionResult<IEnumerable<CalendarEntryDto>>> GetEntries(CalendarSearchDto calendarEntry)
+        public async Task<IActionResult> GetEntries(CalendarSearchDto calendarEntry)
         {
             return Ok(await _calendarRepository.GetEntries(calendarEntry));
         }

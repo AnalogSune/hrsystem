@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../_services/alertify.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -9,10 +10,12 @@ import { UserService } from '../_services/user.service';
 })
 export class SearchBarComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router) { }
   searchParam: string;
   usersfound : string[] = [""];
   usersId:  Map<string, number> = new Map();
+
+  constructor(private userService: UserService, private router: Router,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
@@ -36,6 +39,8 @@ export class SearchBarComponent implements OnInit {
         });
       }
 
+    }, error => {
+      this.alertify.error('Failed to perform search!', error);
     })
   }
 

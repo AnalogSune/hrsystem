@@ -2,6 +2,7 @@ import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { AppUser } from '../_models/appuser';
 import { AdminService } from '../_services/admin.service';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 
@@ -13,7 +14,8 @@ import { UserService } from '../_services/user.service';
 export class CompanyComponent implements OnInit {
   users: AppUser[] = undefined;
 
-  constructor(private userService: UserService, private authService: AuthService, private adminService: AdminService) { }
+  constructor(private userService: UserService, private authService: AuthService, 
+    private adminService: AdminService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.update();
@@ -22,9 +24,8 @@ export class CompanyComponent implements OnInit {
   update() {
     this.userService.getUsers().subscribe(u => {
       this.users = u;
-      console.log(u);
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to retrieve users!', error);
     })
   }
 
@@ -38,10 +39,10 @@ export class CompanyComponent implements OnInit {
 
   deleteUser(id: number): void {
     this.adminService.deleteUser(id).subscribe(d => {
-      console.log(d);
+      this.alertify.success('User deleted!');
       this.update();
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to delete user!', error);
     });
   }
 

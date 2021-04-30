@@ -3,6 +3,7 @@ import { UserService } from '../_services/user.service';
 import { Document } from '../_models/document';
 import { Clipboard } from '@angular/cdk/clipboard';
 import * as FileSaver from 'file-saver';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-documents',
@@ -13,7 +14,8 @@ export class DocumentsComponent implements OnInit {
 
   documents: Document[] = [];
 
-  constructor(private userService: UserService, private clipboard: Clipboard) { }
+  constructor(private userService: UserService, private clipboard: Clipboard,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.fetchDocuments();
@@ -23,31 +25,33 @@ export class DocumentsComponent implements OnInit {
     this.userService.getDocuments().subscribe(docs => {
       this.documents = docs;
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to retrieve document list!', error);
     });
   }
 
   copyToCp(txt: string) {
-    console.log(txt);
-    console.log(this.clipboard.copy(txt));
+    if (!this.clipboard.copy(txt))
+      this.alertify.error('Failed to copy!');
+    else 
+      this.alertify.success('Copied ' + txt);
   }
 
   uploadDocument(evt) {
     const file:File = evt.target.files[0];
     this.userService.uploadDocument(file).subscribe(res => {
-      console.log(res);
+      this.alertify.success('Document uploaded!');
       this.fetchDocuments();
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to upload document!', error);
     });
   }
 
   deleteDocument(id: number) {
     this.userService.deleteDocuments(id).subscribe(res => {
-      console.log(res);
+      this.alertify.success('Document deleted!');
       this.fetchDocuments();
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to delete document!', error);
     });
   }
 

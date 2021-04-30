@@ -5,6 +5,7 @@ import { AppUser } from '../_models/appuser';
 import { ScheduleType, ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
 import { Shift } from '../_models/shift';
 import { AdminService } from '../_services/admin.service';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 
@@ -83,7 +84,8 @@ export class CalendarComponent implements OnInit {
         return this.datePipe.transform(this.startDate, 'dd-MMMM-y') + ' - ' + this.datePipe.transform(this.endDate, 'dd-MMMM-y');
     }
 
-    constructor(private userService: UserService, private datePipe: DatePipe, private authService: AuthService, private adminService: AdminService) 
+    constructor(private userService: UserService, private datePipe: DatePipe, private authService: AuthService, 
+        private adminService: AdminService, private alertify: AlertifyService) 
     {
     }
 
@@ -111,7 +113,7 @@ export class CalendarComponent implements OnInit {
             else
                 this.workShiftId = null;
         }, error => {
-            console.log(error);
+            this.alertify.error('Unable to retrieve the work shifts!', error);
         })
     }
 
@@ -120,6 +122,8 @@ export class CalendarComponent implements OnInit {
         this.userService.getSchedule(new ScheduleSearchDto(this.startDate, this.endDate))
         .subscribe(next => {
             this.scheduleEntries = next;
+        }, error => {
+            this.alertify.error('Unable to retrieve the work schedule!', error)
         });
     }
 
@@ -195,11 +199,11 @@ export class CalendarComponent implements OnInit {
             createNewEntry: create
         };
         this.adminService.addCalendarEntry(entry).subscribe(res => {
-            console.log(res);
+            this.alertify.success('Schedule changed!');
             this.updateDates()
             this.datesSelected.clear();
         }, error => {
-            console.log(error);
+            this.alertify.error('Unable to add the calendar entry!', error);
         });
     }
 }

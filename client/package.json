@@ -23,6 +23,7 @@
     "@angular/router": "^11.2.12",
     "@auth0/angular-jwt": "^5.0.2",
     "@schematics/angular": "^9.1.15",
+    "alertifyjs": "^1.13.1",
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "file-saver": "^2.0.5",

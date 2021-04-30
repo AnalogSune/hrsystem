@@ -17,14 +17,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> SendCV([FromForm] CVDto cvDto)
+        public async Task<IActionResult> SendCV([FromForm] CVDto cvDto)
         {
 
             return Ok(await _cvRepository.AddCVEntry(cvDto));
         }
 
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateCV(UpdateCVDto updateCVDto)
+        public async Task<IActionResult> UpdateCV(UpdateCVDto updateCVDto)
         {
             var uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteCV(int id)
+        public async Task<IActionResult> DeleteCV(int id)
         {
             var uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))

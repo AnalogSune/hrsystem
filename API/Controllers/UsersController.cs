@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -32,125 +33,122 @@ namespace API.Controllers
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
         return Ok(await _userRepository.GetUsers());
     }
 
-    [Authorize]
     [HttpGet("{id}")]
-    public async Task<ActionResult<MemberDto>> GetUser(int id)
+    public async Task<IActionResult> GetUser(int id)
     {
-        return await _userRepository.GetUser(id);
+        return Ok(await _userRepository.GetUser(id));
     }
 
-    [Authorize]
     [HttpGet("pending")]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithPending()
+    public async Task<IActionResult> GetUsersWithPending()
     {
         return Ok(await _userRepository.GetUsersWithPending());
     }
 
-    [Authorize]
     [HttpGet("role/{id}")]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithRole(int id)
+    public async Task<IActionResult> GetUsersWithRole(int id)
     {
         return Ok(await _userRepository.GetUsersWithRole(id));
     }
 
-    [Authorize]
     [HttpGet("department/{id}")]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithDepartment(int id)
+    public async Task<IActionResult> GetUsersWithDepartment(int id)
     {
         return Ok(await _userRepository.GetUsersWithDepartment(id));
     }
 
-    [Authorize]
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> SearchUsers([FromQuery] UserFilterDto filter)
+    public async Task<IActionResult> SearchUsers([FromQuery] UserFilterDto filter)
     {
         return Ok(await _userRepository.GetUsersWithParameters(filter));
     }
 
-    [Authorize]
     [HttpGet("search/{searchParam}")]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> WideSearchUsers(string searchParam)
+    public async Task<IActionResult> WideSearchUsers(string searchParam)
     {
         return Ok(await _userRepository.GetUsersWithSingleParameters(searchParam));
     }
 
-    [Authorize]
     [HttpPut("{id}")]
-    public async Task<ActionResult<bool>> UpdateUser(int id, UserEditDto userEdit)
+    public async Task<IActionResult> UpdateUser(int id, UserEditDto userEdit)
     {
         int uid = RetrieveUserId();
 
         if (id == uid || await _authRepository.IsAdmin(uid))
-            return await _userRepository.UpdateUser(id, userEdit);
+            return Ok(await _userRepository.UpdateUser(id, userEdit));
 
         return Unauthorized();
     }
 
-    [Authorize]
     [HttpPut("department/{id}/{departmentId}")]
-    public async Task<ActionResult<bool>> ChangeDepartment(int id, int departmentId)
+    public async Task<IActionResult> ChangeDepartment(int id, int departmentId)
     {
         int uid = RetrieveUserId();
 
         if (await _authRepository.IsAdmin(uid))
-            return await _userRepository.ChangeUserDepartment(id, departmentId);
+        {
+            if (await _userRepository.ChangeUserDepartment(id, departmentId))
+                return Ok();
+            return BadRequest("Unable to change department!");
+        }
 
         return Unauthorized();
     }
 
-    [Authorize]
     [HttpPut("role/{id}/{roleId}")]
-    public async Task<ActionResult<bool>> ChangeRole(int id, int roleId)
+    public async Task<IActionResult> ChangeRole(int id, int roleId)
     {
         int uid = RetrieveUserId();
 
         if (await _authRepository.IsAdmin(uid))
-            return await _userRepository.ChangeUserRole(id, roleId);
+        {
+            if (await _userRepository.ChangeUserRole(id, roleId))
+                return Ok();
+            return BadRequest("Unable to change role!");
+        }
 
         return Unauthorized();
     }
 
-    [Authorize]
     [HttpPost("image")]
-    public async Task<ActionResult<bool>> UploadPhoto([FromForm] IFormFile image)
+    public async Task<IActionResult> UploadPhoto([FromForm] IFormFile image)
     {
         int uid = RetrieveUserId();
-
         var user = await _userRepository.GetUser(uid);
+
         if (!string.IsNullOrEmpty(user.PictureId))
-            await _photoService.DeletePhotoAsync(user.PictureId);
+            if ((await _photoService.DeletePhotoAsync(user.PictureId)).Error != null)
+                return BadRequest("Unable to delete the previous photo!");
 
         var result = await _photoService.AddPhotoAsync(image);
-        await _userRepository.ChangeImage(uid, result.Url.ToString(), result.PublicId);
+        if (await _userRepository.ChangeImage(uid, result.Url.ToString(), result.PublicId))
+            return Ok();
         
-        return Ok(true);
+        return BadRequest("Unable to upload the photo!");
     }
 
-    [Authorize]
     [HttpPost("file")]
-    public async Task<ActionResult<bool>> UploadFile([FromForm] IFormFile file)
+    public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
     {
         int uid = RetrieveUserId();
         string email = (await _userRepository.GetUser(uid)).Email;
         var result = await _fileService.AddFileAsync(file, email);
         await _userRepository.UploadFile(uid, result, file.FileName, file.ContentType);
-        return true;
+        return Ok();
     }
     
-    [Authorize]
     [HttpGet("file")]
-    public async Task<ActionResult<IEnumerable<PersonalFilesDto>>> GetFiles()
+    public async Task<IActionResult> GetFiles()
     {
         int uid = RetrieveUserId();
         return Ok(await _userRepository.GetFiles(uid));
     }
 
-    [Authorize]
     [HttpDelete("file/{fileId}")]
     public async Task<IActionResult> DeleteFile(int fileId)
     {
@@ -165,17 +163,15 @@ namespace API.Controllers
         await _userRepository.DeleteFileAsync(fileId);
         return Ok(result);
     }
-
-    [Authorize]
+    
     [HttpPut("file")]
-
-    public async Task<ActionResult<bool>> RenameFile(PersonalFilesDto personalFilesDto)
+    public async Task<IActionResult> RenameFile(PersonalFilesDto personalFilesDto)
     {
             int uid = RetrieveUserId();
         
         if (uid == personalFilesDto.FileOwnerId)
         {
-            return await _userRepository.RenameFileAsync(personalFilesDto);
+            return Ok(await _userRepository.RenameFileAsync(personalFilesDto));
         }
 
         return Unauthorized();

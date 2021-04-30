@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../_services/admin.service';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { AuthService } from '../_services/auth.service';
 export class PostsComponent implements OnInit {
   postContent: string;
   postsMade: any;
-  constructor(private adminService: AdminService, private authService: AuthService ) { }
+  constructor(private adminService: AdminService, private authService: AuthService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.getPosts();
@@ -19,12 +21,16 @@ export class PostsComponent implements OnInit {
   submitPost() {
     this.adminService.makePost({publisherid: this.authService.currentUser.id, content: this.postContent}).subscribe(next => {
       this.getPosts();
+    }, error => {
+      this.alertify.error('Unable to post message!', error);
     })
   }
 
   getPosts() {
     this.adminService.getPosts().subscribe(next => {
       this.postsMade = next;
+    }, error => {
+      this.alertify.error('Unable to retrieve posts!', error);
     });
   }
 

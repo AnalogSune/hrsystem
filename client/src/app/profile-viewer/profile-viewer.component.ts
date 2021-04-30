@@ -3,6 +3,7 @@ import { ActivatedRoute, } from '@angular/router';
 import { AppUser } from '../_models/appuser';
 import { Department, Role } from '../_models/department';
 import { AdminService } from '../_services/admin.service';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 
@@ -13,14 +14,14 @@ import { UserService } from '../_services/user.service';
 })
 export class ProfileViewerComponent implements OnInit {
 
-  constructor(private authService: AuthService, private userService: UserService,
-    private routerParams: ActivatedRoute, private adminService: AdminService) { }
-
   user: AppUser;
   password: string;
   departments: Map<number, Department> = new Map<number, Department>();
   userDepartmentId: number = -1;
   userRoleId: number = -1;
+
+  constructor(private authService: AuthService, private userService: UserService,
+    private routerParams: ActivatedRoute, private adminService: AdminService, private alertify: AlertifyService) { }
 
   public get roles(): Role[] {
     return this.departments.get(this.userDepartmentId)?.departmentRoles;
@@ -42,20 +43,13 @@ export class ProfileViewerComponent implements OnInit {
 
   fetchUser() {
     this.routerParams.queryParams.subscribe(params => {
+      let userid = 0;
       if (params.userId == undefined)
-      {
-        this.userService.getUser(this.authService.decodedToken.nameid).subscribe(u => {
-          this.user = u;
-          if (u.inDepartment)
-          {
-            this.userDepartmentId = u.inDepartment.id || -1;
-            this.userRoleId = u.role.id || -1;
-          }
-        });
-      }
+        userid = this.authService.decodedToken.nameid;
       else
-      {
-        this.userService.getUser(params.userId).subscribe(u => {
+        userid = params.userId;
+        
+        this.userService.getUser(userid).subscribe(u => {
           this.user = u;
           if (u.inDepartment)
           {
@@ -63,7 +57,8 @@ export class ProfileViewerComponent implements OnInit {
             this.userRoleId = u.role.id || -1;
           }
         });
-      }
+    }, error => {
+      this.alertify.error('Unable to retrieve query parameters!', error);
     });
   }
 
@@ -71,14 +66,17 @@ export class ProfileViewerComponent implements OnInit {
     const file:File = event.target.files[0];
     this.userService.uploadPhoto(file).subscribe(next=>{
       this.fetchUser();
+      this.alertify.success('Photo uploaded successfully!');
+    }, error => {
+      this.alertify.error('Unable to upload photo!', error);
     });
   }
 
   changePassword(id: number) {
     this.adminService.changePassword(id, this.password).subscribe(next => {
-      console.log(next);
+      this.alertify.success('Password changed successfully!');
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to change password!', error);
     });
   }
 
@@ -86,11 +84,10 @@ export class ProfileViewerComponent implements OnInit {
     if (this.hasRoles())
     {
       this.adminService.changeUserDepartment(this.user.id, this.userDepartmentId).subscribe(next => {
-        console.log(next);
         this.userRoleId = this.departments.get(this.userDepartmentId).departmentRoles[0].id;
         this.updateRole();
       }, error => {
-        console.log(error);
+        this.alertify.error('Unable to change the departments!', error);
       });
     }
   }
@@ -108,10 +105,9 @@ export class ProfileViewerComponent implements OnInit {
 
   updateRole() {
     this.adminService.changeUserRole(this.user.id, this.userRoleId).subscribe(next => {
-      console.log(next);
       this.fetchUser();
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to change role!', error);
     })
   }
 
@@ -122,7 +118,7 @@ export class ProfileViewerComponent implements OnInit {
         this.departments.set(d.id, d);
       });
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to retrieve the departments!', error);
     })
   }
 }

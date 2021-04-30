@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class TaskController : BaseApiController
     {
         private readonly ITasksRepository _tasksRepository;
@@ -17,37 +18,38 @@ namespace API.Controllers
             _tasksRepository = tasksRepository;
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Tasks>> AddTask(TaskDto taskDto)
+        public async Task<IActionResult> AddTask(TaskDto taskDto)
         {
-            return await _tasksRepository.AddTask(taskDto);
+            return Ok(await _tasksRepository.AddTask(taskDto));
         }
 
-        [Authorize]
         [HttpPost("addemployee/{taskid}/{employeeid}")]
-        public async Task<ActionResult<bool>> AddEmployeeToTask(int taskId, int employeeId)
+        public async Task<IActionResult> AddEmployeeToTask(int taskId, int employeeId)
         {
-            return await _tasksRepository.AddEmployeeToTask(taskId, employeeId);
+            return Ok(await _tasksRepository.AddEmployeeToTask(taskId, employeeId));
         }
         
-        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteTask(int id)
+        public async Task<IActionResult> DeleteTask(int id)
         {
-            return await _tasksRepository.DeleteTask(id);
+            if (await _tasksRepository.DeleteTask(id))
+                return Ok();
+            
+            return BadRequest("Unable to delete the task!");
         }
         
-        [Authorize]
         [HttpPut("{taskid}/{employeeid}/{statusid}")]
-        public async Task<ActionResult<bool>> UpdateTask(int taskid, int employeeid, int statusid)
+        public async Task<IActionResult> UpdateTask(int taskid, int employeeid, int statusid)
         {
-            return await _tasksRepository.UpdateTaskStatus(taskid, employeeid, statusid);
+            if (await _tasksRepository.UpdateTaskStatus(taskid, employeeid, statusid))
+                return Ok();
+                
+            return BadRequest("Unable to update the task!");
         }
         
-        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeesTasks>>> GetTasks(TaskSearchDto taskSearchDto)
+        public async Task<IActionResult> GetTasks(TaskSearchDto taskSearchDto)
         {
             return Ok(await _tasksRepository.GetTasks(taskSearchDto));
         }

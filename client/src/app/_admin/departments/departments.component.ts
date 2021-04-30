@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { isEmpty } from 'rxjs/operators';
 import { Department, Role } from 'src/app/_models/department';
 import { AdminService } from 'src/app/_services/admin.service';
+import { AlertifyService } from 'src/app/_services/alertify.service';
 
 @Component({
   selector: 'app-departments',
@@ -15,7 +16,7 @@ export class DepartmentsComponent implements OnInit {
   departmentname: string;
   departments: Department[];
 
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: AdminService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.update();
@@ -26,7 +27,6 @@ export class DepartmentsComponent implements OnInit {
       this.departments = deps;
       if (deps[0] != undefined)
         this.department = deps[0]; 
-      console.log(deps);
     });
   }
 
@@ -34,10 +34,10 @@ export class DepartmentsComponent implements OnInit {
     if (this.department != undefined && this.rolename)
     {
       this.adminService.addRole(this.department.id, this.rolename).subscribe(res => {
-        console.log(res);
+        this.alertify.success('Role added successfully!');
         this.department = res;
       }, error => {
-        console.log(error);
+        this.alertify.error('Unable to add role!', error);
       });
       this.rolename = ""
     }
@@ -49,10 +49,10 @@ export class DepartmentsComponent implements OnInit {
       let newDepartment: Department = {name: ""};
       newDepartment.name = this.departmentname;
       this.adminService.createDepartment(newDepartment).subscribe(next => {
-        console.log(next);
+        this.alertify.success('New department created!');
         this.update();
       }, error => {
-        console.log(error);
+        this.alertify.error('Unable to create department!', error);
       });
       this.departmentname = ""
     }
@@ -64,11 +64,11 @@ export class DepartmentsComponent implements OnInit {
 
   deleteRole(id: number)
   {
-
     this.adminService.removeRole(id).subscribe(next => {
+      this.alertify.success('Role deleted!');
       this.update();
     }, error => {
-      console.log(error);
+      this.alertify.error('Unable to delete role!', error);
     });
   }
 
@@ -79,8 +79,9 @@ export class DepartmentsComponent implements OnInit {
       this.adminService.removeDepartment(this.department.id).subscribe(next => {
         this.department = null;
         this.update();
+        this.alertify.success('Department deleted!');
       }, error => {
-        console.log(error);
+        this.alertify.error('Unable to delete department!', error);
       });
     }
   }
