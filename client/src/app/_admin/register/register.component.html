@@ -34,6 +34,33 @@
             <th>Is Admin</th>
             <th><input type="checkbox" name="isadmin" [(ngModel)]="user.isAdmin"></th>
         </tr>
+        
+        
+        
+        <tr *ngIf="departmentsExist()">
+            <th>Department</th>
+            <select  [(ngModel)]="user.departmentId" name="departmentId"  (ngModelChange)="updateDepartment()">
+                <option *ngFor="let dep of departments | keyvalue" [ngValue]="dep.value.id">{{dep.value.name}}</option>
+            </select>
+        </tr>
+        
+        <tr *ngIf="!departmentsExist()">
+            <th>Department</th>
+            <th>No Departments Available</th>
+        </tr>
+
+        <tr *ngIf="rolesExist()">
+            <th>Role</th>
+            <select  [(ngModel)]="user.roleId" name="roleId">
+                <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
+            </select>
+        </tr>
+        
+        <tr *ngIf="!rolesExist()">
+            <th>Role</th>
+            <th>No Roles Available</th>
+        </tr>
+        
         <tr >
             <th>Date of Birth</th>
             <th><input type="date" name="dateofbirth"  [(ngModel)]="user.dateOfBirth"></th>

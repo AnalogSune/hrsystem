@@ -11,6 +11,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import {TimepickerModule} from 'ngx-bootstrap/timepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +31,7 @@ import { RegisterComponent } from './_admin/register/register.component';
 import { DepartmentsComponent } from './_admin/departments/departments.component';
 import { CompanyComponent } from './company/company.component';
 import { DocumentsComponent } from './documents/documents.component';
+import { ShiftsComponent } from './_admin/shifts/shifts.component';
 
 export function getToken()
 {
@@ -48,11 +50,12 @@ export function getToken()
     PostsComponent,
     TimePipe,
     RequestsComponent,
+    ShiftsComponent,
     ProfileViewerComponent,
     RegisterComponent,
     DepartmentsComponent,
     CompanyComponent,
-      DocumentsComponent
+    DocumentsComponent
    ],
   imports: [
     BrowserModule,
@@ -61,7 +64,7 @@ export function getToken()
     ClipboardModule,
     LayoutModule,
     HttpClientModule,
-    
+    TimepickerModule.forRoot(),
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,

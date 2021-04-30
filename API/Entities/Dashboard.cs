@@ -10,7 +10,6 @@ namespace API.Entities
         public int PublisherId { get; set; }
         public AppUser Publisher { get; set; }
 
-        [MaxLength(200)]
         public string Content { get; set; }
 
         public DateTime TimeCreated { get; set; }

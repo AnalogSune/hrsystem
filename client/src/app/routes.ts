@@ -7,6 +7,7 @@ import { ProfileViewerComponent } from './profile-viewer/profile-viewer.componen
 import { RequestsComponent } from './requests/requests.component';
 import { DepartmentsComponent } from './_admin/departments/departments.component';
 import { RegisterComponent } from './_admin/register/register.component';
+import { ShiftsComponent } from './_admin/shifts/shifts.component';
 import { AdminAuthGuard, AuthGuard } from './_guards/auth.guard';
 
 export const appRoutes: Routes = [
@@ -30,7 +31,8 @@ export const appRoutes: Routes = [
         canActivate: [AdminAuthGuard],
         children: [
             {path: 'register', component: RegisterComponent},
-            {path: 'departments', component: DepartmentsComponent}
+            {path: 'departments', component: DepartmentsComponent},
+            {path: 'shifts', component: ShiftsComponent}
         ]
     },
     { path: '**', redirectTo: '', pathMatch: 'full' }

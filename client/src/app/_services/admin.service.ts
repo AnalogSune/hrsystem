@@ -6,6 +6,8 @@ import { AppUser } from '../_models/appuser';
 import { Department } from '../_models/department';
 import { makePostDto } from '../_models/makePostDto';
 import { RequestSearch, RequestStatus, Request } from '../_models/requests';
+import { ScheduleEntry } from '../_models/scheduleEntry';
+import { Shift } from '../_models/shift';
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +74,21 @@ export class AdminService {
 
   changeUserRole(userId: number, roleId: number) {
     return this.http.put(this.baseUrl + 'users/role/' + userId  + '/' + roleId, {});
+  }
+
+  createWorkShift(shift: Shift) {
+    return this.http.post(this.baseUrl + 'admin/shift', shift);
+  }
+
+  getWorkShifts(): Observable<Shift[]> {
+    return this.http.get<Shift[]>(this.baseUrl + 'admin/shift');
+  }
+
+  deleteWorkShift(id: number) {
+    return this.http.delete(this.baseUrl + 'admin/shift/' + id);
+  }
+
+  addCalendarEntry(calendarEntry: ScheduleEntry) {
+    return this.http.post(this.baseUrl + 'calendar', calendarEntry);
   }
 }

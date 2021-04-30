@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210421181657_training")]
-    partial class training
+    [Migration("20210429200246_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,10 +26,12 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Country")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
@@ -41,19 +43,23 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
 
                     b.Property<string>("FName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Nationality")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("longblob");
@@ -62,7 +68,8 @@ namespace API.Data.Migrations
                         .HasColumnType("longblob");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12) CHARACTER SET utf8mb4");
 
                     b.Property<string>("PictureId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -132,6 +139,9 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("Date");
 
+                    b.Property<int?>("ShiftId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("Date");
 
@@ -140,7 +150,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("ShiftId");
 
                     b.ToTable("Calendar");
                 });
@@ -185,20 +195,25 @@ namespace API.Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("API.Entities.EmployeesTraining", b =>
+            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
                 {
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrainingId")
+                    b.Property<int>("TaskId")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId", "TrainingId");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.ToTable("EmployeesTraining");
+                    b.HasKey("EmployeeId", "TaskId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("EmployeesTasks");
                 });
 
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
+            modelBuilder.Entity("API.Entities.PersonalFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,6 +225,9 @@ namespace API.Data.Migrations
                     b.Property<int>("FileOwnerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FileType")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("FileUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -220,7 +238,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("FileOwnerId");
 
-                    b.ToTable("personalFiles");
+                    b.ToTable("PersonalFiles");
                 });
 
             modelBuilder.Entity("API.Entities.Request", b =>
@@ -274,17 +292,61 @@ namespace API.Data.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("API.Entities.Tasks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("API.Entities.WorkShift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkShifts");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.HasOne("API.Entities.Department", "InDepartment")
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("API.Entities.Role", "Role")
-                        .WithMany("Employees")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("InDepartment");
 
@@ -293,13 +355,11 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.CalendarEntry", b =>
                 {
-                    b.HasOne("API.Entities.AppUser", "Employee")
+                    b.HasOne("API.Entities.WorkShift", "Shift")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShiftId");
 
-                    b.Navigation("Employee");
+                    b.Navigation("Shift");
                 });
 
             modelBuilder.Entity("API.Entities.Dashboard", b =>
@@ -313,7 +373,18 @@ namespace API.Data.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
+            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
+                {
+                    b.HasOne("API.Entities.Tasks", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("API.Entities.PersonalFile", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "FileOwner")
                         .WithMany("PersonalFiles")
@@ -337,13 +408,11 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Role", b =>
                 {
-                    b.HasOne("API.Entities.Department", "InDepartment")
+                    b.HasOne("API.Entities.Department", null)
                         .WithMany("DepartmentRoles")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("InDepartment");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
@@ -354,13 +423,6 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Department", b =>
                 {
                     b.Navigation("DepartmentRoles");
-
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("API.Entities.Role", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

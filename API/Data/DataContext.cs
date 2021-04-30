@@ -14,20 +14,14 @@ namespace API.Data
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
         public DbSet<CalendarEntry> Calendar { get; set; }
-
         public DbSet<Request> Requests { get; set; }
-
         public DbSet<Role> Roles { get; set; }
-
         public DbSet<Department> Departments { get; set; }
-
         public DbSet<CV> CVs { get; set; }
-
-        public DbSet<PersonalFiles> personalFiles { get; set; }
-
+        public DbSet<PersonalFile> PersonalFiles { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
-
         public DbSet<EmployeesTasks> EmployeesTasks { get; set; }
+        public DbSet<WorkShift> WorkShifts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -92,7 +86,7 @@ namespace API.Data
                 .HasForeignKey(k => k.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<PersonalFiles>()
+            builder.Entity<PersonalFile>()
                 .HasOne(s => s.FileOwner)
                 .WithMany(p => p.PersonalFiles)
                 .HasForeignKey(k => k.FileOwnerId)

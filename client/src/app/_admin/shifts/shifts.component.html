@@ -1,0 +1,21 @@
+<form #shiftForm="ngForm"  (ngSubmit)="submit()">
+Name<input type="text" name="name" [(ngModel)]="newShift.name" required>
+Start Time<timepicker name="startTime" [(ngModel)]="newShift.startTime" required></timepicker>
+Duration<input type="number" name="duration" [(ngModel)]="newShift.duration" min="1" required>
+<button type="submit" class="btn btn-success" [disabled]="!shiftForm.valid">Register </button>
+</form>
+<table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
+    <thead>
+      <tr>
+          <th>Name</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+      </tr>
+      <tr *ngFor="let shift of shifts">
+        <th>{{shift.name}}</th>
+        <th>{{shift.startTime | date: 'HH:mm'}}</th>
+        <th>{{shift.endTime | date: 'HH:mm'}}</th>
+        <th><button (click)="deleteShift(shift.id)">Delete</button></th>
+    </tr>
+    </thead>
+</table>

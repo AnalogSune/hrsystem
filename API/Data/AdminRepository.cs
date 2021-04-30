@@ -132,5 +132,34 @@ namespace API.Data
         {
             return await _context.Departments.Include(d => d.DepartmentRoles).ToListAsync();
         }
+
+        public async Task<WorkShift> CreateShift(WorkShiftCreationDto shiftCreationDto)
+        {
+            WorkShift newShift = _mapper.Map<WorkShift>(shiftCreationDto);
+            await _context.WorkShifts.AddAsync(newShift);
+            if (await _context.SaveChangesAsync() == 0) return null;
+            return newShift;
+        }
+
+        public async Task<IEnumerable<WorkShift>> GetShifts()
+        {
+            return await _context.WorkShifts.ToListAsync();
+        }
+
+        public async Task<bool> DeleteShift(int id)
+        {
+            var shift = await _context.WorkShifts
+                .Where(s => s.Id == id)
+                .FirstOrDefaultAsync();
+                
+            _context.Remove(shift);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public Task<bool> AssignShift(int userId, int shiftId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

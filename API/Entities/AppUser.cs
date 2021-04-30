@@ -43,10 +43,8 @@ namespace API.Entities
         public Department? InDepartment { get; set; }
 #nullable disable
         
-        [MaxLength(100)]
         public string PictureUrl { get; set; }
         
-        [MaxLength(100)]
         public string PictureId { get; set; }
 
         public int DaysOffLeft { get; set; }
@@ -55,6 +53,6 @@ namespace API.Entities
 
         public bool IsAdmin { get; set; }
         
-        public ICollection<PersonalFiles> PersonalFiles { get; set; }
+        public ICollection<PersonalFile> PersonalFiles { get; set; }
     }
 }

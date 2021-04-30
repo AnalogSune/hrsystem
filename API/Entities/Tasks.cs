@@ -13,10 +13,8 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
-        [MaxLength(50)]
         public string Title { get; set; }
 
-        [MaxLength(50)]
         public string Description { get; set; }
 
         public DateTime StartTime { get; set; }

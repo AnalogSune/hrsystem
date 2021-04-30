@@ -20,7 +20,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<bool>> AddEntries(CalendarEntryDto calendarEntry)
+        public async Task<IActionResult> AddEntry(CalendarEntryDto calendarEntry)
         {
             int uid = RetrieveUserId();
             if(await _authRepository.IsAdmin(uid))

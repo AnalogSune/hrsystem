@@ -42,12 +42,13 @@
             <option *ngFor="let dep of departments | keyvalue" [ngValue]="dep.value.id">{{dep.value.name}}</option>
         </select>
     </tr>
-    </ng-template>
     
     <tr *ngIf="!departmentsExist()">
         <th>Department</th>
         <th>No departments Available</th>
     </tr>
+    </ng-template>
+    
 
 
     <tr *ngIf="!isAdmin() else adminRoles">
@@ -61,11 +62,12 @@
             <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
         </select>
     </tr>
-    </ng-template>
+    
     <tr *ngIf="!departmentsExist() || !hasRoles()">
         <th>Roles</th>
         <th>No roles Available</th>
     </tr>
+    </ng-template>
     <tr>
         <th>Date Of Birth</th>
         <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>

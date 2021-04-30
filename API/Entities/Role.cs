@@ -7,11 +7,9 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
-        [MaxLength(50)]
         public string RoleName { get; set; }
 
         public int DepartmentId { get; set; }
 
-        // public Department InDepartment { get; set; }
     }
 }

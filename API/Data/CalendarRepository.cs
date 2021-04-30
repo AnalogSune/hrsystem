@@ -71,14 +71,14 @@ namespace API.Data
             var prev = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
                 .Where(c => c.Type == calendarEntry.Type)
-                .Where(c => c.EndDate == calendarEntry.StartDate.AddDays(-1))
+                .Where(c => c.EndDate.Date == calendarEntry.StartDate.AddDays(-1).Date)
                 .FirstOrDefaultAsync();
             if (prev != null) calendarEntry.StartDate = prev.StartDate;
 
             var next = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
                 .Where(c => c.Type == calendarEntry.Type)
-                .Where(c => c.StartDate == calendarEntry.EndDate.AddDays(1))
+                .Where(c => c.StartDate.Date == calendarEntry.EndDate.AddDays(1).Date)
                 .FirstOrDefaultAsync();
             if (next != null) calendarEntry.EndDate = next.EndDate;
         }

@@ -28,7 +28,8 @@ export class ProfileViewerComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUser();
-    this.getDepartments();
+    if (this.isAdmin())
+      this.getDepartments();
   }
 
   isUser(): boolean {

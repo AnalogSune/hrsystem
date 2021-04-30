@@ -3,8 +3,46 @@ import { Inject } from '@angular/core';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppUser } from '../_models/appuser';
 import { ScheduleType, ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
+import { Shift } from '../_models/shift';
+import { AdminService } from '../_services/admin.service';
+import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 
+
+class DateRange {
+    startDate?: Date = null;
+    endDate?: Date = null;
+    employeeId: number;
+
+    selectDate(date: Date, employeeId: number): void {
+        if (this.startDate == null || this.endDate != null ||
+            date.valueOf() < this.startDate.valueOf() ||
+            this.employeeId != employeeId) {
+
+            this.employeeId = employeeId;
+            this.startDate = date;
+            this.endDate = null;
+        }
+        else if (this.endDate == null) {
+            this.endDate = date;
+        }
+    }
+
+    isInRange(date: Date): boolean {
+        if (!this.startDate || !this.endDate) return false;
+        return date.valueOf() >= this.startDate.valueOf() && 
+            date.valueOf() <= this.endDate.valueOf();
+    }
+
+    isValid(): boolean {
+        return this.startDate!=null && this.endDate!=null;
+    }
+
+    clear() {
+        this.startDate = null;
+        this.endDate = null;
+    }
+}
 
 @Component({
   selector: 'app-calendar',
@@ -15,8 +53,12 @@ export class CalendarComponent implements OnInit {
     dates: Date[];
     scheduleEntries: ScheduleEntry[];
     employees: AppUser[];
+    datesSelected: DateRange = new DateRange();
+    workShifts: Shift[] = [];
+    workShiftId: number;
+    scheduleType: ScheduleType = 0;
 
-    calendarColors: string[] = ['green', 'red', 'yellow', 'blue']
+    calendarColors: string[] = ['green', 'red', 'yellow', 'blue', "cyan"]
 
     @Input() view: 'week' | 'month' = 'week';
     @Input() startDate: Date = new Date();
@@ -41,7 +83,7 @@ export class CalendarComponent implements OnInit {
         return this.datePipe.transform(this.startDate, 'dd-MMMM-y') + ' - ' + this.datePipe.transform(this.endDate, 'dd-MMMM-y');
     }
 
-    constructor(private userService: UserService, private datePipe: DatePipe) 
+    constructor(private userService: UserService, private datePipe: DatePipe, private authService: AuthService, private adminService: AdminService) 
     {
     }
 
@@ -53,6 +95,24 @@ export class CalendarComponent implements OnInit {
             this.employees = next;
         });
         this.updateDates();
+        if (this.isAdmin())
+            this.getShifts();
+    }
+
+    isAdmin() {
+        return this.authService.isAdmin();
+    }
+
+    private getShifts() {
+        this.adminService.getWorkShifts().subscribe(shifts => {
+            this.workShifts = shifts;
+            if (shifts.length > 0)
+                this.workShiftId = shifts[0].id;
+            else
+                this.workShiftId = null;
+        }, error => {
+            console.log(error);
+        })
     }
 
     private updateDates() {
@@ -98,6 +158,8 @@ export class CalendarComponent implements OnInit {
     }
 
     getColor(date: Date, id: number): string {
+        if (this.datesSelected.isInRange(date) && this.datesSelected.employeeId == id) 
+            return this.calendarColors[4];
         return this.calendarColors[this.getScheduleType(date, id)];
     }
 
@@ -117,6 +179,27 @@ export class CalendarComponent implements OnInit {
     }
     
     dateClicked(date: Date, employeeId: number) {
-        console.log(date + ', id:' + employeeId);
+        if (this.isAdmin())
+            this.datesSelected.selectDate(date, employeeId);
+    }
+
+    addCalendarEntry(create: boolean = true) {
+        if (!this.datesSelected.isValid() ||
+            (!this.workShiftId && this.scheduleType == ScheduleType.Working && create)) return;
+        let entry: ScheduleEntry = {
+            startDate: this.datesSelected.startDate,
+            endDate: this.datesSelected.endDate,
+            employeeId: this.datesSelected.employeeId,
+            type: this.scheduleType,
+            workShiftId: this.workShiftId,
+            createNewEntry: create
+        };
+        this.adminService.addCalendarEntry(entry).subscribe(res => {
+            console.log(res);
+            this.updateDates()
+            this.datesSelected.clear();
+        }, error => {
+            console.log(error);
+        });
     }
 }

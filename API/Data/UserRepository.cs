@@ -119,7 +119,7 @@ namespace API.Data
 
         public async Task<bool> UploadFile(int id, UploadResult file, string originalFilename, string contentType)
         {
-            PersonalFiles newFile = new PersonalFiles
+            PersonalFile newFile = new PersonalFile
             {
                 FileOwnerId = id,
                 FileUrl = file.Url.ToString(),
@@ -128,21 +128,21 @@ namespace API.Data
                 OriginalFileName = originalFilename
             };
 
-            await _context.personalFiles.AddAsync(_mapper.Map<PersonalFiles>(newFile));
+            await _context.PersonalFiles.AddAsync(_mapper.Map<PersonalFile>(newFile));
 
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> RenameFileAsync(PersonalFilesDto personalFilesDto)
         {
-            var file = await _context.personalFiles.Where(f => f.Id == personalFilesDto.Id).FirstOrDefaultAsync();
+            var file = await _context.PersonalFiles.Where(f => f.Id == personalFilesDto.Id).FirstOrDefaultAsync();
             file.OriginalFileName = personalFilesDto.OriginalFileName;
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteFileAsync(int fileId)
         {
-            var file = await _context.personalFiles.Where(f => f.Id == fileId).FirstOrDefaultAsync();
+            var file = await _context.PersonalFiles.Where(f => f.Id == fileId).FirstOrDefaultAsync();
             _context.Remove(file);
             return await _context.SaveChangesAsync() > 0;
         }
@@ -157,9 +157,9 @@ namespace API.Data
             .ToListAsync();
         }    
         
-        public async Task<PersonalFiles> GetFile(int fileId)
+        public async Task<PersonalFile> GetFile(int fileId)
         {
-            return await _context.personalFiles.Where(f => f.Id == fileId).FirstOrDefaultAsync();
+            return await _context.PersonalFiles.Where(f => f.Id == fileId).FirstOrDefaultAsync();
         }  
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters)

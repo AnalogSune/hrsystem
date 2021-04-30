@@ -16,10 +16,12 @@ namespace API.Helper
             CreateMap<UserEditDto, AppUser>();
             CreateMap<RequestsDto, Request>();
             CreateMap<Role, RoleDto>();
+            CreateMap<WorkShift, WorkShiftCreationDto>();
+            CreateMap<WorkShiftCreationDto, WorkShift>();
             CreateMap<RoleDto, Role>();
             CreateMap<Request, RequestsDto>();
             CreateMap<CalendarEntryDto, CalendarEntry>();
-            CreateMap<PersonalFiles, PersonalFilesDto>();
+            CreateMap<PersonalFile, PersonalFilesDto>();
             CreateMap<DashboardDto, Dashboard>();
             CreateMap<TaskDto, Tasks>();
             CreateMap<Tasks, TaskDto>();

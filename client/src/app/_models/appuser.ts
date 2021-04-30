@@ -10,7 +10,9 @@ export interface AppUser
     phoneNumber?: string;
     address?: string;
     role?: Role;
+    roleId?: number;
     inDepartment?: Department;
+    departmentId?: number;
     pictureUrl?: string;
     daysOffLeft?: number;
     workedFromHome?: number;

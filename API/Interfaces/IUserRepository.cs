@@ -25,7 +25,7 @@ namespace API.Interfaces
 
         Task<bool> RenameFileAsync(PersonalFilesDto personalFilesDto);
         Task<IEnumerable<PersonalFilesDto>> GetFiles(int id);
-        Task<PersonalFiles> GetFile(int fileId);
+        Task<PersonalFile> GetFile(int fileId);
         Task<bool> DeleteFileAsync(int fileId);
     }
 }

@@ -1,3 +1,17 @@
+<div *ngIf="isAdmin()">
+<select [(ngModel)]="workShiftId">
+  <option *ngFor="let shift of workShifts" [ngValue]="shift.id">{{shift.name}} ({{shift.startTime | date: 'HH:mm'}} - {{shift.endTime | date: 'HH:mm'}})</option>
+</select>
+<select [(ngModel)]="scheduleType">
+  <option [ngValue]=0>Work</option>
+  <option [ngValue]=1>Day Off</option>
+  <option [ngValue]=2>Work From Home</option>
+  <option [ngValue]=3>Sick Day</option>
+</select>
+<button (click)="addCalendarEntry()">Assign</button>
+<button (click)="addCalendarEntry(false)">Clear</button>
+</div>
+
 <div class="d-flex flex-row justify-content-center p-2" style="background-color: gray;">    
 <div class="dropdown mr-5" dropdown *ngIf="this.showViews">
     <span class="mr-1">

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.Entities
 {
-    public class PersonalFiles
+    public class PersonalFile
     {
         public int Id { get; set; }
 

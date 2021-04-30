@@ -7,9 +7,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
-        [MaxLength(20)]
         public string Name { get; set; }
-
 
         public ICollection<Role> DepartmentRoles { get; set; }
     }

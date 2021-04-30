@@ -25,5 +25,10 @@ namespace API.Entities
 
         public CalendarType Type { get; set; }
 
+        [ForeignKey("WorkShift")]
+        public int? ShiftId { get; set; } = null;
+        
+        public WorkShift Shift { get; set; } = null;
+
     }
 }

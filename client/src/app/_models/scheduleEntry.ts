@@ -4,11 +4,13 @@ export enum ScheduleType
 }
 
 export class ScheduleEntry {
-    id: number;
+    id?: number;
     employeeId: number;
     startDate: Date;
     endDate: Date;
     type: ScheduleType;
+    createNewEntry: boolean = true;
+    workShiftId: number;
 }
 
 export class ScheduleSearchDto {

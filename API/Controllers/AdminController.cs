@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -23,8 +20,8 @@ namespace API.Controllers
             _adminRepository = adminRepository;
         }
 
-        [HttpPost("department")]
         [Authorize]
+        [HttpPost("department")]
         public async Task<ActionResult<Department>> AddDepartment(DepartmentDto department)
         {
             int uid = RetrieveUserId();
@@ -34,8 +31,8 @@ namespace API.Controllers
                 return Unauthorized();
         }
 
-        [HttpPost("role/{id}/{rolename}")]
         [Authorize]
+        [HttpPost("role/{id}/{rolename}")]
         public async Task<ActionResult<Department>> AddRole(int id, string rolename)
         {
             int uid = RetrieveUserId();
@@ -47,8 +44,8 @@ namespace API.Controllers
             return Unauthorized();
         }
 
-        [HttpDelete("role/{id}")]
         [Authorize]
+        [HttpDelete("role/{id}")]
         public async Task<ActionResult<Department>> DeleteRole(int id)
         {
             int uid = RetrieveUserId();
@@ -60,8 +57,8 @@ namespace API.Controllers
             return Unauthorized();
         }
 
-        [HttpGet("departments")]
         [Authorize]
+        [HttpGet("departments")]
         public async Task<ActionResult<Department>> GetDepartments()
         {
             int uid = RetrieveUserId();
@@ -73,8 +70,8 @@ namespace API.Controllers
             return Unauthorized();
         }
 
-        [HttpDelete("department/{id}")]
         [Authorize]
+        [HttpDelete("department/{id}")]
         public async Task<ActionResult<bool>> DeleteDepartment(int id)
         {
             int uid = RetrieveUserId();
@@ -86,8 +83,8 @@ namespace API.Controllers
             return Unauthorized();
         }
 
-        [HttpDelete("users/{id}")]
         [Authorize]
+        [HttpDelete("users/{id}")]
         public async Task<ActionResult<bool>> DeleteUser(int id)
         {
             int uid = RetrieveUserId();
@@ -101,7 +98,6 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("dashboard")]
-
         public async Task<ActionResult<bool>> AddPost(DashboardDto dashboardDto)
         {
             int uid = RetrieveUserId();
@@ -115,7 +111,6 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet("dashboard")]
-
         public async Task<ActionResult<IEnumerable<Dashboard>>> GetPosts()
         {
             return Ok(await _adminRepository.GetPosts());
@@ -123,12 +118,37 @@ namespace API.Controllers
 
         [Authorize]
         [HttpDelete("dashboard/{id}")]
-
-        public async Task<ActionResult<IEnumerable<Dashboard>>> DeletePost(int id)
+        public async Task<ActionResult<bool>> DeletePost(int id)
         {
             return Ok(await _adminRepository.DeletePost(id));
         }
 
+        [Authorize]
+        [HttpPost("shift")]
+        public async Task<IActionResult> CreateShift(WorkShiftCreationDto shiftCreationDto)
+        {
+            if (shiftCreationDto.Duration <= 0 || string.IsNullOrEmpty(shiftCreationDto.Name))
+                return BadRequest("Invalid Shift!");
+            var newShift = await _adminRepository.CreateShift(shiftCreationDto);
+            if (newShift != null)
+                return Ok(newShift);
+            
+            return BadRequest("Couldn't create the work shift!");
+        }
+
+        [Authorize]
+        [HttpGet("shift")]
+        public async Task<IActionResult> GetShift()
+        {
+            return Ok(await _adminRepository.GetShifts());
+        }
+
+        [Authorize]
+        [HttpDelete("shift/{id}")]
+        public async Task<IActionResult> DeleteShift(int id)
+        {
+            return Ok(await _adminRepository.DeleteShift(id));
+        }
     }
 
 }

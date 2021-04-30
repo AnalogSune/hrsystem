@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210429175641_FileTypes")]
-    partial class FileTypes
+    [Migration("20210430084152_WorkShift2")]
+    partial class WorkShift2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,12 +72,10 @@ namespace API.Data.Migrations
                         .HasColumnType("varchar(12) CHARACTER SET utf8mb4");
 
                     b.Property<string>("PictureId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("PictureUrl")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
@@ -101,32 +99,25 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AdminNote")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("CoverLetter")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("FileId")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("FileUrl")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Fname")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Lname")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -148,6 +139,9 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("Date");
 
+                    b.Property<int?>("ShiftId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("Date");
 
@@ -155,6 +149,8 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShiftId");
 
                     b.ToTable("Calendar");
                 });
@@ -166,8 +162,7 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -193,8 +188,7 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -219,7 +213,7 @@ namespace API.Data.Migrations
                     b.ToTable("EmployeesTasks");
                 });
 
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
+            modelBuilder.Entity("API.Entities.PersonalFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +238,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("FileOwnerId");
 
-                    b.ToTable("personalFiles");
+                    b.ToTable("PersonalFiles");
                 });
 
             modelBuilder.Entity("API.Entities.Request", b =>
@@ -289,8 +283,7 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RoleName")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -306,8 +299,7 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -316,8 +308,7 @@ namespace API.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("type")
                         .HasColumnType("int");
@@ -325,6 +316,26 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("API.Entities.WorkShift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkShifts");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
@@ -340,6 +351,15 @@ namespace API.Data.Migrations
                     b.Navigation("InDepartment");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("API.Entities.CalendarEntry", b =>
+                {
+                    b.HasOne("API.Entities.WorkShift", "Shift")
+                        .WithMany()
+                        .HasForeignKey("ShiftId");
+
+                    b.Navigation("Shift");
                 });
 
             modelBuilder.Entity("API.Entities.Dashboard", b =>
@@ -364,7 +384,7 @@ namespace API.Data.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("API.Entities.PersonalFiles", b =>
+            modelBuilder.Entity("API.Entities.PersonalFile", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "FileOwner")
                         .WithMany("PersonalFiles")
