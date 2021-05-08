@@ -1,24 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using API.Data;
 using API.Extensions;
-using API.Interfaces;
-using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using API.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Quartz;
 
 namespace API
 {
@@ -34,6 +22,27 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddQuartz(q =>
+            {
+                var jobKey = new JobKey("HelloWorldJob");
+                q.AddJob<DayOffJob>(opts => opts.WithIdentity(jobKey));
+
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+                q.AddTrigger(opts => {
+                    opts.ForJob(jobKey)
+                    .WithIdentity("DayOffJob-trigger")
+                    .WithCronSchedule("0 0 0 * * ?");
+                });
+            });
+
+            // ASP.NET Core hosting
+            services.AddQuartzServer(options =>
+            {
+                // when shutting down we want jobs to complete gracefully
+                options.WaitForJobsToComplete = true;
+            });
+
             services.addApplicationServices(_config);
             services.AddControllers();
             services.AddCors();

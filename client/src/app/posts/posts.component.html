@@ -2,7 +2,7 @@
   <div *ngFor="let post of this.postsMade" >
     <div class="post">
       {{post.content}}
-      <div class="post-info">{{post.publishername || "Unnamed"}}: {{post.timeCreated | time}}</div>
+      <div class="post-info">{{post.publisherName || "Unnamed"}}: {{post.timeCreated | time}}</div>
     </div>
   </div>
 </div>

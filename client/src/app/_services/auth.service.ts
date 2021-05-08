@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    if (this.decodedToken) this.decodedToken.isadmin == "True"? true: false;
+    if (this.decodedToken) return this.decodedToken.isadmin == "True"? true: false;
     return false;
   }
 

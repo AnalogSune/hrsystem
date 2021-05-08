@@ -1,10 +1,25 @@
+using System;
+using System.Collections.Generic;
 using API.Entities;
 
 namespace API.DTOs
 {
     public class TaskReturnDto
     {
-        public Tasks Task { get; set; }
-        public int status { get; set; }
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime StartTime { get; set; }
+                
+        public MemberDto Employee { get; set; }
+
+        public int Duration { get; set; }
+
+        ICollection<SubTask> SubTasks { get; set; }
+
+        public DateTime EndTime { get; set; }
     }
 }

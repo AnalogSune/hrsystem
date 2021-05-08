@@ -31,10 +31,16 @@ namespace API.Data
 
         public async Task<bool> UpdateRequestStatus(int id, RequestStatus status)
         {
-            var req = await _context.Requests.Where(r => r.Id == id).FirstOrDefaultAsync();
+            var req = await _context.Requests.Where(r => r.Id == id).Include(q => q.Employee).FirstOrDefaultAsync();
             if (req == null) return false;
 
             req.Status = status;
+
+            if (status == RequestStatus.Accepted && req.requestType == RequestType.DayOff)
+            {   
+                req.Employee.DaysOffLeft -= req.Duration;
+            }
+
             if (await _context.SaveChangesAsync() > 0)
                 return true;
 

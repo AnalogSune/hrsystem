@@ -20,27 +20,19 @@ namespace API.Data
         public DbSet<CV> CVs { get; set; }
         public DbSet<PersonalFile> PersonalFiles { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
-        public DbSet<EmployeesTasks> EmployeesTasks { get; set; }
+        public DbSet<SubTask> SubTasks { get; set; }
         public DbSet<WorkShift> WorkShifts { get; set; }
+
+        public DbSet<Meeting> Meetings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // builder.Entity<Tasks>()
-            // .HasMany(t => t.ETasks)
-            // .WithOne()
-            // .HasForeignKey(g => g.TaskId)
-            // .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<EmployeesTasks>()
-                .HasKey(k => new {k.EmployeeId, k.TaskId});
-
-            builder.Entity<EmployeesTasks>()
-                .HasOne(t => t.Task)
-                .WithMany()
-                .HasForeignKey(t => t.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Tasks>()
+            .HasOne(t => t.Employee)
+            .WithMany()
+            .HasForeignKey(t => t.EmployeeId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)
@@ -50,35 +42,11 @@ namespace API.Data
                 .Property(d => d.TimeCreated)
                 .HasPrecision(0);
 
-            // builder.Entity<CalendarEntry>()
-            //     .HasOne(e => e.Employee)
-            //     .WithMany()
-            //     .HasForeignKey(e => e.EmployeeId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-
-            // builder.Entity<AppUser>()
-            //     .HasOne(s => s.Role)
-            //     .WithMany(e => e.Employees)
-            //     .HasForeignKey(k => k.RoleId)
-            //     .OnDelete(DeleteBehavior.SetNull);
-                
-            // builder.Entity<AppUser>()
-            //     .HasOne(s => s.InDepartment)
-            //     .WithMany(e => e.Employees)
-            //     .HasForeignKey(k => k.DepartmentId)
-            //     .OnDelete(DeleteBehavior.SetNull);
-
             builder.Entity<Dashboard>()
                 .HasOne(s => s.Publisher)
                 .WithMany()
                 .HasForeignKey(k => k.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // builder.Entity<Role>()
-            //     .HasOne(d => d.InDepartment)
-            //     .WithMany(r => r.DepartmentRoles)
-            //     .HasForeignKey(k => k.DepartmentId)
-            //     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Request>()
                 .HasOne(s => s.Employee)

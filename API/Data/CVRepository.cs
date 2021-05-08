@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
@@ -20,7 +22,7 @@ namespace API.Data
             _mapper = mapper;
         }
 
-        public async Task<bool> AddCVEntry(CVDto cvDto)
+        public async Task<bool> AddCVEntry(CVCreationDto cvDto)
         {
             var result = await _fileService.AddFileAsync(cvDto.CvFile, "CVs");
             var entry = _mapper.Map<CV>(cvDto);
@@ -37,7 +39,6 @@ namespace API.Data
                 .FirstOrDefault();
 
             cvEntry.AdminNote = updateCVDto.AdminNotes;
-            cvEntry.Status = updateCVDto.Status;
 
             return await _context.SaveChangesAsync() > 0;
         }
@@ -55,5 +56,9 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<IEnumerable<CV>> GetCVs()
+        {
+            return await _context.CVs.ToListAsync();
+        }
     }
 }

@@ -21,6 +21,12 @@ export class CvComponent implements OnInit {
   }
 
   submit() {
+    let fileType = this.cvModel.cvFile.type.startsWith('text') || this.cvModel.cvFile.type.startsWith('image');
+    if (this.cvModel.cvFile.size == 0 || this.cvModel.cvFile == undefined || !fileType)
+    {
+      this.alertify.error('Incorect file format!');
+      return;
+    }
     this.adminService.uploadCV(this.cvModel).subscribe(res => {
       this.alertify.success('CV uploaded');
     }, error => {

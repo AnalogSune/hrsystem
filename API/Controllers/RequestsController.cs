@@ -58,7 +58,7 @@ namespace API.Controllers
                     return Ok();
             }
 
-            return BadRequest("Unable to add the entry to the calendar!");
+            return Ok();
         }
 
         [HttpGet("history/{id}/{type?}/{status?}")]

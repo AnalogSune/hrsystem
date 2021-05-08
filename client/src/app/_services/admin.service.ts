@@ -93,6 +93,18 @@ export class AdminService {
     return this.http.post(this.baseUrl + 'calendar', calendarEntry);
   }
 
+  getCVs() : Observable<CV[]> {
+    return this.http.get<CV[]>(this.baseUrl + 'cv');
+  }
+
+  updateCV(id, notes) {
+    return this.http.put(this.baseUrl + 'cv', {id: id, adminNotes: notes});
+  }
+
+  deleteCV(id) {
+    return this.http.delete(this.baseUrl + 'cv/' + id);
+  }
+
   uploadCV(cv: CV) {
     let formData = new FormData();
     formData.append('fName', cv.fName);

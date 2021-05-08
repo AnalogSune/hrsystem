@@ -32,6 +32,8 @@ import { CompanyComponent } from './company/company.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { ShiftsComponent } from './_admin/shifts/shifts.component';
 import { CvComponent } from './cv/cv.component';
+import { RecruitmentComponent } from './_admin/recruitment/recruitment.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 export function getToken()
 {
@@ -39,7 +41,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [											
+  declarations: [												
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -56,7 +58,9 @@ export function getToken()
     DepartmentsComponent,
     CompanyComponent,
     DocumentsComponent,
-    CvComponent
+    CvComponent,
+    RecruitmentComponent,
+    TasksComponent
    ],
   imports: [
     BrowserModule,

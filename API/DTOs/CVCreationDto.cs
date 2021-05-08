@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.DTOs
 {
-    public class CVDto
+    public class CVCreationDto
     {
         public string Fname { get; set; }
 

@@ -6,7 +6,7 @@
       [(ngModel)]="cvModel.coverLetter" required minlength=200></textarea>
     <input type="email" class="form-control" name="email" placeholder="Email" email minlength=2 [(ngModel)]="cvModel.email" required>
     <input #fileUpload type="file" class="file-upload" style="display: none;" name="cvFile" (change)="uploadCV($event)" required>
-    <button type="button" class="form-control" (click)="fileUpload.click()">Upload CV (Max: 2MB)</button>
+    <button type="button" class="form-control" (click)="fileUpload.click()">Upload CV (Max: 2MB) in jpg, png or doc form</button>
     <button type="submit" [disabled]="!cvForm.valid" class="form-control" >Send</button>
   </div>
 </form>

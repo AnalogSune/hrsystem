@@ -1,0 +1,24 @@
+<div *ngIf="cvs!=undefined else loading">
+  <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
+    <thead >
+      <tr >
+        <th>Name</th>
+        <th>Email</th>
+        <th>Cover Letter</th>
+        <th>Notes</th>
+        <th>CV File</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let cv of cvs" >
+        <th >{{cv.fname}} {{cv.lname}}</th>
+        <th >{{cv.email}}</th>
+        <th style="word-wrap: break-word; max-width: 300px;">{{cv.coverLetter}}</th>
+        <th><textarea name="" [(ngModel)]="cv.adminNote" cols="30" rows="10"></textarea></th>
+        <th><button class="btn btn-success" (click)="downloadCV(cv.fileUrl)"><i class="fa fa-download"></i></button></th>
+        <button (click)="updateCV(cv)">Update</button>
+        <button (click)="deleteCV(cv.id)">Delete</button>
+      </tr>
+    </thead>
+  </table>
+</div>
+<ng-template #loading>Loading...</ng-template>

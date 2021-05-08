@@ -6,6 +6,5 @@ namespace API.DTOs
     {
         public int Id { get; set; }
         public string AdminNotes { get; set; }
-        public CVStatus Status { get; set; }
     }
 }

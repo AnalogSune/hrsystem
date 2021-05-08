@@ -19,15 +19,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTask(TaskDto taskDto)
+        public async Task<IActionResult> AddTask(TaskCreationDto taskDto)
         {
             return Ok(await _tasksRepository.AddTask(taskDto));
         }
 
-        [HttpPost("addemployee/{taskid}/{employeeid}")]
-        public async Task<IActionResult> AddEmployeeToTask(int taskId, int employeeId)
+        [HttpPost("subtask")]
+        public async Task<IActionResult> AddSubTask(SubTaskCreationDto subTask)
         {
-            return Ok(await _tasksRepository.AddEmployeeToTask(taskId, employeeId));
+            return Ok(await _tasksRepository.AddSubTask(subTask));
         }
         
         [HttpDelete("{id}")]
@@ -39,10 +39,10 @@ namespace API.Controllers
             return BadRequest("Unable to delete the task!");
         }
         
-        [HttpPut("{taskid}/{employeeid}/{statusid}")]
-        public async Task<IActionResult> UpdateTask(int taskid, int employeeid, int statusid)
+        [HttpPut("{taskid}")]
+        public async Task<IActionResult> CompleteSubTask(int taskid)
         {
-            if (await _tasksRepository.UpdateTaskStatus(taskid, employeeid, statusid))
+            if (await _tasksRepository.CompleteSubTask(taskid))
                 return Ok();
                 
             return BadRequest("Unable to update the task!");

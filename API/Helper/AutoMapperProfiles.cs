@@ -23,12 +23,13 @@ namespace API.Helper
             CreateMap<CalendarEntryDto, CalendarEntry>();
             CreateMap<PersonalFile, PersonalFilesDto>();
             CreateMap<DashboardDto, Dashboard>();
-            CreateMap<TaskDto, Tasks>();
-            CreateMap<Tasks, TaskDto>();
-            CreateMap<EmployeesTasks, TaskReturnDto>();
+            CreateMap<SubTaskCreationDto, SubTask>();
+            CreateMap<TaskCreationDto, Tasks>();
+            CreateMap<Tasks, TaskReturnDto>()
+            .ForMember(t => t.Employee, opt => opt.MapFrom(t => t.Employee));
             CreateMap<Dashboard, DashboardReturnDto>()
-            .ForMember(m => m.PublisherName, opt => opt.MapFrom(a => a.Publisher.FName));
-            CreateMap<CVDto, CV>();
+            .ForMember(m => m.PublisherName, opt => opt.MapFrom(a => a.Publisher.FName + " " + a.Publisher.LName));
+            CreateMap<CVCreationDto, CV>();
             CreateMap<RequestsDto, CalendarEntryDto>()
                 .ForMember(m => m.StartDate, opt => opt.MapFrom(src => src.Date))
                 .ForMember(m => m.EndDate, opt => opt.MapFrom(src => src.EndDate))

@@ -40,7 +40,7 @@
         </tr>
         
         <tr *ngFor="let user of employees" >
-            <th>{{user.fName}}</th>
+            <th>{{user.fName}} {{user.lName}}</th>
             <th scope="col" *ngFor="let date of dates" (click)="dateClicked(date, user.id)" 
                 [ngStyle]="{'background-color': getColor(date, user.id)}" >
                 {{date | date : 'dd'}}

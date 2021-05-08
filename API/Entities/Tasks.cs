@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
 
-    public enum TaskType{
-        Training, Task
+    public enum TaskStatus{
+        InProgress, Completed
     }
 
     public class Tasks
@@ -17,17 +18,27 @@ namespace API.Entities
 
         public string Description { get; set; }
 
+        [Column(TypeName="Date")]
         public DateTime StartTime { get; set; }
+        
+        public int EmployeeId { get; set; }
+        
+        public AppUser Employee { get; set; }
 
         public int Duration { get; set; }
 
-        public TaskType type { get; set; }
+        public ICollection<SubTask> SubTasks { get; set; }
 
-        // public ICollection<EmployeesTasks> ETasks{ get; set; }
+        public TaskStatus Status { get; set; }
 
         public DateTime EndTime 
         {
             get => StartTime.AddDays(Duration);
+        }
+
+        public Tasks()
+        {
+            StartTime = DateTime.Today;
         }
     }
 }

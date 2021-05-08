@@ -5,14 +5,13 @@ import { AdminService } from '../_services/admin.service';
 import { AuthService } from '../_services/auth.service';
 import { RequestService } from '../_services/request.service';
 import { AlertifyService } from '../_services/alertify.service';
-import { error } from 'selenium-webdriver';
 
 class RequestForm
 {
   constructor() {}
   startDay: string = "";
   endDay: string = "";
-  requestType: number;
+  requestType: number = 1;
 }
 
 @Component({
@@ -26,12 +25,17 @@ export class RequestsComponent implements OnInit {
     private alertify: AlertifyService) { }
   formModel: RequestForm = new RequestForm();
   requestHistory: Request[];
-  requestSearch: RequestSearch = {requestStatus: 0, employeeId: null, requestType: null};
-  users: AppUser[] = [];
+  requestSearch: RequestSearch = {requestStatus: null, employeeId: null, requestType: null};
+  users: Map<number, AppUser> = new Map<number, AppUser>();
 
   ngOnInit() {
-    this.getHistory();
-    this.getUsers();
+    if (!this.isAdmin())
+      this.getHistory();
+    else
+    {
+      this.search();
+      this.getUsers();
+    }
   }
 
   submit()
@@ -42,6 +46,18 @@ export class RequestsComponent implements OnInit {
     let diff =  (endDate.getFullYear() - startDate.getFullYear()) * 365 + 
                 (endDate.getMonth() - startDate.getMonth()) * 30 + 
                 (endDate.getDate() - startDate.getDate()) + 1;
+    
+    if (diff > this.authService.currentUser.daysOffLeft && this.formModel.requestType == 1)
+    {
+      this.alertify.error("You are asking for more days than you have available!");
+      return;
+    }
+
+    if (this.formModel.requestType == 0 || !this.formModel.startDay || !this.formModel.endDay)
+    {
+      this.alertify.error("Invalid request");
+      return;
+    }
 
     const requestDto: Request = {
       employeeId: this.authService.currentUser.id,
@@ -106,10 +122,18 @@ export class RequestsComponent implements OnInit {
 
   getUsers() {
     this.adminService.getUsersWithPending().subscribe(users => {
-      this.users = users;
+      users.forEach(u => {
+        this.users.set(u.id, u);
+      })
+      console.log(users);
     }, error => {
       this.alertify.error('Unable to retrieve users!', error);
     })
+  }
+
+  getUserName(id): string {
+    if (this.users.get(id) != undefined)
+    return this.users.get(id).fName + ' ' + this.users.get(id).lName;
   }
 
   changeStatus(id: number, status: RequestStatus) {
@@ -117,7 +141,7 @@ export class RequestsComponent implements OnInit {
       this.alertify.success('Status Changed!');
       this.search();
     }, error => {
-      this.alertify.error('Unable change status!', error);
+      this.alertify.error('Unable to change status!', error);
     })
   }
 

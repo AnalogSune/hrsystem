@@ -61,7 +61,7 @@ export class CalendarComponent implements OnInit {
 
     calendarColors: string[] = ['green', 'red', 'yellow', 'blue', "cyan"]
 
-    @Input() view: 'week' | 'month' = 'week';
+    @Input() view: 'week' | 'month' = 'month';
     @Input() startDate: Date = new Date();
     @Input() showViews: boolean = true;
 

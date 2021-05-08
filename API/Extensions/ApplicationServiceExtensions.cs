@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Quartz;
 
 namespace API.Extensions
 {
@@ -22,6 +23,7 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IMeetingRepository, MeetingRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IPhotoService, PhotoService>();

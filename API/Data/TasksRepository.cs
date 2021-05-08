@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using TaskStatus = API.Entities.TaskStatus;
 
 namespace API.Data
 {
@@ -20,20 +22,21 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<bool> AddEmployeeToTask(int taskId, int employeeId)
-        {
-            var et = new EmployeesTasks { EmployeeId = employeeId, TaskId = taskId };
-            await _context.EmployeesTasks.AddAsync(et);
-            return (await _context.SaveChangesAsync() > 0);
-        }
-
-        public async Task<Tasks> AddTask(TaskDto taskDto)
+        public async Task<TaskReturnDto> AddTask(TaskCreationDto taskDto)
         {
             var newTask = _mapper.Map<Tasks>(taskDto);
-            await _context.Tasks.AddAsync(newTask);
+            var taskAdded = await _context.Tasks.AddAsync(newTask);
             if (await _context.SaveChangesAsync() > 0)
-                return newTask;
+                return _mapper.Map<TaskReturnDto>(await _context.Tasks.Where(t => t.Id == taskAdded.Entity.Id).Include(t => t.Employee).FirstOrDefaultAsync());
             return null;
+        }
+
+        public async Task<bool> AddSubTask(SubTaskCreationDto subTask)
+        {
+            var task = await _context.SubTasks.AddAsync(_mapper.Map<SubTask>(subTask));
+            if (await _context.SaveChangesAsync() > 0)
+                return true;
+            return false;
         }
 
         public async Task<bool> DeleteTask(int taskId)
@@ -45,20 +48,32 @@ namespace API.Data
 
         public async Task<IEnumerable<TaskReturnDto>> GetTasks(TaskSearchDto taskDto)
         {
-           return (await _context.EmployeesTasks
+           return (await _context.Tasks
            .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
-           .Where(t => taskDto.taskId == null? true: t.TaskId == taskDto.taskId)
+           .Where(t => taskDto.taskId == null? true: t.Id == taskDto.taskId)
            .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
-           .Include(t => t.Task)
+           .Include(t => t.SubTasks)
            .ProjectTo<TaskReturnDto>(_mapper.ConfigurationProvider)
-           .ToListAsync())
-           .Where(t => taskDto.taskType == null? true: t.Task.type == taskDto.taskType);
+           .ToListAsync());
         }
 
-        public async Task<bool> UpdateTaskStatus(int taskId, int employeeId, int taskStatus)
+        public async Task<bool> CompleteSubTask(int taskId)
         {
-            var newTask = await _context.EmployeesTasks.Where(t => t.EmployeeId == employeeId && t.TaskId == taskId).FirstOrDefaultAsync();
-            newTask.Status = (API.Entities.TaskStatus)taskStatus;
+            Console.Write("taskid: ");
+            Console.WriteLine(taskId);
+            var newTask = await _context.SubTasks.Where(t => t.Id == taskId).FirstOrDefaultAsync();
+            newTask.Status = TaskStatus.Completed;
+            var tsk = await _context.Tasks.Where(t => t.Id == newTask.TasksId).Include(t => t.SubTasks).FirstOrDefaultAsync();
+            TaskStatus status = TaskStatus.Completed;
+            foreach (var st in tsk.SubTasks)
+            {
+                if (st.Status == TaskStatus.InProgress)
+                {
+                    status = TaskStatus.InProgress;
+                    break;
+                }
+            }
+            tsk.Status = status;
             return (await _context.SaveChangesAsync() > 0);
         }
     }

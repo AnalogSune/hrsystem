@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
 import { Document } from '../_models/document';
-import {ScheduleEntry, ScheduleSearchDto} from '../_models/scheduleEntry';
+import { ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
+// import { Tasks } from '../_models/tasks';
 
 @Injectable({
   providedIn: 'root'

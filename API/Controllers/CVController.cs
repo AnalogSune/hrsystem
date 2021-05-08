@@ -18,11 +18,16 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendCV([FromForm] CVDto cvDto)
+        public async Task<IActionResult> SendCV([FromForm] CVCreationDto cvDto)
         {
-            Console.Write("cvvvvvvvvvvvvvvv: ");
-            Console.WriteLine(cvDto.CvFile);
             return Ok(await _cvRepository.AddCVEntry(cvDto));
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> GetCVs()
+        {
+            return Ok(await _cvRepository.GetCVs());
         }
 
         [HttpPut]

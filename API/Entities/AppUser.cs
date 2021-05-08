@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
@@ -21,6 +22,7 @@ namespace API.Entities
         [MaxLength(30)]
         public string LName { get; set; }
 
+        [Column(TypeName="Date")]
         public DateTime DateOfBirth { get; set; }
 
         [MaxLength(12)]
@@ -47,12 +49,24 @@ namespace API.Entities
         
         public string PictureId { get; set; }
 
-        public int DaysOffLeft { get; set; }
+        public double DaysOffLeft { get; set; }
 
         public int WorkedFromHome { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        [Column(TypeName="Date")]
+        public DateTime DateStarted { get; set; }
+
+        [Column(TypeName="Date")]
+        public DateTime DaysOffLastUpdated { get; set; }
         
         public ICollection<PersonalFile> PersonalFiles { get; set; }
+
+        public AppUser()
+        {
+            DateStarted = DateTime.Today;
+            DaysOffLastUpdated = DateStarted;
+        }
     }
 }
