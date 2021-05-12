@@ -12,6 +12,7 @@ import { RegisterComponent } from './_admin/register/register.component';
 import { ShiftsComponent } from './_admin/shifts/shifts.component';
 import { AdminAuthGuard, AuthGuard } from './_guards/auth.guard';
 import { TasksComponent } from './tasks/tasks.component';
+import { MeetingsComponent } from './meetings/meetings.component';
 
 export const appRoutes: Routes = [
     {path : '', component: HomeComponent},
@@ -26,7 +27,8 @@ export const appRoutes: Routes = [
             {path: 'profile', component: ProfileViewerComponent},
             {path: 'company', component: CompanyComponent},
             {path: 'documents', component: DocumentsComponent},
-            {path: 'tasks', component: TasksComponent}
+            {path: 'tasks', component: TasksComponent},
+            {path: 'meetings', component: MeetingsComponent}
         ]
     },
     {

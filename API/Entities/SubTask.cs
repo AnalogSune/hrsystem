@@ -6,7 +6,6 @@ namespace API.Entities
     {
         public int Id { get; set; }
 
-        [ForeignKey("tasks")]
         public int TasksId { get; set; }
         public string Description { get; set; }
 

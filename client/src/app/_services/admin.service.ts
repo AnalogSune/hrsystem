@@ -9,6 +9,7 @@ import { makePostDto } from '../_models/makePostDto';
 import { RequestSearch, RequestStatus, Request } from '../_models/requests';
 import { ScheduleEntry } from '../_models/scheduleEntry';
 import { Shift } from '../_models/shift';
+import { TaskCreationDTO } from '../_models/tasks';
 
 @Injectable({
   providedIn: 'root'

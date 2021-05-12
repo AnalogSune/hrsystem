@@ -48,7 +48,7 @@ namespace API.Controllers
             return BadRequest("Unable to update the task!");
         }
         
-        [HttpGet]
+        [HttpPost("search")]
         public async Task<IActionResult> GetTasks(TaskSearchDto taskSearchDto)
         {
             return Ok(await _tasksRepository.GetTasks(taskSearchDto));

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210508170308_minors")]
-    partial class minors
+    [Migration("20210512183212_TaskForeign")]
+    partial class TaskForeign
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,8 +42,8 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("DaysOffLastUpdated")
                         .HasColumnType("Date");
 
-                    b.Property<int>("DaysOffLeft")
-                        .HasColumnType("int");
+                    b.Property<double>("DaysOffLeft")
+                        .HasColumnType("double");
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
@@ -194,29 +194,40 @@ namespace API.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
+            modelBuilder.Entity("API.Entities.Meeting", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("TaskId")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("DurationHours")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId", "TaskId");
+                    b.Property<int>("MeetingType")
+                        .HasColumnType("int");
 
-                    b.HasIndex("TaskId");
+                    b.HasKey("Id");
 
-                    b.ToTable("EmployeesTasks");
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("API.Entities.PersonalFile", b =>
@@ -298,6 +309,28 @@ namespace API.Data.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("API.Entities.SubTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TasksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("SubTasks");
+                });
+
             modelBuilder.Entity("API.Entities.Tasks", b =>
                 {
                     b.Property<int>("Id")
@@ -310,16 +343,21 @@ namespace API.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("Date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Tasks");
                 });
@@ -348,11 +386,13 @@ namespace API.Data.Migrations
                 {
                     b.HasOne("API.Entities.Department", "InDepartment")
                         .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("API.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("InDepartment");
 
@@ -377,17 +417,6 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("API.Entities.EmployeesTasks", b =>
-                {
-                    b.HasOne("API.Entities.Tasks", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("API.Entities.PersonalFile", b =>
@@ -421,6 +450,26 @@ namespace API.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Entities.SubTask", b =>
+                {
+                    b.HasOne("API.Entities.Tasks", null)
+                        .WithMany("SubTasks")
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Entities.Tasks", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.Navigation("PersonalFiles");
@@ -429,6 +478,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Department", b =>
                 {
                     b.Navigation("DepartmentRoles");
+                });
+
+            modelBuilder.Entity("API.Entities.Tasks", b =>
+                {
+                    b.Navigation("SubTasks");
                 });
 #pragma warning restore 612, 618
         }

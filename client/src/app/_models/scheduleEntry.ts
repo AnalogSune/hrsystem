@@ -1,3 +1,5 @@
+import { Shift } from "./shift";
+
 export enum ScheduleType 
 {
     Working, DayOff, WorkFromHome, SickDay
@@ -10,7 +12,8 @@ export class ScheduleEntry {
     endDate: Date;
     type: ScheduleType;
     createNewEntry: boolean = true;
-    workShiftId: number;
+    shiftId?: number;
+    shift?: Shift;
 }
 
 export class ScheduleSearchDto {

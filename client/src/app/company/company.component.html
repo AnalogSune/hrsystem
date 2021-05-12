@@ -1,11 +1,25 @@
-<ng-template class="container" [ngIf]="users!= undefined" [ngIfElse]="loading">
+<ng-template class="container" [ngIf]="users!= undefined && departments != undefined" [ngIfElse]="loading">
+
+<div class="dropdown" dropdown>
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
+    {{departmentName}}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" *dropdownMenu>
+    <button type="button" (click)="filterByDepartment(null)" class="dropdown-item" >All departments</button>
+    <button type="button" class="dropdown-item" *ngFor="let department of departments" (click)="filterByDepartment(department.id, department.name)" >
+      {{department.name}}
+    </button>
+  </div>
+</div>
+
 <div class="row">
 <div *ngFor="let user of users" class="card row ml-4 mt-2" style="width: 18rem;">
   <img *ngIf="user.pictureUrl==undefined" class="card-img-top" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
   <img *ngIf="user.pictureUrl!=undefined" class="card-img-top" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
   <div class="card-body">
-    <h5 class="card-title">{{user.fname}} {{user.lname}}</h5>
-    <p class="card-text">{{user.email}}</p>
+    <p class="card-text">{{user.fName || 'No fName'}} {{user.lName || 'No lName'}}</p>
+    <p class="card-text">{{user.email || 'No email'}}</p>
+    <p class="card-text">{{user?.inDepartment?.name || 'No department'}} - {{user?.role?.roleName || 'No role'}}</p>
     <a href="#" class="btn btn-primary" [routerLink]="['/profile']" [queryParams]="{userId: user.id}">{{user.password}}</a>
     <a *ngIf="isAdmin() && !isUser(user.id)" class="ml-3" (click)="deleteUser(user.id)">Delete User</a>
   </div>

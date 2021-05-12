@@ -18,8 +18,8 @@ namespace API.DTOs
 
         public int Duration { get; set; }
 
-        ICollection<SubTask> SubTasks { get; set; }
+        public ICollection<SubTask> SubTasks { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime EndTime { get => StartTime.AddDays(Duration); }
     }
 }

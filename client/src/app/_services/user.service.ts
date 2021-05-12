@@ -22,6 +22,10 @@ export class UserService {
     return this.http.get<AppUser[]>(this.baseUrl + 'users');
   }
 
+  getUsersByDepartment(id: number) {
+    return this.http.get<AppUser[]>(this.baseUrl + 'users/department/' + id);
+  }
+
   searchUsers(param: string) {
     return this.http.get<AppUser[]>(this.baseUrl + 'users/search/' + param);
   }

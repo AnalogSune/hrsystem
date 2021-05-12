@@ -34,14 +34,15 @@ import { ShiftsComponent } from './_admin/shifts/shifts.component';
 import { CvComponent } from './cv/cv.component';
 import { RecruitmentComponent } from './_admin/recruitment/recruitment.component';
 import { TasksComponent } from './tasks/tasks.component';
-
+import { MeetingsComponent } from './meetings/meetings.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 export function getToken()
 {
   return localStorage.getItem('token');
 }
 
 @NgModule({
-  declarations: [												
+  declarations: [													
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -60,19 +61,22 @@ export function getToken()
     DocumentsComponent,
     CvComponent,
     RecruitmentComponent,
-    TasksComponent
+    TasksComponent,
+    MeetingsComponent
    ],
   imports: [
     BrowserModule,
     MatTooltipModule,
     AppRoutingModule,
     ClipboardModule,
+    NgbModule,
     LayoutModule,
     HttpClientModule,
     TimepickerModule.forRoot(),
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
+    MatTooltipModule,
     TabsModule.forRoot(),
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),

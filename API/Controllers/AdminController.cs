@@ -26,7 +26,12 @@ namespace API.Controllers
         {
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
+            {
+                if (await _adminRepository.DepartmentExists(department))
+                    return BadRequest("Department already exists!");
+                
                 return Ok(await _adminRepository.CreateDepartment(department));
+            }
             else
                 return Unauthorized("You need administrative rights!");
         }
@@ -37,7 +42,10 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
-                return Ok(await _adminRepository.AddRole(id, rolename));
+                var dep = await _adminRepository.AddRole(id, rolename);
+                if (dep != null)
+                    return Ok(dep);
+                return BadRequest("Unable to add role, check if role already exists in department!");
             }
             
             return Unauthorized("You need administrative rights!");
@@ -58,13 +66,7 @@ namespace API.Controllers
         [HttpGet("departments")]
         public async Task<IActionResult> GetDepartments()
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
-            {
-                return Ok(await _adminRepository.GetDepartments());
-            }
-            
-            return Unauthorized("You need administrative rights!");
+            return Ok(await _adminRepository.GetDepartments());
         }
 
         [HttpDelete("department/{id}")]

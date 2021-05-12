@@ -30,6 +30,7 @@ namespace API.Data
                     (c.StartDate.Date < calendarEntry.StartDate.Date && c.EndDate.Date >= calendarEntry.StartDate.Date) ||
                     (c.StartDate.Date <= calendarEntry.EndDate.Date && c.EndDate.Date > calendarEntry.EndDate.Date) ||
                     (c.StartDate.Date >= calendarEntry.StartDate.Date && c.EndDate.Date <= calendarEntry.EndDate.Date))
+                .Include(c => c.Shift)
                 .ToListAsync();
 
             return entries;

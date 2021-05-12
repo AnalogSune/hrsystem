@@ -13,6 +13,7 @@ namespace API.DTOs
         public int Duration { get; set; }
         public int Status { get; set; }
         public RequestType requestType { get; set; }
+        public int ShiftId {get; set;} = 1;
         public DateTime EndDate
         {
             get => Date.AddDays(Duration);

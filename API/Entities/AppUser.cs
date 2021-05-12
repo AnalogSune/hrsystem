@@ -38,6 +38,7 @@ namespace API.Entities
         public string Nationality { get; set; }
         
 #nullable enable
+        
         public int? RoleId { get; set; }
         public Role? Role { get; set; }
 

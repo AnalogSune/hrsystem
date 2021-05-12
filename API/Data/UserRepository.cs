@@ -37,6 +37,8 @@ namespace API.Data
         public async Task<IEnumerable<MemberDto>> GetUsers()
         {
             return await _context.Users
+                .Include(e => e.InDepartment)
+                .Include(e => e.Role)
                 .Select(e => _mapper.Map<MemberDto>(e))
                 .ToListAsync();
         }
@@ -83,8 +85,10 @@ namespace API.Data
 
         public async Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId)
         {
-            return await _context.Departments
-                .Where(d => d.Id == departmentId)
+            return await _context.Users
+                .Where(d => d.DepartmentId == departmentId)
+                .Include(e => e.InDepartment)
+                .Include(e => e.Role)
                 .Select(e => _mapper.Map<MemberDto>(e))
                 .ToListAsync();
         }

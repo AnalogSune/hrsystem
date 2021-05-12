@@ -41,6 +41,8 @@ namespace API.Data
 
         public async Task<Department> AddRole(int departmentId, string name)
         {
+            if (await _context.Roles.Where(r => r.DepartmentId == departmentId && r.RoleName == name).AnyAsync())
+                return null;
             await _context.Roles.AddAsync(new Role{
                 RoleName = name,
                 DepartmentId = departmentId

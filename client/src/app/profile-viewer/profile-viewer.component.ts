@@ -53,8 +53,8 @@ export class ProfileViewerComponent implements OnInit {
           this.user = u;
           if (u.inDepartment)
           {
-            this.userDepartmentId = u.inDepartment.id || -1;
-            this.userRoleId = u.role.id || -1;
+            this.userDepartmentId = u.inDepartment?.id || -1;
+            this.userRoleId = u.role?.id || -1;
           }
         });
     }, error => {

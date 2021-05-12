@@ -32,7 +32,13 @@ namespace API.Data
             .HasOne(t => t.Employee)
             .WithMany()
             .HasForeignKey(t => t.EmployeeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Tasks>()
+            .HasMany(t => t.SubTasks)
+            .WithOne()
+            .HasForeignKey(t => t.TasksId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)
@@ -59,6 +65,22 @@ namespace API.Data
                 .WithMany(p => p.PersonalFiles)
                 .HasForeignKey(k => k.FileOwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AppUser>()
+                .HasOne(e => e.Role)
+                .WithMany()
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<AppUser>()
+                .HasOne(e => e.InDepartment)
+                .WithMany()
+                .HasForeignKey(e => e.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+            
+            builder.Entity<Department>()
+            .HasIndex(r => r.Name)
+            .IsUnique();
         }
 
     }

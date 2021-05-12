@@ -48,19 +48,17 @@ namespace API.Data
 
         public async Task<IEnumerable<TaskReturnDto>> GetTasks(TaskSearchDto taskDto)
         {
-           return (await _context.Tasks
+           return await _context.Tasks
+           .Include(t => t.SubTasks)
            .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
            .Where(t => taskDto.taskId == null? true: t.Id == taskDto.taskId)
            .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
-           .Include(t => t.SubTasks)
            .ProjectTo<TaskReturnDto>(_mapper.ConfigurationProvider)
-           .ToListAsync());
+           .ToListAsync();
         }
 
         public async Task<bool> CompleteSubTask(int taskId)
         {
-            Console.Write("taskid: ");
-            Console.WriteLine(taskId);
             var newTask = await _context.SubTasks.Where(t => t.Id == taskId).FirstOrDefaultAsync();
             newTask.Status = TaskStatus.Completed;
             var tsk = await _context.Tasks.Where(t => t.Id == newTask.TasksId).Include(t => t.SubTasks).FirstOrDefaultAsync();

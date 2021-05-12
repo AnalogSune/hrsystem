@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class NavComponent implements OnInit {
   model: any = {}
   loggedIn: boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -26,6 +27,10 @@ export class NavComponent implements OnInit {
   logout(){
     localStorage.removeItem('email');
     localStorage.removeItem('token');
+  }
+
+  submit(event) {
+    this.router.navigate(['/profile'], {queryParams: {'userId': event}});
   }
 
 }

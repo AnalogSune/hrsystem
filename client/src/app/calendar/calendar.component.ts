@@ -55,7 +55,7 @@ export class CalendarComponent implements OnInit {
     scheduleEntries: ScheduleEntry[];
     employees: AppUser[];
     datesSelected: DateRange = new DateRange();
-    workShifts: Shift[] = [];
+    workShifts: Map<number, Shift> = new Map<number, Shift>();
     workShiftId: number;
     scheduleType: ScheduleType = 0;
 
@@ -97,17 +97,26 @@ export class CalendarComponent implements OnInit {
             this.employees = next;
         });
         this.updateDates();
-        if (this.isAdmin())
-            this.getShifts();
+        this.getShifts();
     }
 
     isAdmin() {
         return this.authService.isAdmin();
     }
 
+    getShiftStr(date, id): string {
+        let entry = this.getScheduleEntry(date, id);
+        if (entry?.shift && (entry?.type == ScheduleType.Working || entry?.type == ScheduleType.WorkFromHome))
+            return entry.shift.name + ' -> ' + this.datePipe.transform(entry.shift.startTime, 'HH:mm')
+            + ' - ' + this.datePipe.transform(entry.shift.endTime, 'HH:mm');
+        return '';
+    }
+
     private getShifts() {
         this.adminService.getWorkShifts().subscribe(shifts => {
-            this.workShifts = shifts;
+            shifts.forEach(s => {
+                this.workShifts.set(s.id, s);
+            }) ;
             if (shifts.length > 0)
                 this.workShiftId = shifts[0].id;
             else
@@ -125,6 +134,10 @@ export class CalendarComponent implements OnInit {
         }, error => {
             this.alertify.error('Unable to retrieve the work schedule!', error)
         });
+    }
+
+    isEntryValid(): boolean {
+        return ((this.scheduleType == 0 || this.scheduleType == 2) && this.workShiftId == null);
     }
 
     nextMonth() {
@@ -168,6 +181,10 @@ export class CalendarComponent implements OnInit {
     }
 
     getScheduleType(date: Date, id: number): ScheduleType {
+        return this.getScheduleEntry(date, id)?.type;
+    }
+
+    getScheduleEntry(date: Date, id: number): ScheduleEntry {
         for (let i = 0; i < this.scheduleEntries.length; i++)
         {
             let sDate = new Date(this.scheduleEntries[i].startDate);
@@ -177,7 +194,7 @@ export class CalendarComponent implements OnInit {
             if (this.scheduleEntries[i].employeeId == id && sDate <= date &&
             nDate >= date)
             {
-                return this.scheduleEntries[i].type;
+                return this.scheduleEntries[i];
             }
         }
     }
@@ -195,7 +212,7 @@ export class CalendarComponent implements OnInit {
             endDate: this.datesSelected.endDate,
             employeeId: this.datesSelected.employeeId,
             type: this.scheduleType,
-            workShiftId: this.workShiftId,
+            shiftId: this.workShiftId,
             createNewEntry: create
         };
         this.adminService.addCalendarEntry(entry).subscribe(res => {

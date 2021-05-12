@@ -35,6 +35,7 @@
         <th>Department</th>
         <th>{{user.inDepartment?.name || ""}}</th>
     </tr>
+
     <ng-template  #adminDepartments>
     <tr *ngIf="departmentsExist()">
         <th>Department</th>
@@ -73,27 +74,27 @@
         <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>
     </tr>
 
-    <tr *ngIf="isUser()">
+    <tr *ngIf="isUser() || isAdmin()">
         <th>Nationality</th>
         <th *ngIf="user">{{user.nationality || ""}}</th>
     </tr>
 
-    <tr *ngIf="isUser()">
+    <tr *ngIf="isUser() || isAdmin()">
         <th>Phone Number</th>
         <th *ngIf="user">{{user.phoneNumber || ""}}</th>
     </tr>
       
-    <tr *ngIf="isUser()">
+    <tr *ngIf="isUser() || isAdmin()">
         <th>Address</th>
         <th *ngIf="user">{{user.address || ""}}</th>
     </tr>
 
-    <tr *ngIf="isUser()">
+    <tr *ngIf="isUser() || isAdmin()">
       <th>Country</th>
       <th *ngIf="user">{{user.country || ""}}</th>
     </tr>
 
-    <tr *ngIf="isUser()">
+    <tr *ngIf="isUser() || isAdmin()">
         <th>Days Off Available</th>
         <th *ngIf="user">{{user.daysOffLeft}}</th>
     </tr>

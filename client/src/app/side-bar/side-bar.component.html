@@ -7,6 +7,7 @@
   <a [routerLink]="['/documents']"><div><i class="fa fa-folder-open fa-fw mr-1"></i>DOCUMENTS</div></a>
   <a [routerLink]="['/requests']"><div><i class="fa fa-plane fa-fw mr-1"></i>REQUESTS</div></a>
   <a [routerLink]="['/tasks']"><div><i class="fa fa-tasks fa-fw mr-1"></i>TASKS</div></a>
+  <a [routerLink]="['/meetings']"><div><i class="fa fa-exclamation-circle fa-fw mr-1"></i>MEETINGS</div></a>
   <a *ngIf="isAdmin()" [routerLink]="['/admin/register']"><div><i class="fa fa-plus fa-fw mr-1"></i>REGISTER</div></a>
   <a *ngIf="isAdmin()" [routerLink]="['/admin/departments']"><div><i class="fa fa-building fa-fw mr-1"></i>DEPARTMENTS</div></a>
   <a *ngIf="isAdmin()" [routerLink]="['/admin/shifts']"><div><i class="fa fa-history fa-fw mr-1"></i>SHIFTS</div></a>

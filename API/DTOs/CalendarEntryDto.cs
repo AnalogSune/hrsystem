@@ -11,6 +11,6 @@ namespace API.DTOs
         public int EmployeeId { get; set; }        
         public CalendarType Type { get; set; }
         public bool CreateNewEntry { get; set; }
-        public int? WorkShiftId { get; set; }
+        public int? ShiftId { get; set; }
     }
 }

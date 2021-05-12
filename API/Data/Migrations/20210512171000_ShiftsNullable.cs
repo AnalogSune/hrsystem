@@ -2,7 +2,7 @@
 
 namespace API.Data.Migrations
 {
-    public partial class WorkShift2 : Migration
+    public partial class ShiftsNullable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

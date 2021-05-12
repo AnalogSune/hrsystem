@@ -1,6 +1,8 @@
 <div *ngIf="isAdmin()">
 <select [(ngModel)]="workShiftId">
-  <option *ngFor="let shift of workShifts" [ngValue]="shift.id">{{shift.name}} ({{shift.startTime | date: 'HH:mm'}} - {{shift.endTime | date: 'HH:mm'}})</option>
+  <option [ngValue]="null">None</option>
+  <option *ngFor="let shift of workShifts | keyvalue" [ngValue]="shift.key">{{shift.value.name}}
+    ({{shift.value.startTime | date: 'HH:mm'}} - {{shift.value.endTime | date: 'HH:mm'}})</option>
 </select>
 <select [(ngModel)]="scheduleType">
   <option [ngValue]=0>Work</option>
@@ -8,7 +10,7 @@
   <option [ngValue]=2>Work From Home</option>
   <option [ngValue]=3>Sick Day</option>
 </select>
-<button (click)="addCalendarEntry()">Assign</button>
+<button [disabled]="isEntryValid()" (click)="addCalendarEntry()">Assign</button>
 <button (click)="addCalendarEntry(false)">Clear</button>
 </div>
 
@@ -28,7 +30,7 @@
 
 <button class="btn btn-primary mr-auto" (click)="prevMonth()">Previous</button>
 <div class="m-auto font-weight-bold" style="font-size: 180%;">{{this.dateRangeStr}}</div>
-<button class="btn btn-primary ml-auto " (click)='nextMonth()'>Next</button>
+<button  class="btn btn-primary ml-auto " (click)='nextMonth()'>Next</button>
 </div>
 
 <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
@@ -41,7 +43,8 @@
         
         <tr *ngFor="let user of employees" >
             <th>{{user.fName}} {{user.lName}}</th>
-            <th scope="col" *ngFor="let date of dates" (click)="dateClicked(date, user.id)" 
+            <th scope="col" *ngFor="let date of dates" container="body" [ngbTooltip]="getShiftStr(date, user.id)"
+                (click)="dateClicked(date, user.id)"
                 [ngStyle]="{'background-color': getColor(date, user.id)}" >
                 {{date | date : 'dd'}}
             </th>
