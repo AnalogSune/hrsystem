@@ -14,8 +14,7 @@ export class TasksComponent implements OnInit {
   taskCreation: TaskCreationDTO = {};
   subTaskCreation: SubTaskCreationDto = {};
   tasks: Task[] = undefined;
-  searchListName: string = "All tasks";
-  searchDto: TaskSearchDto = {};
+  searchDto: TaskSearchDto = {status:null, isOverdue:null};
 
   constructor(private authService: AuthService, private taskService: TaskService,private alertifyService: AlertifyService) { }
 
@@ -23,19 +22,14 @@ export class TasksComponent implements OnInit {
     this.getTasks();
   }
 
-  getTasks(isOverdue: boolean = null) {
-    if (isOverdue == null) this.searchListName = "All Tasks";
-    else if (isOverdue == true) this.searchListName = "Overdue";
-    else this.searchListName = "Ongoing";
-    this.searchDto.isOverdue = isOverdue;
+  getTasks() {
     if (!this.isAdmin())
     {
-      this.searchDto.employeeId = this.authService.currentUser.id;
+      this.searchDto.employeeId = this.authService.decodedToken.nameid;
     }
 
     this.taskService.getTasks(this.searchDto).subscribe(t => {
       this.tasks = t;
-      console.log(t);
     }, error => {
       this.alertifyService.error('Unable to retrieve tasks!', error);
     })
@@ -74,11 +68,12 @@ export class TasksComponent implements OnInit {
     this.taskCreation.employeeId = event;
   }
 
-  completeSubTask(subtask: SubTask, elm, task) {
+  completeSubTask(subtask: SubTask) {
+    console.log(subtask.id);
     if (subtask.status != 0) return;
-    elm.disabled = true;
     this.taskService.completeSubTask(subtask.id).subscribe(r => {
       this.alertifyService.success('Subtask updated!');
+      subtask.status = 1;
     }, error => {
       this.alertifyService.error('Error updated task!', error);
     });

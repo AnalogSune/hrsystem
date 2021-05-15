@@ -96,7 +96,8 @@ namespace API.Data
                     EmployeeId = entry2.EmployeeId,
                     EndDate =  entry2.EndDate,
                     StartDate = entry1.EndDate.AddDays(1),
-                    Type = entry2.Type
+                    Type = entry2.Type,
+                    ShiftId = entry2.ShiftId
                 };
 
                 await _context.Calendar.AddAsync(_mapper.Map<CalendarEntry>(newEntry));

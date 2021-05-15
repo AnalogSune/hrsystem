@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMeeting(Meeting meeting)
+        public async Task<IActionResult> AddMeeting(MeetingDto meeting)
         {
             int uid = RetrieveUserId();
             if (!await _authRepository.IsAdmin(uid))
@@ -32,10 +33,10 @@ namespace API.Controllers
             return BadRequest("Unable to create the request!");
         }
 
-        [HttpGet("{id}/{type}")]
-        public async Task<IActionResult> GetMeetings(int id, MeetingType type)
+        [HttpPost("search")]
+        public async Task<IActionResult> GetMeetings(MeetingSearchDto meetingSearch)
         {
-            return Ok(await _meetingRepository.GetMeetings(id, type));
+            return Ok(await _meetingRepository.GetMeetings(meetingSearch));
         }
 
         [HttpDelete("{id}")]

@@ -22,6 +22,7 @@ namespace API.Helper
             CreateMap<Request, RequestsDto>();
             CreateMap<CalendarEntryDto, CalendarEntry>();
             CreateMap<PersonalFile, PersonalFilesDto>();
+            CreateMap<MeetingDto, Meeting>();
             CreateMap<DashboardDto, Dashboard>();
             CreateMap<SubTaskCreationDto, SubTask>();
             CreateMap<TaskCreationDto, Tasks>();

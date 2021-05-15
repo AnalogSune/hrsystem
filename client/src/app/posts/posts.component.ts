@@ -19,7 +19,7 @@ export class PostsComponent implements OnInit {
   }
 
   submitPost() {
-    this.adminService.makePost({publisherid: this.authService.currentUser.id, content: this.postContent}).subscribe(next => {
+    this.adminService.makePost({publisherid: this.authService.getCurrentUser().id, content: this.postContent}).subscribe(next => {
       this.getPosts();
     }, error => {
       this.alertify.error('Unable to post message!', error);

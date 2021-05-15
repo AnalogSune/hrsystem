@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../_models/appuser';
@@ -13,7 +14,9 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   baseUrl = environment.baseUrl;
-  currentUser: AppUser;
+
+  private currentUserSource = new ReplaySubject<AppUser>(1);
+  currentUser = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private userService: UserService) 
   { 
@@ -25,10 +28,23 @@ export class AuthService {
   private updateCurrentUser() {
     this.decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('token'));
     this.userService.getUser(this.decodedToken.nameid).subscribe(user => {
-      this.currentUser = user;
+      this.setCurrentUser(user);
+      localStorage.setItem('departmentId', user.inDepartment.id.toString());
     }, error => {
       console.log(error);
     });
+  }
+
+  setCurrentUser(user: AppUser) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  getCurrentUser(): AppUser {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
+  getUserId(): number {
+    return this.decodedToken.nameid
   }
 
   isAdmin(): boolean {

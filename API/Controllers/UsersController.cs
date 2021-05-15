@@ -126,7 +126,7 @@ namespace API.Controllers
                 return BadRequest("Unable to delete the previous photo!");
 
         var result = await _photoService.AddPhotoAsync(image);
-        if (await _userRepository.ChangeImage(uid, result.Url.ToString(), result.PublicId))
+        if (await _userRepository.ChangeImage(uid, result.SecureUrl.ToString(), result.PublicId))
             return Ok();
         
         return BadRequest("Unable to upload the photo!");

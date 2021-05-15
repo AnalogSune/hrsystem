@@ -37,6 +37,20 @@ import { TasksComponent } from './tasks/tasks.component';
 import { MeetingsComponent } from './meetings/meetings.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule} from '@angular/material/select';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import {MatInputModule} from '@angular/material/input';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MeetingsTableComponent } from './meetings-table/meetings-table.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
+
 
 export function getToken()
 {
@@ -64,7 +78,8 @@ export function getToken()
     CvComponent,
     RecruitmentComponent,
     TasksComponent,
-    MeetingsComponent
+    MeetingsComponent,
+    MeetingsTableComponent
    ],
   imports: [
     BrowserModule,
@@ -72,8 +87,20 @@ export function getToken()
     AppRoutingModule,
     MatSelectModule,
     ClipboardModule,
+    MatPaginatorModule,
+    MatTabsModule,
+    MatDatepickerModule,
     NgbModule,
+    MatTableModule,
+    MatDividerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatRadioModule,
+    MatInputModule,
     LayoutModule,
+    MatListModule,
     HttpClientModule,
     TimepickerModule.forRoot(),
     CommonModule,
@@ -91,7 +118,7 @@ export function getToken()
         disallowedRoutes: ['localhost:5001/api/auth']
       }})
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,MatNativeDateModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -47,7 +47,7 @@ export class RequestsComponent implements OnInit {
                 (endDate.getMonth() - startDate.getMonth()) * 30 + 
                 (endDate.getDate() - startDate.getDate()) + 1;
     
-    if (diff > this.authService.currentUser.daysOffLeft && this.formModel.requestType == 1)
+    if (diff > this.authService.getCurrentUser().daysOffLeft && this.formModel.requestType == 1)
     {
       this.alertify.error("You are asking for more days than you have available!");
       return;
@@ -60,7 +60,7 @@ export class RequestsComponent implements OnInit {
     }
 
     const requestDto: Request = {
-      employeeId: this.authService.currentUser.id,
+      employeeId: this.authService.getUserId(),
       date: new Date(this.formModel.startDay),
       endDate: new Date(this.formModel.endDay),
       requestType:this.formModel.requestType,
