@@ -13,8 +13,10 @@ namespace API.Controllers
     public class TaskController : BaseApiController
     {
         private readonly ITasksRepository _tasksRepository;
-        public TaskController(ITasksRepository tasksRepository)
+        private readonly IAuthRepository _authRepository;
+        public TaskController(ITasksRepository tasksRepository, IAuthRepository authRepository)
         {
+            _authRepository = authRepository;
             _tasksRepository = tasksRepository;
         }
 
@@ -29,29 +31,33 @@ namespace API.Controllers
         {
             return Ok(await _tasksRepository.AddSubTask(subTask));
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
             if (await _tasksRepository.DeleteTask(id))
                 return Ok();
-            
+
             return BadRequest("Unable to delete the task!");
         }
-        
+
         [HttpPut("{taskid}")]
         public async Task<IActionResult> CompleteSubTask(int taskid)
         {
             if (await _tasksRepository.CompleteSubTask(taskid))
                 return Ok();
-                
+
             return BadRequest("Unable to update the task!");
         }
-        
+
         [HttpPost("search")]
         public async Task<IActionResult> GetTasks(TaskSearchDto taskSearchDto)
         {
-            return Ok(await _tasksRepository.GetTasks(taskSearchDto));
+            int uid = RetrieveUserId();
+            if (await _authRepository.IsAdmin(uid) || (taskSearchDto.employeeId != null && taskSearchDto.employeeId == uid))
+                return Ok(await _tasksRepository.GetTasks(taskSearchDto));
+
+            return Unauthorized("You need admin rights to do that!");
         }
     }
 }

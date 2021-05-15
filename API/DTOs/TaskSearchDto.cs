@@ -7,5 +7,7 @@ namespace API.DTOs
         public int? employeeId { get; set; }
         public int? taskId { get; set; }
         public TaskStatus? status { get; set; }
+
+        public bool? isOverdue { get; set; }
     }
 }

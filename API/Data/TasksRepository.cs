@@ -31,12 +31,14 @@ namespace API.Data
             return null;
         }
 
-        public async Task<bool> AddSubTask(SubTaskCreationDto subTask)
+        public async Task<SubTask> AddSubTask(SubTaskCreationDto subTask)
         {
-            var task = await _context.SubTasks.AddAsync(_mapper.Map<SubTask>(subTask));
+            var subtask = await _context.SubTasks.AddAsync(_mapper.Map<SubTask>(subTask));
+            var task = await _context.Tasks.Where(t => t.Id == subTask.TasksId).FirstOrDefaultAsync();
+            task.Status = TaskStatus.InProgress;
             if (await _context.SaveChangesAsync() > 0)
-                return true;
-            return false;
+                return subtask.Entity;
+            return null;
         }
 
         public async Task<bool> DeleteTask(int taskId)
@@ -49,12 +51,16 @@ namespace API.Data
         public async Task<IEnumerable<TaskReturnDto>> GetTasks(TaskSearchDto taskDto)
         {
            return await _context.Tasks
-           .Include(t => t.SubTasks)
-           .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
-           .Where(t => taskDto.taskId == null? true: t.Id == taskDto.taskId)
-           .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
-           .ProjectTo<TaskReturnDto>(_mapper.ConfigurationProvider)
-           .ToListAsync();
+            .Include(t => t.SubTasks)
+            .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
+            .Where(t => taskDto.taskId == null? true: t.Id == taskDto.taskId)
+            .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
+            .Where(t => taskDto.isOverdue == null? true:
+                        taskDto.isOverdue == false? t.StartTime.AddDays(t.Duration) >= DateTime.Now:
+                        t.StartTime.AddDays(t.Duration) < DateTime.Now
+                    )
+            .ProjectTo<TaskReturnDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
         }
 
         public async Task<bool> CompleteSubTask(int taskId)
@@ -72,7 +78,7 @@ namespace API.Data
                 }
             }
             tsk.Status = status;
-            return (await _context.SaveChangesAsync() > 0);
+            return (await _context.SaveChangesAsync()) > 0;
         }
     }
 }

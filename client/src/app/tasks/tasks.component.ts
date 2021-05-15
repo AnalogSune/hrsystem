@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubTaskCreationDto, Task, TaskCreationDTO } from '../_models/tasks';
+import { SubTask, SubTaskCreationDto, Task, TaskCreationDTO, TaskSearchDto } from '../_models/tasks';
 import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 import { TaskService } from '../_services/task.service';
@@ -14,31 +14,101 @@ export class TasksComponent implements OnInit {
   taskCreation: TaskCreationDTO = {};
   subTaskCreation: SubTaskCreationDto = {};
   tasks: Task[] = undefined;
-  constructor(private userService: AuthService, private taskService: TaskService,private alertifyService: AlertifyService) { }
+  searchListName: string = "All tasks";
+  searchDto: TaskSearchDto = {};
+
+  constructor(private authService: AuthService, private taskService: TaskService,private alertifyService: AlertifyService) { }
 
   ngOnInit() {
+    this.getTasks();
   }
 
-  getTasks() {
-    this.taskService.getTasks().subscribe(t => {
+  getTasks(isOverdue: boolean = null) {
+    if (isOverdue == null) this.searchListName = "All Tasks";
+    else if (isOverdue == true) this.searchListName = "Overdue";
+    else this.searchListName = "Ongoing";
+    this.searchDto.isOverdue = isOverdue;
+    if (!this.isAdmin())
+    {
+      this.searchDto.employeeId = this.authService.currentUser.id;
+    }
+
+    this.taskService.getTasks(this.searchDto).subscribe(t => {
       this.tasks = t;
+      console.log(t);
     }, error => {
       this.alertifyService.error('Unable to retrieve tasks!', error);
     })
   }
 
+  isTaskCompleted(task: Task) : boolean {
+    let isComplete = true; 
+    for (let st of task.subTasks)
+    {
+      if (st.status === 0)
+      {
+        isComplete = false;
+        break;
+      }
+    }
+
+    return isComplete;
+  }
+
+  taskComletedClass(task: Task): string {
+    if(this.isTaskCompleted(task) == true) return "fa fa-check-circle";
+    else return "fa fa-circle";
+  }
+
+  isOverdue(date: string): string {
+    let now = new Date();
+    if ((new Date(date)) < now) return "Overdue"
+     else return ""
+  }
+
   isAdmin() {
-    return this.userService.isAdmin();
+    return this.authService.isAdmin();
   }
 
   userSelected(event) {
     this.taskCreation.employeeId = event;
   }
 
+  completeSubTask(subtask: SubTask, elm, task) {
+    if (subtask.status != 0) return;
+    elm.disabled = true;
+    this.taskService.completeSubTask(subtask.id).subscribe(r => {
+      this.alertifyService.success('Subtask updated!');
+    }, error => {
+      this.alertifyService.error('Error updated task!', error);
+    });
+  }
+
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(task.id).subscribe(r => {
+      this.alertifyService.success("Deleted task!");
+      this.tasks.splice(this.tasks.indexOf(task), 1);
+    }, error => {
+      this.alertifyService.error("Couldn't delete task!", error);
+    });
+  }
+
+  addSubtask(text: string, task: Task) {
+    let st: SubTaskCreationDto = {description: text, tasksId: task.id};
+
+    this.taskService.addSubTask(st).subscribe(subtask => {
+      this.alertifyService.success("Subtask Created!");
+      task.subTasks.push(subtask);
+    }, error => {
+      this.alertifyService.error("Unable to create subtask!", error);
+    })
+  }
+
   submit() {
     if (!this.taskCreation.employeeId) {this.alertifyService.error('Select an employee!'); return;}
     this.taskService.createTask(this.taskCreation).subscribe(t => {
       this.alertifyService.success('Task Created!');
+      this.tasks.push(t);
     }, error => {
       this.alertifyService.error('Unable to create task', error);
     })

@@ -36,6 +36,8 @@ import { RecruitmentComponent } from './_admin/recruitment/recruitment.component
 import { TasksComponent } from './tasks/tasks.component';
 import { MeetingsComponent } from './meetings/meetings.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSelectModule} from '@angular/material/select';
+
 export function getToken()
 {
   return localStorage.getItem('token');
@@ -68,6 +70,7 @@ export function getToken()
     BrowserModule,
     MatTooltipModule,
     AppRoutingModule,
+    MatSelectModule,
     ClipboardModule,
     NgbModule,
     LayoutModule,

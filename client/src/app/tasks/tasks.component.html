@@ -1,3 +1,52 @@
+<div class="dropdown" dropdown>
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
+    {{searchListName}}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" *dropdownMenu>
+    <button type="button" (click)="getTasks(null)" class="dropdown-item" >All Tasks</button>
+    <button type="button" class="dropdown-item" (click)="getTasks(true)" >
+      Overdue
+    </button>
+    <button type="button" class="dropdown-item" (click)="getTasks(false)" >
+      Ongoing
+    </button>
+  </div>
+</div>
+
+<mat-form-field appearance="fill">
+  <mat-label>Favorite food</mat-label>
+  <mat-select>
+    <!-- <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option> -->
+    <mat-option>1</mat-option>
+    <mat-option>2</mat-option>
+    <mat-option>3</mat-option>
+    <mat-option>4</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1" [value]="null" [(ngModel)]="searchDto.status" (ngModelChange)="getTasks()">
+  <label class="form-check-label" for="flexRadioDefault1">
+    All
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" checked [value]="0" [(ngModel)]="searchDto.status" (ngModelChange)="getTasks()">
+  <label class="form-check-label" for="flexRadioDefault2">
+    Active
+  </label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" checked [value]="1" [(ngModel)]="searchDto.status" (ngModelChange)="getTasks()">
+  <label class="form-check-label" for="flexRadioDefault2">
+    Completed
+  </label>
+</div>
+
 <form *ngIf="isAdmin()" #requestForm="ngForm" (ngSubmit)="submit()">
   <input class="form-control" type="text" name="title" required [(ngModel)]="taskCreation.title">
   <input class="form-control" type="text" name="description" required [(ngModel)]="taskCreation.description">
@@ -7,14 +56,25 @@
   <button [disabled]="!requestForm.valid" type="submit" >Submit Request</button>
 </form>
 <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-  <ngb-panel title="Simple">
+  <ngb-panel *ngFor="let task of tasks">
+   <ng-template ngbPanelTitle>Task: {{task.title}} {{'&emsp;'}} Employee: {{task.employee.fName}} {{task.employee.lName}}
+    {{'&emsp;'}} Started: {{task.startTime | date: 'dd-MM-yyyy'}}{{'&emsp;'}} Deadline: {{task.endTime | date: 'dd-MM-yyyy'}} 
+    {{'&emsp;'}} {{isOverdue(task.endTime)}} {{'&emsp;'}}
+    <i  #checkBox [ngClass]="taskComletedClass(task)"></i>{{'&emsp;'}}
+    <button class="fa fa-close" (click)="deleteTask(task)"></button></ng-template>
     <ng-template ngbPanelContent>
-      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
-      aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-      sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-      craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-      occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-      labore sustainable VHS.
-    </ng-template>
+      {{task.description}}
+      <div *ngIf="isAdmin()">
+        <hr>
+        <textarea #textArea cols="45" rows="1"></textarea>
+        <button (click)="addSubtask(textArea.value, task)"><i class="fa fa-plus"></i> Add Subtask</button>
+      </div>
+      <hr>
+      <ul class="list-group">
+      <li class="list-group-item" *ngFor="let subtask of task.subTasks">
+        {{subtask.description}} <input #refEl [disabled]="subtask.status" type="checkbox" [(ngModel)]="subtask.status" (click)="completeSubTask(subtask, refEl, task)">
+      </li>
+    </ul>
+    </ng-template> 
   </ngb-panel>
 </ngb-accordion>

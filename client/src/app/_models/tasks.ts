@@ -9,6 +9,7 @@ export interface TaskCreationDTO {
 }
 
 export interface Task {
+    id?: number;
     title? : string;
     description? : string;
     startTime? : Date;
@@ -19,13 +20,20 @@ export interface Task {
 }
 
 export interface SubTaskCreationDto {
-    taskId?: number;
+    tasksId?: number;
     description?: string;
 }
 
 export interface SubTask {
     id?: number;
-    taskId?: number;
+    tasksId?: number;
     description?: string;
-    taskStatus?: number;
+    status?: number;
+}
+
+export interface TaskSearchDto {
+    employeeId?: number;
+    taskId?: number;
+    status?: number;
+    isOverdue?: boolean;
 }
