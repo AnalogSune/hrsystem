@@ -29,6 +29,7 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<ICVRepository, CVRepository>();
+            services.AddScoped<IlogService, logService>();
 
             services.AddDbContext<DataContext>(options =>
             {

@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace API.Data
 {
@@ -80,5 +82,11 @@ namespace API.Data
 
         public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.Email == username.ToLower());
         public async Task<bool> IsAdmin(int id) => (await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync()).IsAdmin == true;
+
+        public async Task<string> GetEmailById(int id) 
+        {
+            string userEmail = await _context.Users.Where(x => x.Id == id).Select(x => x.Email).SingleOrDefaultAsync();
+            return userEmail;
+        } 
     }
 }

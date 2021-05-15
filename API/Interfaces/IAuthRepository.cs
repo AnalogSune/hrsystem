@@ -12,5 +12,7 @@ namespace API.Interfaces
         Task<bool> UserExists(string username);
         Task<bool> IsAdmin(int id);
         Task<bool> ChangePassword(int id, string newPassword);
+
+        Task<string> GetEmailById(int id);
     }
 }

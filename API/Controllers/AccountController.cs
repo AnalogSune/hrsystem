@@ -23,9 +23,11 @@ namespace API.Controllers
     {
         private IAuthRepository _authRepository;
         private IMapper _mapper;
+        private readonly IlogService _logService;
 
-        public AccountController(IAuthRepository authRepository, IMapper mapper)
+        public AccountController(IAuthRepository authRepository, IMapper mapper, IlogService logService)
         {
+            _logService = logService;
             _authRepository = authRepository;
             _mapper = mapper;
         }
@@ -34,7 +36,11 @@ namespace API.Controllers
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if (await _authRepository.UserExists(registerDto.Email)) return BadRequest("Username is taken");
-            
+
+            int uid = RetrieveUserId();
+            string adminEmail = await  _authRepository.GetEmailById(uid);
+            await _logService.RegisterLogFile(registerDto, adminEmail);
+
             return Ok(await _authRepository.Register(registerDto));
         }
 
@@ -42,18 +48,20 @@ namespace API.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!await _authRepository.UserExists(loginDto.Email)) return Unauthorized("Wrong Username");
-            
-            UserDto user =  await _authRepository.Login(loginDto.Email, loginDto.Password);
+
+            UserDto user = await _authRepository.Login(loginDto.Email, loginDto.Password);
+            await _logService.LoginLogFile(loginDto);
 
             if (user == null) return BadRequest("Wrong Password");
-            
+
             return Ok(user);
         }
 
         [Authorize]
         [HttpPost("password/{id}/{password}")]
-        public async Task<IActionResult> ChangePassword(int id, string password) {
-            
+        public async Task<IActionResult> ChangePassword(int id, string password)
+        {
+
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
@@ -62,6 +70,6 @@ namespace API.Controllers
 
             return Unauthorized("You need administrative rights to do this!");
         }
-        
+
     }
 }

@@ -15,8 +15,10 @@ namespace API.Controllers
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IAuthRepository _authRepository;
-        public AdminController(IAdminRepository adminRepository, IAuthRepository authRepository)
+        private readonly IlogService _logService;
+        public AdminController(IAdminRepository adminRepository, IAuthRepository authRepository, IlogService logService)
         {
+            _logService = logService;
             _authRepository = authRepository;
             _adminRepository = adminRepository;
         }
@@ -29,6 +31,9 @@ namespace API.Controllers
             {
                 if (await _adminRepository.DepartmentExists(department))
                     return BadRequest("Department already exists!");
+
+                string adminEmail = await _authRepository.GetEmailById(uid);
+                await _logService.DepartmentsLogFile(department, adminEmail, Services.DepartmentActionType.Delete);
                 
                 return Ok(await _adminRepository.CreateDepartment(department));
             }
@@ -47,7 +52,7 @@ namespace API.Controllers
                     return Ok(dep);
                 return BadRequest("Unable to add role, check if role already exists in department!");
             }
-            
+
             return Unauthorized("You need administrative rights!");
         }
 
@@ -57,9 +62,10 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
+                
                 return Ok(await _adminRepository.DeleteRole(id));
             }
-            
+
             return Unauthorized("You need administrative rights!");
         }
 
@@ -75,9 +81,13 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
+                string adminEmail = await _authRepository.GetEmailById(uid);
+                var department = await _adminRepository.getDepartmentNameById(id);
+                await _logService.DepartmentsLogFile(department, adminEmail, Services.DepartmentActionType.Delete);
+
                 return Ok(await _adminRepository.DeleteDepartment(id));
             }
-            
+
             return Unauthorized("You need administrative rights!");
         }
 
@@ -87,9 +97,13 @@ namespace API.Controllers
             int uid = RetrieveUserId();
             if (await _authRepository.IsAdmin(uid))
             {
+                string userEmail = await _authRepository.GetEmailById(id);
+                string adminEmail = await _authRepository.GetEmailById(uid);
+                await _logService.UserDeletedLogFile(userEmail, adminEmail);
+
                 return Ok(await _adminRepository.DeleteUser(id));
             }
-            
+
             return Unauthorized("You need administrative rights!");
         }
 
@@ -125,7 +139,7 @@ namespace API.Controllers
             var newShift = await _adminRepository.CreateShift(shiftCreationDto);
             if (newShift != null)
                 return Ok(newShift);
-            
+
             return BadRequest("Couldn't create the work shift!");
         }
 

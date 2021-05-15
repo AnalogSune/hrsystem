@@ -13,5 +13,7 @@ namespace API.Interfaces
         Task<ICollection<RequestsDto>> GetRequests(int id, RequestType? type, RequestStatus? status);
         Task<ICollection<RequestsDto>> GetRequests(RequestSearchDto searchDto);
         Task<RequestsDto> GetRequest(int requestId);
+
+        Task<string> getUserByRequestId (int id);
     }
 }

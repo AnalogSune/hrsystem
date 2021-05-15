@@ -163,5 +163,13 @@ namespace API.Data
         {
             throw new System.NotImplementedException();
         }
+
+        public async Task<DepartmentDto> getDepartmentNameById(int id)
+        {
+            return await _context.Departments
+                .Where(x => x.Id == id)
+                .ProjectTo<DepartmentDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+        }
     }
 }

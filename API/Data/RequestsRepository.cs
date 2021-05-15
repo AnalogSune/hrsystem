@@ -70,5 +70,10 @@ namespace API.Data
                 .Select(u => _mapper.Map<RequestsDto>(u))
                 .ToListAsync();
         }
+
+        public async Task<string> getUserByRequestId (int id)
+        {
+            return await _context.Requests.Where(x => x.Id == id).Select(x => x.Employee.Email).SingleOrDefaultAsync();
+        }
     }
 }

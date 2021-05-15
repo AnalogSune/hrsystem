@@ -17,10 +17,12 @@ namespace API.Controllers
         private readonly IRequestsRepository _requestsRepository;
         private readonly ICalendarRepository _calendarRepository;
         private readonly IMapper _mapper;
+        private readonly IlogService _logService;
 
         public RequestsController(IAuthRepository authRepository, IRequestsRepository requestsRepository,
-            ICalendarRepository calendarRepository, IMapper mapper)
+            ICalendarRepository calendarRepository, IMapper mapper, IlogService logService)
         {
+            _logService = logService;
             _mapper = mapper;
             _requestsRepository = requestsRepository;
             _authRepository = authRepository;
@@ -34,10 +36,14 @@ namespace API.Controllers
             if (requestsDto.EmployeeId == uid || await _authRepository.IsAdmin(uid))
             {
                 if (await _requestsRepository.CreateRequest(requestsDto))
+                {
+                    string userEmail = await _authRepository.GetEmailById(uid);
+                    await _logService.RequestMadeLogFile(userEmail, requestsDto);
                     return Ok();
+                }
                 return BadRequest("Unable to create the request!");
             }
-            
+
             return Unauthorized("You don't have the rights to do this!");
         }
 
@@ -51,9 +57,15 @@ namespace API.Controllers
             if (!await _requestsRepository.UpdateRequestStatus(id, status))
                 return BadRequest("Unable to update the request");
 
+            string adminEmail = await _authRepository.GetEmailById(uid);
+            string userEmail = await _requestsRepository.getUserByRequestId(id);
+            var request = await _requestsRepository.GetRequest(id);
+            await _logService.AcceptRequestLogFile(userEmail, request, adminEmail);
+
             if (status == RequestStatus.Accepted)
             {
                 var newRequest = (await _requestsRepository.GetRequest(id));
+
                 if (await _calendarRepository.AddEntry(_mapper.Map<CalendarEntryDto>(newRequest)))
                     return Ok();
             }
