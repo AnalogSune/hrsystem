@@ -25,7 +25,19 @@ export class ProfileViewerComponent implements OnInit {
 
   public get roles(): Role[] {
     return this.departments.get(this.userDepartmentId)?.departmentRoles;
-  }  
+  }
+
+  public get roleid(): number {
+    let dep = this.departments.get(this.userDepartmentId);
+    if (dep.departmentRoles.find(r => {r.id == this.userRoleId}))
+      return this.userRoleId;
+    else 
+      return dep.departmentRoles[0]?.id;
+  }
+
+  public set roleid(id: number) {
+    this.userRoleId = id;
+  }
 
   ngOnInit() {
     this.fetchUser();
@@ -105,7 +117,13 @@ export class ProfileViewerComponent implements OnInit {
 
   updateRole() {
     this.adminService.changeUserRole(this.user.id, this.userRoleId).subscribe(next => {
-      this.fetchUser();
+      this.userService.updateUser(this.user).subscribe(x => {
+        this.user = x;
+        this.alertify.success("User Updated!");
+        this.fetchUser();
+      }, error => {
+        this.alertify.error("Could not Update user!");
+      })
     }, error => {
       this.alertify.error('Unable to change role!', error);
     })
@@ -120,5 +138,9 @@ export class ProfileViewerComponent implements OnInit {
     }, error => {
       this.alertify.error('Unable to retrieve the departments!', error);
     })
+  }
+
+  saveChanges() {
+    this.updateDepartment();
   }
 }

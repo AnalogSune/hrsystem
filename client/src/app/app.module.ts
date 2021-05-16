@@ -50,6 +50,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MeetingsTableComponent } from './meetings-table/meetings-table.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import {MatRippleModule} from '@angular/material/core';
 
 
 export function getToken()
@@ -91,6 +92,7 @@ export function getToken()
     MatTabsModule,
     MatDatepickerModule,
     NgbModule,
+    MatRippleModule,
     MatTableModule,
     MatDividerModule,
     MatNativeDateModule,

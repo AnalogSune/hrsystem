@@ -1,4 +1,4 @@
-<ng-template class="container" [ngIf]="user!= undefined" [ngIfElse]="loading">
+<!-- <ng-template class="container" [ngIf]="user!= undefined" [ngIfElse]="loading"> -->
 
     
 <form (ngSubmit)="changePassword(user.id)" #form="ngForm">
@@ -13,6 +13,73 @@
 <input #fileUpload type="file" class="file-upload" style="display: none;" (change)="uploadPhoto($event)">
 <button *ngIf="isUser()" (click)="fileUpload.click()">Change Profile Picture</button>
 
+<div class="container">
+    <form #userForm="ngForm" (ngSubmit)="saveChanges()">
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Email</mat-label>
+        <input matInput name="email" [(ngModel)]="user.email" email required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Department</mat-label>
+        <mat-select name="department" [(ngModel)]="userDepartmentId" required>
+        <mat-option *ngFor="let dep of departments | keyvalue" [value]="dep.value.id" >{{dep.value.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Role</mat-label>
+        <mat-select name="role" [(ngModel)]="roleid" required>
+        <mat-option *ngFor="let role of roles" [value]="role.id" >{{role.roleName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>First Name</mat-label>
+        <input [disabled]="!isAdmin()" #fname maxlength="20" matInput name="fName" [(ngModel)]="user.fName" required>
+        <mat-hint align="end">{{fname.value?.length || 0}}/20</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Last Name</mat-label>
+        <input #lname maxlength="30" matInput name="lName" [(ngModel)]="user.lName" required>
+        <mat-hint align="end">{{lname.value?.length || 0}}/30</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Date of Birth</mat-label>
+        <input name="dateOfBirth" matInput [matDatepicker]="picker" [(ngModel)]="user.dateOfBirth" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Phone Number</mat-label>
+        <input #pnumber maxlength="10" matInput name="phoneNumber" [(ngModel)]="user.phoneNumber" required>
+        <mat-hint align="end">{{pnumber.value?.length || 0}}/10</mat-hint>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Address</mat-label>
+        <input matInput name="address" [(ngModel)]="user.address" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Country</mat-label>
+        <input matInput name="country" [(ngModel)]="user.country" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Nationality</mat-label>
+        <input matInput name="nationality" [(ngModel)]="user.nationality" required>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" color="primary" class="col" [disabled]="!userForm.valid">Update User</button>
+    </form>
+</div>
+
+
+<!-- 
 <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
   <thead >
 
@@ -104,4 +171,4 @@
 
 </ng-template>
 
-<ng-template #loading>Loading..</ng-template>
+<ng-template #loading>Loading..</ng-template> -->

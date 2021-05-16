@@ -24,25 +24,3 @@
     overflow-x: hidden;
     background: transparent;
 }
-
-/*Customize scrollbars*/
-/* Works on Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(83, 83, 83) rgb(255, 255, 255);
-  }
-  
-  /* Works on Chrome, Edge, and Safari */
-  *::-webkit-scrollbar {
-    width: 13px;
-  }
-  
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  *::-webkit-scrollbar-thumb {
-    background-color: rgb(107, 103, 124);
-    border-radius: 12px;
-    border: 2px solid rgb(129, 115, 89);
-  }

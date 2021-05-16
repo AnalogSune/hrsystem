@@ -27,9 +27,9 @@ namespace API.Controllers
         {
             if (!User.IsAdmin())
                 return Unauthorized("You need administrative rights!");
-
-            if (await _meetingRepository.AddMeeting(meeting))
-                return Ok();
+            var meet = await _meetingRepository.AddMeeting(meeting);
+            if (meet != null)
+                return Ok(meet);
             return BadRequest("Unable to create the request!");
         }
 

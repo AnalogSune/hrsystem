@@ -1,0 +1,42 @@
+.info_buttons{
+    margin-top: 10px;
+    margin-left: 1px;
+}
+
+.mat-raised-button{
+    margin: 10px;
+    max-height: 50px;
+}
+
+#calendar-table{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.round-left {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.round-right {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+#calendar-table > .table-cont{
+    display:block;
+    max-height: 65vh;
+    overflow:scroll;
+    overflow-x:hidden;
+}
+
+.mat-form-field{
+    margin: 10px;
+}
+
+#add-calendar{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+

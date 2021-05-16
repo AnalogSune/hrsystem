@@ -21,11 +21,13 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<bool> AddMeeting(MeetingDto meeting)
+        public async Task<Meeting> AddMeeting(MeetingDto meeting)
         {
-            await _context.Meetings.AddAsync(_mapper.Map<Meeting>(meeting));
+            var newMeeting = await _context.Meetings.AddAsync(_mapper.Map<Meeting>(meeting));
 
-            return await _context.SaveChangesAsync() > 0;
+            if (await _context.SaveChangesAsync() > 0)
+                return newMeeting.Entity;
+            return null;
         }
 
         public async Task<bool> DeleteMeeting(int meetingID)

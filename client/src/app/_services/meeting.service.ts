@@ -13,7 +13,7 @@ export class MeetingService {
   }
 
   createMeeting(meeting: Meeting) {
-    return this.http.post(this.baseUrl + 'meeting', meeting);
+    return this.http.post<Meeting>(this.baseUrl + 'meeting', meeting);
   }
 
   getMeetings(meetingSearch: MeetingSearchDto) {

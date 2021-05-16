@@ -8,7 +8,7 @@ namespace API.Interfaces
 {
     public interface IMeetingRepository
     {
-        Task<bool> AddMeeting(MeetingDto meeting);
+        Task<Meeting> AddMeeting(MeetingDto meeting);
 
         Task<IEnumerable<Meeting>> GetMeetings(MeetingSearchDto meetingSearch);
 

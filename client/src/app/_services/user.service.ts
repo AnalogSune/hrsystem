@@ -22,6 +22,10 @@ export class UserService {
     return this.http.get<AppUser[]>(this.baseUrl + 'users');
   }
 
+  updateUser(user: AppUser) {
+    return this.http.put<AppUser>(this.baseUrl + 'users', user);
+  }
+
   getUsersByDepartment(id: number) {
     return this.http.get<AppUser[]>(this.baseUrl + 'users/department/' + id);
   }

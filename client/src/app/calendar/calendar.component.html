@@ -1,61 +1,72 @@
-<div *ngIf="isAdmin()">
-<select [(ngModel)]="workShiftId">
-  <option [ngValue]="null">None</option>
-  <option *ngFor="let shift of workShifts | keyvalue" [ngValue]="shift.key">{{shift.value.name}}
-    ({{shift.value.startTime | date: 'HH:mm'}} - {{shift.value.endTime | date: 'HH:mm'}})</option>
-</select>
-<select [(ngModel)]="scheduleType">
-  <option [ngValue]=0>Work</option>
-  <option [ngValue]=1>Day Off</option>
-  <option [ngValue]=2>Work From Home</option>
-  <option [ngValue]=3>Sick Day</option>
-</select>
-<button [disabled]="isEntryValid()" (click)="addCalendarEntry()">Assign</button>
-<button (click)="addCalendarEntry(false)">Clear</button>
+<div *ngIf="isAdmin()" id="add-calendar">
+<mat-form-field appearance="fill">
+  <mat-label>Work Shifts</mat-label>
+  <mat-select  [(ngModel)]="workShiftId" name="">
+    <mat-option [value]="null">None</mat-option>
+    <mat-option *ngFor="let shift of workShifts | keyvalue" [value]="shift.key">{{shift.value.name}}
+      ({{shift.value.startTime | date: 'HH:mm'}} - {{shift.value.endTime | date: 'HH:mm'}})</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Type</mat-label>
+<mat-select [(ngModel)]="scheduleType" name="">
+  <mat-option [value]=0>Work</mat-option>
+  <mat-option [value]=1>Day Off</mat-option>
+  <mat-option [value]=2>Work From Home</mat-option>
+  <mat-option [value]=3>Sick Day</mat-option>
+</mat-select>
+</mat-form-field>
+
+<button mat-raised-button color="primary" [disabled]="isEntryValid()" (click)="addCalendarEntry()">Assign</button>
+<button mat-raised-button color="warn" (click)="addCalendarEntry(false)">Clear</button>
 </div>
 
-<div class="d-flex flex-row justify-content-center p-2" style="background-color: gray;">    
-<div class="dropdown mr-5" dropdown *ngIf="this.showViews">
-    <span class="mr-1">
-    </span>
-    <a class="btn dropdown-toggle" style="font-size: 140%;" dropdownToggle>
-      {{this.view == 'week'? "Week":"Month"}}
-    </a>
-    <div class="dropdown-menu mt-3" *dropdownMenu>
-      <a class="dropdown-item" (click)="changeView('week')" style="color: black;">Week</a>
-      <div class="dropdown-divider" ></div>
-      <a class="dropdown-item" (click)="changeView('month')" style="color: black;">Month</a>
+<div id="calendar-table" >
+  <div class="container-fluid bg-primary rounded" style="height: 80px;">    
+  <div class="row">
+    <div class="col" *ngIf="this.showViews">
+      <mat-form-field appearance="fill">
+        <mat-label>View</mat-label>
+      <mat-select [(ngModel)]="_view" name="" >
+        <mat-option [value]='"week"'>Week</mat-option>
+        <mat-option [value]='"month"'>Month</mat-option>
+      </mat-select>
+      </mat-form-field>
     </div>
+
+    <button class="col-sm" mat-raised-button (click)="prevMonth()">Previous</button>
+    <div class="col-8 text-center m-auto font-weight" style="font-size: 160%;">{{this.dateRangeStr}}</div>
+    <button class="col-sm" mat-raised-button (click)='nextMonth()'>Next</button>
   </div>
-
-<button class="btn btn-primary mr-auto" (click)="prevMonth()">Previous</button>
-<div class="m-auto font-weight-bold" style="font-size: 180%;">{{this.dateRangeStr}}</div>
-<button  class="btn btn-primary ml-auto " (click)='nextMonth()'>Next</button>
-</div>
-
-<table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
-    <ng-template [ngIf]="this.scheduleEntries != undefined" [ngIfElse]="loading">
-    <thead >
-        <tr >
-            <th>Employee</th>
-            <th style="background-color: white;" scope="col" *ngFor="let date of dates">{{date | date : 'EEEEEE'}}</th>
-        </tr>
-        
+  </div>
+  <div class="table-cont">
+  <table class="table table-striped table-borderless m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
+      <ng-template [ngIf]="this.scheduleEntries != undefined" [ngIfElse]="loading">
+      <thead>
+          <tr class="thead-light "  style="position: sticky; top: 0; z-index: 1;">
+              <th class="sticky-top" style="width: 200px">Employee</th>
+              <th class="sticky-top" scope="col" *ngFor="let date of dates">{{date | date : 'EEEEEE'}}</th>
+          </tr>
+      </thead>
+      <tbody>
         <tr *ngFor="let user of employees" >
-            <th>{{user.fName}} {{user.lName}}</th>
-            <th scope="col" *ngFor="let date of dates" container="body" [ngbTooltip]="getShiftStr(date, user.id)"
-                (click)="dateClicked(date, user.id)"
-                [ngStyle]="{'background-color': getColor(date, user.id)}" >
-                {{date | date : 'dd'}}
+            <th style="width: 200px;" class="text-nowrap">{{user.fName}} {{user.lName}}</th>
+            <th matRipple [matRippleUnbounded]="false" scope="col" *ngFor="let date of dates" container="body" style="padding-left: 0 !important;padding-right: 0 !important;" [ngbTooltip]="getShiftStr(date, user.id)"
+                (click)="dateClicked(date, user.id)" class="text-center ">
+                <div [ngClass]="getColor(date, user.id)" >
+                  {{date | date : 'dd'}}</div>          
             </th>
         </tr>
-    </thead>
-    </ng-template>
-    <ng-template #loading><h1>Loading...</h1></ng-template>
-</table>
-<div class="container row">
-  <div style="display: block; width: 20px; height: 20px;" [ngStyle]="{'background-color': calendarColors[0]}"></div>Work
-  <div style="display: block; width: 20px; height: 20px;" [ngStyle]="{'background-color': calendarColors[1]}"></div>Day Off
-  <div style="display: block; width: 20px; height: 20px;" [ngStyle]="{'background-color': calendarColors[2]}"></div>Work From Home
-  <div style="display: block; width: 20px; height: 20px;" [ngStyle]="{'background-color': calendarColors[3]}"></div>Sick Day
+      </tbody>
+      </ng-template>
+      <ng-template #loading><h1>Loading...</h1></ng-template>
+  </table>
+</div>
+  <div class="container row info_buttons" style="font-size: 1rem;">
+    <i class="fa fa-circle " [ngClass]="calendarColors[0]"></i> {{'&nbsp;'}} Work {{'&emsp;'}}
+    <i class="fa fa-circle " [ngClass]="calendarColors[1]"></i> {{'&nbsp;'}} Day Off {{'&emsp;'}}
+    <i class="fa fa-circle " [ngClass]="calendarColors[2]"></i> {{'&nbsp;'}} Work From Home {{'&emsp;'}}
+    <i class="fa fa-circle " [ngClass]="calendarColors[3]"></i> {{'&nbsp;'}} Sick Day   {{'&emsp;'}}
+  </div>
 </div>

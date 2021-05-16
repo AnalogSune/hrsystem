@@ -8,6 +8,7 @@ using AutoMapper.QueryableExtensions;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using CloudinaryDotNet.Actions;
+using System;
 
 namespace API.Data
 {
@@ -93,15 +94,22 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<bool> UpdateUser(int id, UserEditDto userEdit)
+        public async Task<MemberDto> UpdateUser(MemberDto userEdit)
         {
             var user = _context.Users
-                .Where(u => u.Id == id)
+                .Where(u => u.Id == userEdit.Id)
+                
                 .FirstOrDefault();
-
-            _mapper.Map(userEdit, user);
+            var u = _context.Entry(user);
+            user = _mapper.Map<AppUser>(userEdit);
+            // user.DepartmentId = userEdit.InDepartment?.Id;
+            // user.RoleId = userEdit.Role?.Id;
+            u.State = EntityState.Modified;
             
-            return await _context.SaveChangesAsync() > 0;
+            if (await _context.SaveChangesAsync() > 0)
+                return _mapper.Map<MemberDto>(user);
+
+            return null;
         }
 
         public async Task<bool> ChangeImage(int id, string url, string publicId)

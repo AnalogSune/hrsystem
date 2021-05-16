@@ -9,11 +9,12 @@ namespace API.Helper
         public AutoMapperProfiles()
         {
             CreateMap<AppUser, MemberDto>();
+            CreateMap<MemberDto, AppUser>();
+
             CreateMap<RegisterDto, AppUser>()
                 .ForMember(r => r.Email, opt => opt.MapFrom(src => src.Email.ToLower()));
             CreateMap<DepartmentDto, Department>();
             CreateMap<Department, DepartmentDto>();
-            CreateMap<UserEditDto, AppUser>();
             CreateMap<RequestsDto, Request>();
             CreateMap<Role, RoleDto>();
             CreateMap<WorkShift, WorkShiftCreationDto>();

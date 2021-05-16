@@ -30,5 +30,8 @@ namespace API.DTOs
         public Department InDepartment { get; set; }
 
         public Role Role { get; set; }
+
+        public int DepartmentId { get; set; }
+        public int RoleId { get; set; }
     }
 }

@@ -30,6 +30,17 @@ export class MeetingsTableComponent implements OnInit {
     this.update();
   }
 
+  addNewMeet(meeting: Meeting) {
+    this.dataSource.data.push(meeting);
+    this.sortMeetings();
+  }
+
+  sortMeetings() {
+    this.dataSource.data = this.dataSource.data.sort((a, b): number => {
+      return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+    })
+  }
+
   update() {
     let search: MeetingSearchDto = {meetingType: this.meetingType};
     if (!this.authService.isAdmin()) {
@@ -37,6 +48,7 @@ export class MeetingsTableComponent implements OnInit {
     }
     this.meetingService.getMeetings(search).subscribe(r => {
       this.dataSource = new MatTableDataSource<Meeting>(r);
+      this.sortMeetings();
     }, error => {
       this.alertifyService.error("unable to retrieve meetings", error);
     })

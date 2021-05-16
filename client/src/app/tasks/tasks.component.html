@@ -35,7 +35,7 @@
       </div>
       </mat-panel-title>
       <mat-panel-description>
-        Started: {{task.startTime | date: 'dd-MM-yyyy'}}{{'&emsp;'}} Deadline: {{task.endTime | date: 'dd-MM-yyyy'}} {{'&emsp;'}} {{isOverdue(task.endTime)}}
+        Started: {{task.startTime | date: 'dd-MM-yyyy'}}{{'&emsp;'}} Deadline: {{task.endTime | date: 'dd-MM-yyyy'}} {{'&emsp;'}} {{isOverdue(task)}}
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-divider></mat-divider>

@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Inject } from '@angular/core';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from '../_models/appuser';
 import { ScheduleType, ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
 import { Shift } from '../_models/shift';
@@ -14,18 +15,20 @@ class DateRange {
     startDate?: Date = null;
     endDate?: Date = null;
     employeeId: number;
-
+    firstSelection: boolean = true;
     selectDate(date: Date, employeeId: number): void {
-        if (this.startDate == null || this.endDate != null ||
+        if (this.firstSelection == true ||
             date.valueOf() < this.startDate.valueOf() ||
             this.employeeId != employeeId) {
 
             this.employeeId = employeeId;
             this.startDate = date;
-            this.endDate = null;
-        }
-        else if (this.endDate == null) {
             this.endDate = date;
+            this.firstSelection = false;
+        }
+        else if (this.firstSelection == false) {
+            this.endDate = date;
+            this.firstSelection = true;
         }
     }
 
@@ -35,6 +38,14 @@ class DateRange {
             date.valueOf() <= this.endDate.valueOf();
     }
 
+    isStart(date: Date) {
+        return date.getDate() == this.startDate?.getDate();
+    }
+
+    isEnd(date: Date) {
+        return date.getDate() == this.endDate?.getDate();
+    }
+
     isValid(): boolean {
         return this.startDate!=null && this.endDate!=null;
     }
@@ -42,6 +53,7 @@ class DateRange {
     clear() {
         this.startDate = null;
         this.endDate = null;
+        this.firstSelection = true;
     }
 }
 
@@ -57,11 +69,23 @@ export class CalendarComponent implements OnInit {
     datesSelected: DateRange = new DateRange();
     workShifts: Map<number, Shift> = new Map<number, Shift>();
     workShiftId: number;
+    workShiftName: string= "asdasd";
     scheduleType: ScheduleType = 0;
-
-    calendarColors: string[] = ['green', 'red', 'yellow', 'blue', "cyan"]
+    dataSource:  MatTableDataSource<Date>;
+    calendarColors: string[] = ['workColor', 'doColor', 'wfhColor', 'sdColor', 'selColor']
+    calendarColorsBg: string[] = ['workColor-bg', 'doColor-bg', 'wfhColor-bg', 'sdColor-bg', 'selColor-bg']
 
     @Input() view: 'week' | 'month' = 'month';
+
+    public get _view() {
+        return this.view
+    }
+
+    public set _view(value: 'week' | 'month') {
+        this.view = value;
+        this.updateDates();
+    }
+
     @Input() startDate: Date = new Date();
     @Input() showViews: boolean = true;
 
@@ -90,7 +114,7 @@ export class CalendarComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.dates = this.getDates();
+        // this.dates = this.getDates();
         this.startDate = new Date();
         this.userService.getUsers()
         .subscribe(next => {
@@ -128,6 +152,7 @@ export class CalendarComponent implements OnInit {
 
     private updateDates() {
         this.dates = this.getDates();
+        this.dataSource = new MatTableDataSource<Date>(this.getDates());
         this.userService.getSchedule(new ScheduleSearchDto(this.startDate, this.endDate))
         .subscribe(next => {
             this.scheduleEntries = next;
@@ -168,16 +193,17 @@ export class CalendarComponent implements OnInit {
         return dates;
     }
 
-    changeView(view: 'week' | 'month')
-    {
-        this.view = view;
-        this.updateDates();
-    }
-
     getColor(date: Date, id: number): string {
+        let classStr = "";
+        if (this.datesSelected.isStart(date))
+            classStr += "round-left "
+        if (this.datesSelected.isEnd(date))
+            classStr += "round-right "
         if (this.datesSelected.isInRange(date) && this.datesSelected.employeeId == id) 
-            return this.calendarColors[4];
-        return this.calendarColors[this.getScheduleType(date, id)];
+            classStr += this.calendarColorsBg[4];
+        else
+            classStr += this.calendarColorsBg[this.getScheduleType(date, id)];
+        return classStr;
     }
 
     getScheduleType(date: Date, id: number): ScheduleType {

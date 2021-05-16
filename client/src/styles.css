@@ -56,3 +56,66 @@ body {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.workColor{
+    color: rgb(71, 163, 117);
+} 
+
+.doColor {
+    color: rgb(179, 114, 95);
+} 
+
+.wfhColor{
+    color: rgb(224, 191, 118);
+}
+
+.sdColor{
+    color: rgb(120, 136, 167);
+}
+
+.selColor{
+    color: rgb(92, 199, 163);
+}
+
+.workColor-bg{
+    background-color: rgb(71, 163, 117);
+} 
+
+.doColor-bg {
+    background-color: rgb(179, 114, 95);
+} 
+
+.wfhColor-bg{
+    background-color: rgb(224, 191, 118);
+}
+
+.sdColor-bg{
+    background-color: rgb(149, 168, 97);
+}
+
+.selColor-bg{
+    background-color: rgb(92, 199, 163);
+}
+
+
+/*Customize scrollbars*/
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(83, 83, 83) rgb(255, 255, 255);
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 13px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: rgb(107, 103, 124);
+    border-radius: 12px;
+    border: 2px solid rgb(129, 115, 89);
+  }

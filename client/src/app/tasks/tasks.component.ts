@@ -54,9 +54,9 @@ export class TasksComponent implements OnInit {
     else return "fa fa-circle";
   }
 
-  isOverdue(date: string): string {
+  isOverdue(task: Task): string {
     let now = new Date();
-    if ((new Date(date)) < now) return "Overdue"
+    if ((new Date(task.endTime)) < now && !this.isTaskCompleted(task)) return "Overdue"
      else return ""
   }
 

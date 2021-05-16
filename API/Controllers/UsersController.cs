@@ -77,13 +77,18 @@ namespace API.Controllers
             return Ok(await _userRepository.GetUsersWithSingleParameters(searchParam));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserEditDto userEdit)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(MemberDto userEdit)
         {
 
-            if (id == User.GetId() || User.IsAdmin())
-                return Ok(await _userRepository.UpdateUser(id, userEdit));
+            if (userEdit.Id == User.GetId() || User.IsAdmin())
+            {
+                var updated = await _userRepository.UpdateUser(userEdit);
+                if (updated != null) 
+                    return Ok(updated);
 
+                return BadRequest("Unable to update user!");
+            }
             return Unauthorized();
         }
 

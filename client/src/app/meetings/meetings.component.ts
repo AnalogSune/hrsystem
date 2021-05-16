@@ -44,9 +44,11 @@ export class MeetingsComponent implements OnInit {
   }
 
   createMeeting() {
-    this.meetingService.createMeeting(this.meetingCreationModel).subscribe(r => {
-      this.meetingsTable.update();
-      this.trainingTable.update();
+    this.meetingService.createMeeting(this.meetingCreationModel).subscribe(r  => {
+      if (r.meetingType == 0)
+        this.trainingTable.addNewMeet(r);
+      else
+        this.meetingsTable.addNewMeet(r);
       this.alertifyService.success("Meeting Created");
     }, error => {
       this.alertifyService.error("Unable to create meeting!", error);
