@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,8 @@ namespace API.Controllers
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IAuthRepository _authRepository;
-        private readonly IlogService _logService;
-        public AdminController(IAdminRepository adminRepository, IAuthRepository authRepository, IlogService logService)
+        private readonly ILogService _logService;
+        public AdminController(IAdminRepository adminRepository, IAuthRepository authRepository, ILogService logService)
         {
             _logService = logService;
             _authRepository = authRepository;
@@ -26,14 +27,13 @@ namespace API.Controllers
         [HttpPost("department")]
         public async Task<IActionResult> AddDepartment(DepartmentDto department)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 if (await _adminRepository.DepartmentExists(department))
                     return BadRequest("Department already exists!");
 
-                string adminEmail = await _authRepository.GetEmailById(uid);
-                await _logService.DepartmentsLogFile(department, adminEmail, Services.DepartmentActionType.Delete);
+                string adminEmail = await _authRepository.GetEmailById(User.GetId());
+                await _logService.DepartmentsLogFile(department, adminEmail, Services.DepartmentActionType.Create);
                 
                 return Ok(await _adminRepository.CreateDepartment(department));
             }
@@ -44,8 +44,7 @@ namespace API.Controllers
         [HttpPost("role/{id}/{rolename}")]
         public async Task<IActionResult> AddRole(int id, string rolename)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 var dep = await _adminRepository.AddRole(id, rolename);
                 if (dep != null)
@@ -59,8 +58,7 @@ namespace API.Controllers
         [HttpDelete("role/{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 
                 return Ok(await _adminRepository.DeleteRole(id));
@@ -78,10 +76,9 @@ namespace API.Controllers
         [HttpDelete("department/{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
-                string adminEmail = await _authRepository.GetEmailById(uid);
+                string adminEmail = await _authRepository.GetEmailById(User.GetId());
                 var department = await _adminRepository.getDepartmentNameById(id);
                 await _logService.DepartmentsLogFile(department, adminEmail, Services.DepartmentActionType.Delete);
 
@@ -94,11 +91,10 @@ namespace API.Controllers
         [HttpDelete("users/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 string userEmail = await _authRepository.GetEmailById(id);
-                string adminEmail = await _authRepository.GetEmailById(uid);
+                string adminEmail = await _authRepository.GetEmailById(User.GetId());
                 await _logService.UserDeletedLogFile(userEmail, adminEmail);
 
                 return Ok(await _adminRepository.DeleteUser(id));
@@ -110,8 +106,7 @@ namespace API.Controllers
         [HttpPost("dashboard")]
         public async Task<IActionResult> AddPost(DashboardDto dashboardDto)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 return Ok(await _adminRepository.AddPost(dashboardDto));
             }

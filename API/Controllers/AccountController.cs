@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helper;
 using API.Interfaces;
 using AutoMapper;
@@ -23,11 +24,11 @@ namespace API.Controllers
     {
         private IAuthRepository _authRepository;
         private IMapper _mapper;
-        private readonly IlogService _logService;
+        private readonly ILogService _logService;
 
-        public AccountController(IAuthRepository authRepository, IMapper mapper, IlogService logService)
+        public AccountController(IAuthRepository authRepository, IMapper mapper, ILogService LogService)
         {
-            _logService = logService;
+            _logService = LogService;
             _authRepository = authRepository;
             _mapper = mapper;
         }
@@ -37,8 +38,7 @@ namespace API.Controllers
         {
             if (await _authRepository.UserExists(registerDto.Email)) return BadRequest("Username is taken");
 
-            int uid = RetrieveUserId();
-            string adminEmail = await  _authRepository.GetEmailById(uid);
+            string adminEmail = await _authRepository.GetEmailById(User.GetId());
             await _logService.RegisterLogFile(registerDto, adminEmail);
 
             return Ok(await _authRepository.Register(registerDto));
@@ -62,8 +62,7 @@ namespace API.Controllers
         public async Task<IActionResult> ChangePassword(int id, string password)
         {
 
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 return Ok(await _authRepository.ChangePassword(id, password));
             }

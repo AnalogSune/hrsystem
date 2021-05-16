@@ -85,7 +85,10 @@ namespace API.Data
 
         public async Task<string> GetEmailById(int id) 
         {
-            string userEmail = await _context.Users.Where(x => x.Id == id).Select(x => x.Email).SingleOrDefaultAsync();
+            string userEmail = await _context.Users
+                .Where(x => x.Id == id)
+                .Select(x => x.Email)
+                .SingleOrDefaultAsync();
             return userEmail;
         } 
     }

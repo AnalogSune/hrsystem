@@ -159,11 +159,6 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> AssignShift(int userId, int shiftId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<DepartmentDto> getDepartmentNameById(int id)
         {
             return await _context.Departments

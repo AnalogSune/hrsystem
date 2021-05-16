@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMeeting(MeetingDto meeting)
         {
-            int uid = RetrieveUserId();
-            if (!await _authRepository.IsAdmin(uid))
+            if (!User.IsAdmin())
                 return Unauthorized("You need administrative rights!");
 
             if (await _meetingRepository.AddMeeting(meeting))
@@ -42,8 +42,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMeeting(int id)
         {
-            int uid = RetrieveUserId();
-            if (!await _authRepository.IsAdmin(uid))
+            if (!User.IsAdmin())
                 return Unauthorized("You need administrative rights!");
 
             return Ok(await _meetingRepository.DeleteMeeting(id));

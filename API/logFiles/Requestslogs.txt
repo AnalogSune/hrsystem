@@ -10,3 +10,5 @@ Request by: dennis_ritchie@gmail.com. Request for WorkHome at -> 5/21/2021 12:00
 Request by: dennis_ritchie@gmail.com. Request for WorkHome at -> 5/21/2021 12:00:00 AM. Duration: 5 days. Accepted by: michael_jordan@gmail.gr -> 5/15/2021 11:03:55 PM
 Request made by: newuser@gmail.com. Request for SickDay at -> 5/8/2021 12:00:00 AM. Duration: 11 days. -> 5/15/2021 11:04:49 PM
 Request by: newuser@gmail.com. Request for SickDay at -> 5/8/2021 12:00:00 AM. Duration: 11 days. Declined by: michael_jordan@gmail.gr -> 5/15/2021 11:05:05 PM
+Request made by: newuser@gmail.com. Request for WorkHome at -> 5/19/2021 12:00:00 AM. Duration: 6 days. -> 5/15/2021 11:52:08 PM
+Request by: newuser@gmail.com. Request for WorkHome at -> 5/19/2021 12:00:00 AM. Duration: 6 days. Accepted by: michael_jordan@gmail.gr -> 5/15/2021 11:52:14 PM

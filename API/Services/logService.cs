@@ -11,7 +11,7 @@ namespace API.Services
         Create, Delete
     }
 
-    public class logService : IlogService
+    public class LogService : ILogService
     {
         public async Task AcceptRequestLogFile(string user, RequestsDto requestsDto, string adminEmail)
         {
@@ -87,7 +87,7 @@ namespace API.Services
         public async Task DepartmentsLogFile(DepartmentDto department, string admin, DepartmentActionType actionType)
         {
             try {
-                string log = "Department " + department.Name + " was " + (actionType == 0?"deleted by ":"created by ") + admin + " -> " + DateTime.Now;
+                string log = "Department " + department.Name + " was " + (actionType == 0?"created by ":"deleted by ") + admin + " -> " + DateTime.Now;
 
                 using StreamWriter file = new("logFiles/Departmentslogs.txt", append: true);
                 await file.WriteLineAsync(log);

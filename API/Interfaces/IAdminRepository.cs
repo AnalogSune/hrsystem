@@ -19,7 +19,6 @@ namespace API.Interfaces
         Task<bool> DeletePost(int id);
         Task<WorkShift> CreateShift(WorkShiftCreationDto shiftCreationDto);
         Task<IEnumerable<WorkShift>> GetShifts();
-        Task<bool> AssignShift(int userId, int shiftId);
         Task<bool> DeleteShift(int id);
         Task<DepartmentDto> getDepartmentNameById(int id);
     }

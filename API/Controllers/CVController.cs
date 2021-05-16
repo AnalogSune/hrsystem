@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCV(UpdateCVDto updateCVDto)
         {
-            var uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 return Ok(await _cvRepository.UpdateCVEntry(updateCVDto));
             }
@@ -45,8 +45,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCV(int id)
         {
-            var uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 return Ok(await _cvRepository.DeleteCVEntry(id));
             }

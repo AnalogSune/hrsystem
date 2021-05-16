@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,10 @@ namespace API.Controllers
         private readonly IAuthRepository _authRepository;
         private readonly IPhotoService _photoService;
         private readonly IFileService _fileService;
-        private readonly IlogService _logService;
+        private readonly ILogService _logService;
 
         public UsersController(IUserRepository userRepository, IAuthRepository authRepository,
-        IPhotoService photoService, IFileService fileService, IlogService logService)
+        IPhotoService photoService, IFileService fileService, ILogService logService)
         {
             _logService = logService;
             _fileService = fileService;
@@ -79,9 +80,8 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserEditDto userEdit)
         {
-            int uid = RetrieveUserId();
 
-            if (id == uid || await _authRepository.IsAdmin(uid))
+            if (id == User.GetId() || User.IsAdmin())
                 return Ok(await _userRepository.UpdateUser(id, userEdit));
 
             return Unauthorized();
@@ -90,9 +90,8 @@ namespace API.Controllers
         [HttpPut("department/{id}/{departmentId}")]
         public async Task<IActionResult> ChangeDepartment(int id, int departmentId)
         {
-            int uid = RetrieveUserId();
 
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 if (await _userRepository.ChangeUserDepartment(id, departmentId))
                     return Ok();
@@ -105,9 +104,8 @@ namespace API.Controllers
         [HttpPut("role/{id}/{roleId}")]
         public async Task<IActionResult> ChangeRole(int id, int roleId)
         {
-            int uid = RetrieveUserId();
 
-            if (await _authRepository.IsAdmin(uid))
+            if (User.IsAdmin())
             {
                 if (await _userRepository.ChangeUserRole(id, roleId))
                     return Ok();
@@ -120,15 +118,14 @@ namespace API.Controllers
         [HttpPost("image")]
         public async Task<IActionResult> UploadPhoto([FromForm] IFormFile image)
         {
-            int uid = RetrieveUserId();
-            var user = await _userRepository.GetUser(uid);
+            var user = await _userRepository.GetUser(User.GetId());
 
             if (!string.IsNullOrEmpty(user.PictureId))
                 if ((await _photoService.DeletePhotoAsync(user.PictureId)).Error != null)
                     return BadRequest("Unable to delete the previous photo!");
 
             var result = await _photoService.AddPhotoAsync(image);
-            if (await _userRepository.ChangeImage(uid, result.SecureUrl.ToString(), result.PublicId))
+            if (await _userRepository.ChangeImage(User.GetId(), result.SecureUrl.ToString(), result.PublicId))
                 return Ok();
 
             return BadRequest("Unable to upload the photo!");
@@ -137,24 +134,21 @@ namespace API.Controllers
         [HttpPost("file")]
         public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
         {
-            int uid = RetrieveUserId();
-            string email = (await _userRepository.GetUser(uid)).Email;
+            string email = (await _userRepository.GetUser(User.GetId())).Email;
             var result = await _fileService.AddFileAsync(file, email);
-            await _userRepository.UploadFile(uid, result, file.FileName, file.ContentType);
+            await _userRepository.UploadFile(User.GetId(), result, file.FileName, file.ContentType);
             return Ok();
         }
 
         [HttpGet("file")]
         public async Task<IActionResult> GetFiles()
         {
-            int uid = RetrieveUserId();
-            return Ok(await _userRepository.GetFiles(uid));
+            return Ok(await _userRepository.GetFiles(User.GetId()));
         }
 
         [HttpDelete("file/{fileId}")]
         public async Task<IActionResult> DeleteFile(int fileId)
         {
-            int uid = RetrieveUserId();
             var file = await _userRepository.GetFile(fileId);
             if (file == null) return Ok("Not found");
             ResourceType type;
@@ -169,9 +163,8 @@ namespace API.Controllers
         [HttpPut("file")]
         public async Task<IActionResult> RenameFile(PersonalFilesDto personalFilesDto)
         {
-            int uid = RetrieveUserId();
 
-            if (uid == personalFilesDto.FileOwnerId)
+            if (User.GetId() == personalFilesDto.FileOwnerId)
             {
                 return Ok(await _userRepository.RenameFileAsync(personalFilesDto));
             }

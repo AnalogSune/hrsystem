@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,8 +54,7 @@ namespace API.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> GetTasks(TaskSearchDto taskSearchDto)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid) || (taskSearchDto.employeeId != null && taskSearchDto.employeeId == uid))
+            if (User.IsAdmin() || (taskSearchDto.employeeId != null && taskSearchDto.employeeId == User.GetId()))
                 return Ok(await _tasksRepository.GetTasks(taskSearchDto));
 
             return Unauthorized("You need admin rights to do that!");

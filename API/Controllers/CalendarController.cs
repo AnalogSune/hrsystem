@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +23,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEntry(CalendarEntryDto calendarEntry)
         {
-            int uid = RetrieveUserId();
-            if(await _authRepository.IsAdmin(uid))
+            if(User.IsAdmin())
             {
                 if (await _calendarRepository.AddEntry(calendarEntry))
                     return Ok();

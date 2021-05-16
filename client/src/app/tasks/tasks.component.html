@@ -29,7 +29,7 @@
         Task: {{task.title}} {{'&emsp;'}} Employee: {{task.employee.fName}} {{task.employee.lName}}{{'&emsp;'}}
         <i  #checkBox [ngClass]="taskComletedClass(task)"></i>{{'&emsp;'}}
         <div class="button-container">
-        <button mat-icon-button aria-label="Delete the task!" (click)="deleteTask(task)">
+        <button *ngIf="isAdmin()" mat-icon-button aria-label="Delete the task!" (click)="deleteTask(task)">
           <mat-icon>close</mat-icon>
         </button>
       </div>

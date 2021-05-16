@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,10 @@ namespace API.Controllers
         private readonly IRequestsRepository _requestsRepository;
         private readonly ICalendarRepository _calendarRepository;
         private readonly IMapper _mapper;
-        private readonly IlogService _logService;
+        private readonly ILogService _logService;
 
         public RequestsController(IAuthRepository authRepository, IRequestsRepository requestsRepository,
-            ICalendarRepository calendarRepository, IMapper mapper, IlogService logService)
+            ICalendarRepository calendarRepository, IMapper mapper, ILogService logService)
         {
             _logService = logService;
             _mapper = mapper;
@@ -32,12 +33,11 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRequest(RequestsDto requestsDto)
         {
-            int uid = RetrieveUserId();
-            if (requestsDto.EmployeeId == uid || await _authRepository.IsAdmin(uid))
+            if (requestsDto.EmployeeId == User.GetId() || User.IsAdmin())
             {
                 if (await _requestsRepository.CreateRequest(requestsDto))
                 {
-                    string userEmail = await _authRepository.GetEmailById(uid);
+                    string userEmail = await _authRepository.GetEmailById(User.GetId());
                     await _logService.RequestMadeLogFile(userEmail, requestsDto);
                     return Ok();
                 }
@@ -50,14 +50,13 @@ namespace API.Controllers
         [HttpPost("{id}/{status}")]
         public async Task<IActionResult> UpdateRequestStatus(int id, RequestStatus status)
         {
-            int uid = RetrieveUserId();
-            if (!await _authRepository.IsAdmin(uid))
+            if (!User.IsAdmin())
                 return Unauthorized("You need administrative rights!");
 
             if (!await _requestsRepository.UpdateRequestStatus(id, status))
                 return BadRequest("Unable to update the request");
 
-            string adminEmail = await _authRepository.GetEmailById(uid);
+            string adminEmail = await _authRepository.GetEmailById(User.GetId());
             string userEmail = await _requestsRepository.getUserByRequestId(id);
             var request = await _requestsRepository.GetRequest(id);
             await _logService.AcceptRequestLogFile(userEmail, request, adminEmail);
@@ -76,8 +75,7 @@ namespace API.Controllers
         [HttpGet("history/{id}/{type?}/{status?}")]
         public async Task<IActionResult> GetRequests(int id, RequestType? type, RequestStatus? status)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid) || uid == id)
+            if (User.IsAdmin() || User.GetId() == id)
                 return Ok(await _requestsRepository.GetRequests(id, type, status));
             else
                 return Unauthorized("You need administrative rights!");
@@ -86,8 +84,7 @@ namespace API.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> GetRequests(RequestSearchDto searchDto)
         {
-            int uid = RetrieveUserId();
-            if (await _authRepository.IsAdmin(uid) || uid == searchDto.EmployeeId)
+            if (User.IsAdmin() || User.GetId() == searchDto.EmployeeId)
                 return Ok(await _requestsRepository.GetRequests(searchDto));
             else
                 return Unauthorized("You need administrative rights!");

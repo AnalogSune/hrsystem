@@ -4,7 +4,7 @@ using API.Services;
 
 namespace API.Interfaces
 {
-    public interface IlogService
+    public interface ILogService
     {
         Task LoginLogFile(LoginDto loginDto);
 
