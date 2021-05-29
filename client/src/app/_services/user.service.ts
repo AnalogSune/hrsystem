@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AppUser } from '../_models/appuser';
+import { AppUser, UserUpdate } from '../_models/appuser';
 import { Document } from '../_models/document';
 import { ScheduleEntry, ScheduleSearchDto } from '../_models/scheduleEntry';
 // import { Tasks } from '../_models/tasks';
@@ -22,8 +22,8 @@ export class UserService {
     return this.http.get<AppUser[]>(this.baseUrl + 'users');
   }
 
-  updateUser(user: AppUser) {
-    return this.http.put<AppUser>(this.baseUrl + 'users', user);
+  updateUser(id: number, user: UserUpdate) {
+    return this.http.put<AppUser>(this.baseUrl + 'users/' + id, user);
   }
 
   getUsersByDepartment(id: number) {

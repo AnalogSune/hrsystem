@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
-import { AppUser } from '../_models/appuser';
+import { AppUser, UserUpdate } from '../_models/appuser';
 import { Department, Role } from '../_models/department';
 import { AdminService } from '../_services/admin.service';
 import { AlertifyService } from '../_services/alertify.service';
@@ -14,7 +14,7 @@ import { UserService } from '../_services/user.service';
 })
 export class ProfileViewerComponent implements OnInit {
 
-  user: AppUser;
+  updateUser: UserUpdate = {};
   password: string;
   departments: Map<number, Department> = new Map<number, Department>();
   userDepartmentId: number = -1;
@@ -24,29 +24,37 @@ export class ProfileViewerComponent implements OnInit {
     private routerParams: ActivatedRoute, private adminService: AdminService, private alertify: AlertifyService) { }
 
   public get roles(): Role[] {
-    return this.departments.get(this.userDepartmentId)?.departmentRoles;
+    return this.departments.get(this.updateUser.departmentId)?.departmentRoles;
   }
 
   public get roleid(): number {
-    let dep = this.departments.get(this.userDepartmentId);
-    if (dep.departmentRoles.find(r => {r.id == this.userRoleId}))
+    let dep = this.departments.get(this.updateUser.departmentId);
+    if (!dep) return - 1;
+    if (dep.departmentRoles.find(r => {return r.id === this.userRoleId}))
+    {
       return this.userRoleId;
+    }
     else 
+    {
+      this.updateUser.roleId = dep.departmentRoles[0]?.id;
+      this.userRoleId = dep.departmentRoles[0]?.id;
       return dep.departmentRoles[0]?.id;
+    }
   }
 
   public set roleid(id: number) {
+    this.updateUser.roleId = id;
     this.userRoleId = id;
   }
 
   ngOnInit() {
     this.fetchUser();
-    if (this.isAdmin())
+    // if (this.isAdmin())
       this.getDepartments();
   }
 
   isUser(): boolean {
-    return this.authService.decodedToken.nameid == this.user.id;
+    return this.authService.decodedToken.nameid == this.updateUser.id;
   }
 
   isAdmin(): boolean {
@@ -62,7 +70,7 @@ export class ProfileViewerComponent implements OnInit {
         userid = params.userId;
         
         this.userService.getUser(userid).subscribe(u => {
-          this.user = u;
+          this.updateUser = <UserUpdate>u;
           if (u.inDepartment)
           {
             this.userDepartmentId = u.inDepartment?.id || -1;
@@ -92,18 +100,6 @@ export class ProfileViewerComponent implements OnInit {
     });
   }
 
-  updateDepartment() {
-    if (this.hasRoles())
-    {
-      this.adminService.changeUserDepartment(this.user.id, this.userDepartmentId).subscribe(next => {
-        this.userRoleId = this.departments.get(this.userDepartmentId).departmentRoles[0].id;
-        this.updateRole();
-      }, error => {
-        this.alertify.error('Unable to change the departments!', error);
-      });
-    }
-  }
-
   hasRoles(): boolean {
     if (this.userDepartmentId >= 0  && this.departmentsExist())
       return this.departments.get(this.userDepartmentId)?.departmentRoles.length > 0;
@@ -113,20 +109,6 @@ export class ProfileViewerComponent implements OnInit {
 
   departmentsExist(): boolean {
     return this.departments.size > 0;
-  }
-
-  updateRole() {
-    this.adminService.changeUserRole(this.user.id, this.userRoleId).subscribe(next => {
-      this.userService.updateUser(this.user).subscribe(x => {
-        this.user = x;
-        this.alertify.success("User Updated!");
-        this.fetchUser();
-      }, error => {
-        this.alertify.error("Could not Update user!");
-      })
-    }, error => {
-      this.alertify.error('Unable to change role!', error);
-    })
   }
 
   getDepartments() {
@@ -141,6 +123,12 @@ export class ProfileViewerComponent implements OnInit {
   }
 
   saveChanges() {
-    this.updateDepartment();
+    console.log(this.updateUser);
+    this.userService.updateUser(this.updateUser.id, this.updateUser).subscribe(x => {
+      this.updateUser = x;
+      this.alertify.success("User Updated!");
+    }, error => {
+      this.alertify.error("Could not Update user!");
+    })
   }
 }

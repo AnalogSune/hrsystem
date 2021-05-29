@@ -77,13 +77,13 @@ namespace API.Controllers
             return Ok(await _userRepository.GetUsersWithSingleParameters(searchParam));
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(MemberDto userEdit)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserUpdateDto userEdit)
         {
 
-            if (userEdit.Id == User.GetId() || User.IsAdmin())
+            if (id == User.GetId() || User.IsAdmin())
             {
-                var updated = await _userRepository.UpdateUser(userEdit);
+                var updated = await _userRepository.UpdateUser(id, userEdit);
                 if (updated != null) 
                     return Ok(updated);
 

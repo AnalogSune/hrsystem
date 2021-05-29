@@ -10,6 +10,7 @@ namespace API.Helper
         {
             CreateMap<AppUser, MemberDto>();
             CreateMap<MemberDto, AppUser>();
+            CreateMap<UserUpdateDto, AppUser>();
 
             CreateMap<RegisterDto, AppUser>()
                 .ForMember(r => r.Email, opt => opt.MapFrom(src => src.Email.ToLower()));

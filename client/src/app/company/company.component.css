@@ -1,0 +1,35 @@
+img {
+    border-radius: 50%;
+    border: 5px solid gray;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  mat-card-title{
+    height: 30px;
+    font-size:medium !important;
+  }
+
+  mat-card-header{
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  mat-card-content{
+    text-align: center !important;
+  }
+
+  mat-card{
+    width: 17rem;
+  }
+
+  mat-card-actions{
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  mat-form-field{
+      margin: 10px;
+  }

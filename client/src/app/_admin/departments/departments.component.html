@@ -1,4 +1,5 @@
-<div *ngIf="departments!=undefined;else loading" class="container">
+<ng-template [ngIf]="departments!=undefined" [ngIfElse]="loading">
+  <div class="container">
 <div class="container row">
   <div class="row">Departments</div>
   <div class="dropdown row ml-5" dropdown>
@@ -29,6 +30,6 @@
   <input type="text" name="name" [(ngModel)]="rolename">
   </div>
 </table>
-  
 </div>
-<ng-template #loading>Loading...</ng-template>
+</ng-template>
+<ng-template #loading><mat-spinner class="spinner"></mat-spinner></ng-template>

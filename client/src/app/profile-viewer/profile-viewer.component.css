@@ -1,0 +1,52 @@
+img {
+    border-radius: 50%;
+    border: 5px solid gray;
+    margin-left: 40px;
+    margin-top: 20px;
+  }
+
+#change_profile_btn{
+    margin-left: 40px;
+    margin-top: 20px;
+    position: absolute; 
+    top: 27px; 
+    left: 170px;
+    width: 50px; 
+    height: 50px;
+    background:lightpink;
+    text-align: center;
+    border-radius: 50%;
+    color:white;
+    padding:5px 10px;
+    border: 0px;
+    font-size:20px;
+}
+
+.container{
+  margin-top: 50px;
+  margin-left: 20px;
+}
+
+.col{
+  min-width: 150px;
+  max-width: 600px;
+  padding: 8px;
+  width: 100%;
+}
+
+button.col {
+  margin-bottom: 30px;
+  max-width: 200px;
+}
+
+.col :disabled {
+  color: black !important;
+}
+
+.blacky {
+  color: black !important;
+}
+
+/deep/ .mat-select-min-line {
+  color: black !important;
+}

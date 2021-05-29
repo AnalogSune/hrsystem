@@ -94,18 +94,14 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<MemberDto> UpdateUser(MemberDto userEdit)
+        public async Task<MemberDto> UpdateUser(int id, UserUpdateDto userEdit)
         {
             var user = _context.Users
-                .Where(u => u.Id == userEdit.Id)
-                
+                .Where(u => u.Id ==id)
                 .FirstOrDefault();
             var u = _context.Entry(user);
-            user = _mapper.Map<AppUser>(userEdit);
-            // user.DepartmentId = userEdit.InDepartment?.Id;
-            // user.RoleId = userEdit.Role?.Id;
-            u.State = EntityState.Modified;
-            
+            _mapper.Map(userEdit, user);
+                        
             if (await _context.SaveChangesAsync() > 0)
                 return _mapper.Map<MemberDto>(user);
 

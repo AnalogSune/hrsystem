@@ -1,3 +1,5 @@
+
+<ng-template [ngIf]="shifts!=undefined" [ngIfElse]="loading">
 <form #shiftForm="ngForm"  (ngSubmit)="submit()">
 Name<input type="text" name="name" [(ngModel)]="newShift.name" required>
 Start Time<timepicker name="startTime" [(ngModel)]="newShift.startTime" required></timepicker>
@@ -19,3 +21,7 @@ Duration<input type="number" name="duration" [(ngModel)]="newShift.duration" min
     </tr>
     </thead>
 </table>
+
+</ng-template>
+
+<ng-template #loading> <mat-spinner class="spinner"></mat-spinner></ng-template>

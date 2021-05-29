@@ -21,3 +21,21 @@ export interface AppUser
     nationality?: string;
     isAdmin?: boolean;
 }
+
+export interface UserUpdate
+{
+    id?: number;
+    email?: string;
+    fName?: string;
+    lName?: string;
+    pictureUrl?: string;
+    phoneNumber?: string;
+    address?: string;
+    roleId?: number;
+    departmentId?: number;
+    daysOffLeft?: number;
+    workedFromHome?: number;
+    country?: string;
+    dateOfBirth?: Date;
+    nationality?: string;
+}

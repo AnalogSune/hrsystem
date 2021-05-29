@@ -1,29 +1,29 @@
 <ng-template class="container" [ngIf]="users!= undefined && departments != undefined" [ngIfElse]="loading">
 
-<div class="dropdown" dropdown>
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
-    {{departmentName}}
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" *dropdownMenu>
-    <button type="button" (click)="filterByDepartment(null)" class="dropdown-item" >All departments</button>
-    <button type="button" class="dropdown-item" *ngFor="let department of departments" (click)="filterByDepartment(department.id, department.name)" >
-      {{department.name}}
-    </button>
-  </div>
-</div>
+  <mat-form-field appearance="fill">
+    <mat-label>Departments</mat-label>
+  <mat-select [value]="departmentName">
+    <mat-option  (click)="filterByDepartment(null)" [value]="'All Departments'">All Departments</mat-option>
+    <mat-option *ngFor="let department of departments" [value]="department.name" (click)="filterByDepartment(department.id, department.name)">{{department.name}}</mat-option>
+  </mat-select>
+  </mat-form-field>
 
 <div class="row">
-<div *ngFor="let user of users" class="card row ml-4 mt-2" style="width: 18rem;">
-  <img *ngIf="user.pictureUrl==undefined" class="card-img-top" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
-  <img *ngIf="user.pictureUrl!=undefined" class="card-img-top" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
-  <div class="card-body">
-    <p class="card-text">{{user.fName || 'No fName'}} {{user.lName || 'No lName'}}</p>
-    <p class="card-text">{{user.email || 'No email'}}</p>
-    <p class="card-text">{{user?.inDepartment?.name || 'No department'}} - {{user?.role?.roleName || 'No role'}}</p>
-    <a href="#" class="btn btn-primary" [routerLink]="['/profile']" [queryParams]="{userId: user.id}">{{user.password}}</a>
-    <a *ngIf="isAdmin() && !isUser(user.id)" class="ml-3" (click)="deleteUser(user.id)">Delete User</a>
-  </div>
+  <mat-card class="row ml-4 mt-2 mb-2" *ngFor="let user of users">
+    <mat-card-header>
+      <mat-card-title>{{user.fName || 'No fName'}} {{user.lName || 'No lName'}}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image style="width: 200px; height: 200px;" [src]="user.pictureUrl || '../../assets/user.png'" alt="OOps">
+    <mat-card-content>
+      <p><b>Email: </b>{{user.email || 'No email'}}</p>
+      <p><b>Department: </b>{{user?.inDepartment?.name || 'No department'}} - {{user?.role?.roleName || 'No role'}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button [routerLink]="['/profile']" [queryParams]="{userId: user.id}">PROFILE</button>
+      <button mat-raised-button color="warn" *ngIf="isAdmin() && !isUser(user.id)"(click)="deleteUser(user.id)">DELETE</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
-</div>
-</ng-template>
-<ng-template #loading></ng-template>
+
+</ng-template> 
+<ng-template #loading><mat-spinner class="spinner"></mat-spinner></ng-template>

@@ -1,0 +1,9 @@
+button{
+    margin: 10px !important;
+}
+
+.table{
+    margin: 10px;
+    max-width: fit-content;
+    margin-left: 10px !important;
+}

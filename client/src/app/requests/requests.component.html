@@ -1,54 +1,106 @@
- <div  *ngIf="isAdmin()">
- <select  class="form-control" name="requestStatus" [(ngModel)]="requestSearch.employeeId" (ngModelChange)="search()">
-  <option [ngValue]="null">Any</option>
-  <option *ngFor="let user of users | keyvalue" [ngValue]="user.value.id">{{user.value.fName}}</option>
-</select>
- <select  class="form-control" name="requestStatus" [(ngModel)]="requestSearch.requestStatus" (ngModelChange)="search()">
-  <option [ngValue]="null" [selected]="true">All</option>
-  <option [ngValue]="0">Pending</option>
-  <option [ngValue]="1">Accepted</option>
-  <option [ngValue]="2">Declined</option>
-</select>
- <select class="form-control" name="requestType" [(ngModel)]="requestSearch.requestType" (ngModelChange)="search()">
-  <option [ngValue]="null">All</option>
-  <option [ngValue]="1">Day off</option>
-  <option [ngValue]="2">Work From Home</option>
-  <option [ngValue]="3">Sick day</option>
-</select>
+<ng-template class="container" [ngIf]="dataSource!= undefined" [ngIfElse]="loading"></ng-template>
 
-</div>
-<form *ngIf="!isAdmin()" #requestForm="ngForm" (ngSubmit)="submit()">
-  <input class="form-control" type="date" name="startDay" [(ngModel)]="formModel.startDay">
-  <input class="form-control" type="date" name="endDay" [(ngModel)]="formModel.endDay">
-    <select class="form-control" name="requestType" [(ngModel)]="formModel.requestType">
-      <option [ngValue]="1">Day off</option>
-      <option [ngValue]="2">Work From Home</option>
-      <option [ngValue]="3">Sick day</option>
-    </select>
-  <button type="submit" >Submit Request</button>
+<form *ngIf="!isAdmin()" #requestForm=ngForm (ngSubmit)="submit()">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Start Date</mat-label>
+    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="startDate" name="startDay" [(ngModel)]="formModel.startDay">
+    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+    <mat-datepicker #startDate></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>End Date</mat-label>
+    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="endDate" name="endDay" [(ngModel)]="formModel.endDay">
+    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+    <mat-datepicker #endDate></mat-datepicker>
+  </mat-form-field>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Request Type</mat-label>
+    <mat-select name="requestType" [(ngModel)]="formModel.requestType">
+      <mat-option [value]="1">Day Off</mat-option>
+      <mat-option [value]="2">Work From Home</mat-option>
+      <mat-option [value]="3">Sick Day</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" >Submit Request</button>
+
 </form>
- <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
-  <thead >
-      <tr >
-        <th *ngIf="isAdmin()">Employee</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th *ngIf="isAdmin()"></th>
-      </tr>
-      
-      <tr *ngFor="let request of requestHistory">
-        <ng-container *ngIf="request.requestType != 0">
-          <th *ngIf="isAdmin()">{{getUserName(request.employeeId)}}</th>
-          <th>{{request.date | date: 'dd-MM-yyyy'}}</th>
-          <th>{{request.endDate | date: 'dd-MM-yyyy'}}</th>
-          <th>{{requestType(request.requestType)}}</th>
-          <th>{{status(request.status)}}</th>
-          <th *ngIf="isAdmin() && request.status == 0">
-            <button (click)="changeStatus(request.id, 1)">Accept</button>
-            <button (click)="changeStatus(request.id, 2)">Decline</button>
-          </th>
-        </ng-container>
-      </tr>
-  </thead>
+
+<form *ngIf="isAdmin()" #requestForm=ngForm (ngSubmit)="submit()">  
+  <mat-form-field appearance="fill">
+    <mat-label>Employee</mat-label>
+    <mat-select name="employeeId" [(ngModel)]="requestSearch.employeeId" (ngModelChange)="search()">
+      <mat-option [value]='null'>Any</mat-option>
+      <mat-option *ngFor="let user of users | keyvalue" [value]="user.value.id">{{user.value.fName}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Request Status</mat-label>
+    <mat-select name="requestStatus" [(ngModel)]="requestSearch.requestStatus" (ngModelChange)="search()">
+      <mat-option [value]='null' [selected]="true">All</mat-option>
+      <mat-option [value]='0'>Pending</mat-option>
+      <mat-option [value]='1'>Accepted</mat-option>
+      <mat-option [value]='2'>Declined</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Request Type</mat-label>
+    <mat-select name="requestType" [(ngModel)]="requestSearch.requestType" (ngModelChange)="search()">
+      <mat-option [value]='null'>All</mat-option>
+      <mat-option [value]='1'>Day off</mat-option>
+      <mat-option [value]='2'>Work From Home</mat-option>
+      <mat-option [value]='3'>Sick day</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</form>
+
+<div class="mat-elevation-z8" >
+  <table matSort (matSortChange)="sortData($event)" mat-table [dataSource]="dataSource" style="width: 100%;">
+
+    <ng-container matColumnDef="employee" *ngIf="isAdmin()">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee </th>
+      <td mat-cell *matCellDef="let element"> {{getUserName(element.employeeId)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd-MM-yyyy'}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.endDate | date: 'dd-MM-yyyy'}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Request Type </th>
+      <td mat-cell *matCellDef="let element"> {{requestType(element.requestType)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+      <td mat-cell *matCellDef="let element"> {{status(element.status)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="buttons" *ngIf="isAdmin()">
+      <th mat-header-cell *matHeaderCellDef style="padding-right: 0px !important; width: 220px !important;"> </th>
+      <td mat-cell *matCellDef="let element" class="buttons"> 
+        <button  mat-raised-button color="success" *ngIf="!element.status" (click)="changeStatus(element.id, 1)">Accept</button>
+        <button mat-raised-button color="warn" *ngIf="!element.status" (click)="changeStatus(element.id, 2)">Decline</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<ng-template #loading> <mat-spinner class="spinner"></mat-spinner></ng-template>

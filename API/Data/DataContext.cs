@@ -28,17 +28,17 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Tasks>()
-            .HasOne(t => t.Employee)
-            .WithMany()
-            .HasForeignKey(t => t.EmployeeId)
-            .OnDelete(DeleteBehavior.Cascade);
+                builder.Entity<Tasks>()
+                .HasOne(t => t.Employee)
+                .WithMany()
+                .HasForeignKey(t => t.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Tasks>()
-            .HasMany(t => t.SubTasks)
-            .WithOne()
-            .HasForeignKey(t => t.TasksId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(t => t.SubTasks)
+                .WithOne()
+                .HasForeignKey(t => t.TasksId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Request>()
                 .Property(d => d.DateCreated)
@@ -79,8 +79,8 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.SetNull);
             
             builder.Entity<Department>()
-            .HasIndex(r => r.Name)
-            .IsUnique();
+                .HasIndex(r => r.Name)
+                .IsUnique();
         }
 
     }

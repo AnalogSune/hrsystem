@@ -9,6 +9,7 @@
 }
 
 #calendar-table{
+    margin-top: 10px;
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -30,6 +31,7 @@
     overflow-x:hidden;
 }
 
+
 .mat-form-field{
     margin: 10px;
 }
@@ -38,5 +40,13 @@
     margin-top: 20px;
     margin-left: 20px;
     margin-bottom: 20px;
+}
+
+.sticky-top{
+    z-index: 30 !important;
+}
+
+.front-panel{
+    z-index: 1030 !important;
 }
 

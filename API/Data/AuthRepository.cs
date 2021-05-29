@@ -49,7 +49,6 @@ namespace API.Data
         }
 
         public async Task<UserDto> Register(RegisterDto registerDto)
-
         {
             using var hmac = new HMACSHA512();
 

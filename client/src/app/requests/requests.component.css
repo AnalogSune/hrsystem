@@ -1,0 +1,26 @@
+.mat-elevation-z8{
+    margin: 10px;
+}
+
+.mat-sort-header-container {
+    align-items: center !important;
+  }
+
+.buttons{
+    max-width: 70px !important;
+}
+.buttons > button{
+    margin-right: 20px;
+}
+
+mat-form-field{
+    margin: 10px;
+    margin-top: 30px;
+}
+
+  
+  .mat-cell {
+    width: auto;
+    max-width: 360px !important;
+    padding: 8px 8px 8px 0;
+  }

@@ -19,7 +19,7 @@ namespace API.Interfaces
         Task<IEnumerable<MemberDto>> GetUsersWithDepartment(int departmentId);
         Task<IEnumerable<MemberDto>> GetUsersWithParameters(UserFilterDto filters);
         Task<IEnumerable<MemberDto>> GetUsersWithSingleParameters(string searchParam);
-        Task<MemberDto> UpdateUser(MemberDto userEdit);
+        Task<MemberDto> UpdateUser(int id, UserUpdateDto userEdit);
         Task<bool> ChangeImage(int id, string url, string publicId);
         Task<bool> UploadFile(int id, UploadResult file, string originalFilename, string contentType);
 

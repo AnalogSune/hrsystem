@@ -1,174 +1,86 @@
-<!-- <ng-template class="container" [ngIf]="user!= undefined" [ngIfElse]="loading"> -->
+<ng-template class="container" [ngIf]="updateUser!= undefined" [ngIfElse]="loading">
 
     
-<form (ngSubmit)="changePassword(user.id)" #form="ngForm">
+<form (ngSubmit)="changePassword(updateUser.id)" #form="ngForm">
     <button *ngIf="isAdmin()" [disabled]="!form.valid || !form.dirty" type="submit">Change Password</button>
     <input *ngIf="isAdmin()" name="pass" minlength="6" type="password" [(ngModel)]="password">
 </form>
     
 
-<img *ngIf="user.pictureUrl==undefined" class="" style="width: 200px; height: 200px;" src="../../assets/user.png" alt="OOps">
-<img *ngIf="user.pictureUrl!=undefined" class="" style="width: 200px; height: 200px;" src={{user.pictureUrl}} alt="OOps">
+<img *ngIf="updateUser.pictureUrl==undefined" class="" style="width: 220px; height: 220px;" src="../../assets/user.png" alt="OOps">
+<img *ngIf="updateUser.pictureUrl!=undefined" class="" style="width: 220px; height: 220px;" src={{updateUser.pictureUrl}} alt="OOps">
 
 <input #fileUpload type="file" class="file-upload" style="display: none;" (change)="uploadPhoto($event)">
-<button *ngIf="isUser()" (click)="fileUpload.click()">Change Profile Picture</button>
+<button id="change_profile_btn" *ngIf="isUser()" (click)="fileUpload.click()" class="fa fa-camera fa-fw mr-1"></button>
 
 <div class="container">
     <form #userForm="ngForm" (ngSubmit)="saveChanges()">
     <mat-form-field appearance="fill" class="col">
         <mat-label>Email</mat-label>
-        <input matInput name="email" [(ngModel)]="user.email" email required>
+        <input [disabled]="!isAdmin()" matInput name="email" [(ngModel)]="updateUser.email" email required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Department</mat-label>
-        <mat-select name="department" [(ngModel)]="userDepartmentId" required>
+        <mat-select [disabled]="!isAdmin()" name="department" [(ngModel)]="updateUser.departmentId" required>
         <mat-option *ngFor="let dep of departments | keyvalue" [value]="dep.value.id" >{{dep.value.name}}</mat-option>
         </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Role</mat-label>
-        <mat-select name="role" [(ngModel)]="roleid" required>
+        <mat-select [disabled]="!isAdmin()" name="role" [(ngModel)]="roleid" required>
         <mat-option *ngFor="let role of roles" [value]="role.id" >{{role.roleName}}</mat-option>
         </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>First Name</mat-label>
-        <input [disabled]="!isAdmin()" #fname maxlength="20" matInput name="fName" [(ngModel)]="user.fName" required>
+        <input [disabled]="!isAdmin()" #fname maxlength="20" matInput name="fName" [(ngModel)]="updateUser.fName" required>
         <mat-hint align="end">{{fname.value?.length || 0}}/20</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Last Name</mat-label>
-        <input #lname maxlength="30" matInput name="lName" [(ngModel)]="user.lName" required>
+        <input [disabled]="!isAdmin()" #lname maxlength="30" matInput name="lName" [(ngModel)]="updateUser.lName" required>
         <mat-hint align="end">{{lname.value?.length || 0}}/30</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Date of Birth</mat-label>
-        <input name="dateOfBirth" matInput [matDatepicker]="picker" [(ngModel)]="user.dateOfBirth" required>
+        <input [disabled]="!isAdmin()" name="dateOfBirth" matInput [matDatepicker]="picker" [(ngModel)]="updateUser.dateOfBirth" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     
-    <mat-form-field appearance="fill" class="col">
+    <mat-form-field appearance="fill" class="col" *ngIf="isUser() || isAdmin()">
         <mat-label>Phone Number</mat-label>
-        <input #pnumber maxlength="10" matInput name="phoneNumber" [(ngModel)]="user.phoneNumber" required>
-        <mat-hint align="end">{{pnumber.value?.length || 0}}/10</mat-hint>
+        <input [disabled]="!isAdmin()" #pnumber maxlength="12" matInput name="phoneNumber" [(ngModel)]="updateUser.phoneNumber" required>
+        <mat-hint align="end">{{pnumber.value?.length || 0}}/12</mat-hint>
     </mat-form-field>
     
-    <mat-form-field appearance="fill" class="col">
+    <mat-form-field appearance="fill" class="col" *ngIf="isUser() || isAdmin()">
         <mat-label>Address</mat-label>
-        <input matInput name="address" [(ngModel)]="user.address" required>
+        <input [disabled]="!isAdmin()" matInput name="address" [(ngModel)]="updateUser.address" required>
     </mat-form-field>
     
-    <mat-form-field appearance="fill" class="col">
+    <mat-form-field appearance="fill" class="col" *ngIf="isUser() || isAdmin()">
         <mat-label>Country</mat-label>
-        <input matInput name="country" [(ngModel)]="user.country" required>
+        <input [disabled]="!isAdmin()" matInput name="country" [(ngModel)]="updateUser.country" required>
     </mat-form-field>
     
-    <mat-form-field appearance="fill" class="col">
+    <mat-form-field appearance="fill" class="col" *ngIf="isUser() || isAdmin()">
         <mat-label>Nationality</mat-label>
-        <input matInput name="nationality" [(ngModel)]="user.nationality" required>
+        <input [disabled]="!isAdmin()" matInput name="nationality" [(ngModel)]="updateUser.nationality" required>
     </mat-form-field>
 
-    <button mat-raised-button type="submit" color="primary" class="col" [disabled]="!userForm.valid">Update User</button>
+    <p>
+    <button *ngIf="isAdmin()" mat-raised-button type="submit" color="primary" class="col" [disabled]="!userForm.valid">Update User</button>
+    </p>
     </form>
+    
 </div>
-
-
-<!-- 
-<table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
-  <thead >
-
-    <tr>
-        <th>Email</th>
-        <th *ngIf="user">{{user.email || ""}}</th>
-    </tr>
-
-    <tr >
-        <th>First Name</th>
-        <th *ngIf="user">{{user.fName || ""}}</th>
-    </tr>
-
-    <tr >
-        <th>Last Name</th>
-        <th *ngIf="user">{{user.lName || ""}}</th>
-    </tr>
-
-    <tr *ngIf="!isAdmin() else adminDepartments">
-        <th>Department</th>
-        <th>{{user.inDepartment?.name || ""}}</th>
-    </tr>
-
-    <ng-template  #adminDepartments>
-    <tr *ngIf="departmentsExist()">
-        <th>Department</th>
-        <select  [(ngModel)]="userDepartmentId" (ngModelChange)="updateDepartment()">
-            <option *ngFor="let dep of departments | keyvalue" [ngValue]="dep.value.id">{{dep.value.name}}</option>
-        </select>
-    </tr>
-    
-    <tr *ngIf="!departmentsExist()">
-        <th>Department</th>
-        <th>No departments Available</th>
-    </tr>
-    </ng-template>
-    
-
-
-    <tr *ngIf="!isAdmin() else adminRoles">
-        <th>Role</th>
-        <th>{{user.role?.roleName || ""}}</th>
-    </tr>
-    <ng-template #adminRoles>
-    <tr *ngIf="user.inDepartment && hasRoles()">
-        <th>Role</th>
-        <select [(ngModel)]="userRoleId" (ngModelChange)="updateRole()">
-            <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
-        </select>
-    </tr>
-    
-    <tr *ngIf="!departmentsExist() || !hasRoles()">
-        <th>Roles</th>
-        <th>No roles Available</th>
-    </tr>
-    </ng-template>
-    <tr>
-        <th>Date Of Birth</th>
-        <th *ngIf="user">{{user.dateOfBirth | date: 'dd-MM-yyyy' || ""}}</th>
-    </tr>
-
-    <tr *ngIf="isUser() || isAdmin()">
-        <th>Nationality</th>
-        <th *ngIf="user">{{user.nationality || ""}}</th>
-    </tr>
-
-    <tr *ngIf="isUser() || isAdmin()">
-        <th>Phone Number</th>
-        <th *ngIf="user">{{user.phoneNumber || ""}}</th>
-    </tr>
-      
-    <tr *ngIf="isUser() || isAdmin()">
-        <th>Address</th>
-        <th *ngIf="user">{{user.address || ""}}</th>
-    </tr>
-
-    <tr *ngIf="isUser() || isAdmin()">
-      <th>Country</th>
-      <th *ngIf="user">{{user.country || ""}}</th>
-    </tr>
-
-    <tr *ngIf="isUser() || isAdmin()">
-        <th>Days Off Available</th>
-        <th *ngIf="user">{{user.daysOffLeft}}</th>
-    </tr>
-
-  </thead>
-</table>
 
 </ng-template>
 
-<ng-template #loading>Loading..</ng-template> -->
+<ng-template #loading> <mat-spinner class="spinner"></mat-spinner></ng-template>

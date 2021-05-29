@@ -8,13 +8,11 @@ namespace API.Extensions
     {
         public static string GetEmail(this ClaimsPrincipal user)
         {
-            // System.Console.WriteLine("user.Claims.FirstOrDefault().Value");
-            // System.Console.WriteLine(user.);
-            return user.Claims.Where(c => c.Type == JwtRegisteredClaimNames.Name ).FirstOrDefault()?.Value;
+            return user.FindFirst(ClaimTypes.Name)?.Value;
         }
         public static int GetId(this ClaimsPrincipal user)
         {
-            return int.Parse(user.Claims.FirstOrDefault().Value);
+            return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
         public static bool IsAdmin(this ClaimsPrincipal user)
         {

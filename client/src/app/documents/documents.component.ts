@@ -33,7 +33,7 @@ export class DocumentsComponent implements OnInit {
     if (!this.clipboard.copy(txt))
       this.alertify.error('Failed to copy!');
     else 
-      this.alertify.success('Copied ' + txt);
+      this.alertify.success('Copied to clipboard');
   }
 
   uploadDocument(evt) {

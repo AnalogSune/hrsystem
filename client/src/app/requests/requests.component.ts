@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppUser } from '../_models/appuser';
 import { Request, RequestSearch, RequestStatus } from '../_models/requests';
 import { AdminService } from '../_services/admin.service';
 import { AuthService } from '../_services/auth.service';
 import { RequestService } from '../_services/request.service';
 import { AlertifyService } from '../_services/alertify.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import {Sort} from '@angular/material/sort';
 
 class RequestForm
 {
@@ -21,41 +24,60 @@ class RequestForm
 })
 export class RequestsComponent implements OnInit {
 
+  displayedColumns: string[] = ['startDate', 'endDate', 'type', 'status']
+  dataSource: MatTableDataSource<Request>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private authService: AuthService, private requestService: RequestService, private adminService: AdminService,
     private alertify: AlertifyService) { }
-  formModel: RequestForm = new RequestForm();
-  requestHistory: Request[];
+
+  formModel: RequestForm = new RequestForm();  
   requestSearch: RequestSearch = {requestStatus: null, employeeId: null, requestType: null};
   users: Map<number, AppUser> = new Map<number, AppUser>();
 
   ngOnInit() {
+
+    setTimeout(()=>{this.dataSource.paginator = this.paginator;}, 200);
     if (!this.isAdmin())
       this.getHistory();
     else
     {
+      this.displayedColumns.unshift('employee');
+      this.displayedColumns.push('buttons');
       this.search();
       this.getUsers();
     }
   }
 
+  myFilter = (d: Date | null): boolean => {
+    return d.getDate() >= (new Date().getDate());
+  }
+
   submit()
   {
+    if (this.formModel.requestType == 0 || !this.formModel.startDay || !this.formModel.endDay)
+    {
+      this.alertify.error("Invalid request");
+      return;
+    }
+
     let endDate = new Date(this.formModel.endDay);
     let startDate = new Date(this.formModel.startDay);
 
     let diff =  (endDate.getFullYear() - startDate.getFullYear()) * 365 + 
                 (endDate.getMonth() - startDate.getMonth()) * 30 + 
                 (endDate.getDate() - startDate.getDate()) + 1;
+
     
     if (diff > this.authService.getCurrentUser().daysOffLeft && this.formModel.requestType == 1)
     {
       this.alertify.error("You are asking for more days than you have available!");
       return;
     }
-
-    if (this.formModel.requestType == 0 || !this.formModel.startDay || !this.formModel.endDay)
+    
+    if (endDate < startDate)
     {
-      this.alertify.error("Invalid request");
+      this.alertify.error("Invalid dates!");
       return;
     }
 
@@ -102,7 +124,8 @@ export class RequestsComponent implements OnInit {
   getHistory()
   {
     this.requestService.getRequests(this.authService.decodedToken.nameid).subscribe(res => {
-      this.requestHistory = res;
+      this.dataSource = new MatTableDataSource<Request>(res);
+      this.dataSource.paginator = this.paginator;
     }, error => {
       this.alertify.error('Unable to retrieve request history!', error);
     });
@@ -114,7 +137,8 @@ export class RequestsComponent implements OnInit {
 
   search() {
     this.adminService.searchRequests(this.requestSearch).subscribe(reqs => {
-      this.requestHistory = reqs;
+      this.dataSource = new MatTableDataSource<Request>(reqs);
+      this.dataSource.paginator = this.paginator;
     }, error => {
       this.alertify.error('Unable to perform search!', error);
     });
@@ -143,6 +167,31 @@ export class RequestsComponent implements OnInit {
     }, error => {
       this.alertify.error('Unable to change status!', error);
     })
+  }
+
+  sortData(sort: Sort) {
+    const data = this.dataSource.data.slice();
+    if (!sort.active || sort.direction === '') {
+      this.dataSource.data = data;
+      return;
+    }
+
+    this.dataSource.data = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'employee': return compare(this.getUserName(a.employeeId), this.getUserName(b.employeeId), isAsc);
+        case 'startDate': return compare(a.date, b.date, isAsc);
+        case 'endDate': return compare(a.endDate, b.endDate, isAsc);
+        case 'type': return compare(a.requestType, b.requestType, isAsc);
+        case 'status': return compare(a.status, b.status, isAsc);
+        default: return 0;
+      }
+    });
+    
+
+    function compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+      return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    }
   }
 
 }
