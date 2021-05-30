@@ -1,0 +1,39 @@
+<form #requestForm="ngForm" (ngSubmit)="submit()">
+
+  <div class="row">
+    <mat-form-field> 
+      <mat-label>Title</mat-label>
+      <input matInput type="text" name="title" required [(ngModel)]="taskCreation.title">
+    </mat-form-field>
+  </div>
+    <div class="row">
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput type="text" name="description" required [(ngModel)]="taskCreation.description"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="fill" >
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepickerFilter]="daysFilter" required [matDatepicker]="startTime" name="startTime" [(ngModel)]="taskCreation.startTime">
+      <mat-datepicker-toggle matSuffix [for]="startTime"></mat-datepicker-toggle>
+      <mat-datepicker #startTime></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Duration (in days)</mat-label>
+      <input matInput type="number" name="duration" required [(ngModel)]="taskCreation.duration">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <app-search-bar class="searchBar" [animate]="false" (onSubmit)="userSelected($event)"></app-search-bar>
+  </div>
+
+  <div class="row">
+    <button mat-raised-button [disabled]="!requestForm.valid" type="submit" >Create Task</button>
+  </div>
+</form>

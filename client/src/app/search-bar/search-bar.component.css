@@ -28,13 +28,13 @@ input[type=search]::content{
 }
 
 input[type=search]:focus {
-    width: 196px !important;
+    width: 296px !important;
     text-indent: 16px;
 }
 
 .search-bar:hover,
 .search-bar:focus {
-  width: 196px !important;
+  width: 296px !important;
 }
 
 .search-bar .search-img {

@@ -1,5 +1,7 @@
 import { Component, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { CreateMeetingComponent } from '../create-meeting/create-meeting.component';
 import { MeetingsTableComponent } from '../meetings-table/meetings-table.component';
 import { Department } from '../_models/department';
 import { Meeting } from '../_models/meetings';
@@ -14,12 +16,11 @@ import { MeetingService } from '../_services/meeting.service';
   styleUrls: ['./meetings.component.css']
 })
 export class MeetingsComponent implements OnInit {
-  meetingCreationModel: Meeting = {};
 
   departments : Department[] = undefined;
 
   constructor(private authService: AuthService, private alertifyService: AlertifyService,
-    private meetingService: MeetingService, private adminService: AdminService) { }
+    private meetingService: MeetingService, private adminService: AdminService, private dialog: MatDialog) { }
     
   @ViewChild("meetingsTable") meetingsTable: MeetingsTableComponent;
   @ViewChild("trainingTable") trainingTable: MeetingsTableComponent;
@@ -43,8 +44,8 @@ export class MeetingsComponent implements OnInit {
     })
   }
 
-  createMeeting() {
-    this.meetingService.createMeeting(this.meetingCreationModel).subscribe(r  => {
+  createMeeting(meeting: Meeting) {
+    this.meetingService.createMeeting(meeting).subscribe(r  => {
       if (r.meetingType == 0)
         this.trainingTable.addNewMeet(r);
       else
@@ -57,6 +58,14 @@ export class MeetingsComponent implements OnInit {
 
   isAdmin() {
     return this.authService.isAdmin();
+  }
+
+  openDialog(){
+      const ref = this.dialog.open(CreateMeetingComponent, {width: 'auto', data: this.departments});
+      ref.afterClosed().subscribe(r => {
+        if (r)
+          this.createMeeting(r);
+      });
   }
 
 }

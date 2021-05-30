@@ -27,11 +27,17 @@ export class SearchBarComponent implements OnInit {
   }
 
   @Output() onSubmit: EventEmitter<number> = new EventEmitter();
+  @Input() animate: boolean = true;
 
   constructor(private userService: UserService, private router: Router,
     private alertify: AlertifyService) { }
 
   ngOnInit() {
+  }
+
+  animateClass(): object {
+    if (this.animate === true) return {}
+    return {'width': '296px'}
   }
 
   filter(str: string) {

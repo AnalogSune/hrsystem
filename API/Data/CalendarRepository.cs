@@ -38,7 +38,7 @@ namespace API.Data
 
         public async Task<bool> AddEntry(CalendarEntryDto calendarEntry)
         {
-            await CorrentDates(calendarEntry);
+            await CorrectDates(calendarEntry);
 
             var entries = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
@@ -67,11 +67,12 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
         
-        private async Task CorrentDates(CalendarEntryDto calendarEntry)
+        private async Task CorrectDates(CalendarEntryDto calendarEntry)
         {
             var prev = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
                 .Where(c => c.Type == calendarEntry.Type)
+                .Where(c => c.ShiftId == calendarEntry.ShiftId)
                 .Where(c => c.EndDate.Date == calendarEntry.StartDate.AddDays(-1).Date)
                 .FirstOrDefaultAsync();
             if (prev != null) calendarEntry.StartDate = prev.StartDate;
@@ -79,6 +80,7 @@ namespace API.Data
             var next = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
                 .Where(c => c.Type == calendarEntry.Type)
+                .Where(c => c.ShiftId == calendarEntry.ShiftId)
                 .Where(c => c.StartDate.Date == calendarEntry.EndDate.AddDays(1).Date)
                 .FirstOrDefaultAsync();
             if (next != null) calendarEntry.EndDate = next.EndDate;
@@ -105,7 +107,7 @@ namespace API.Data
             }
             else if (startOffset > 0 && endOffset <= 0)
             {
-                if (entry2.Type != entry1.Type)
+                if (entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId)
                     entry2.EndDate = entry1.StartDate.AddDays(-1);
                 else
                 {
@@ -115,7 +117,7 @@ namespace API.Data
             }
             else if (startOffset <= 0 && endOffset > 0)
             {
-                if (entry2.Type != entry1.Type)
+                if (entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId)
                     entry2.StartDate = entry1.EndDate.AddDays(1);
                 else
                 {

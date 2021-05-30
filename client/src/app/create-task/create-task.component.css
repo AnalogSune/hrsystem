@@ -1,0 +1,17 @@
+mat-form-field{
+    width: 300px;
+    margin: 10px;
+}
+
+
+
+button{
+    left:50%;
+    margin-top: 10px;
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
+
+.searchBar{
+    margin-left: 10px;
+}

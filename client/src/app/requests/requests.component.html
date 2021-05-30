@@ -4,14 +4,14 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Start Date</mat-label>
-    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="startDate" name="startDay" [(ngModel)]="formModel.startDay">
+    <input matInput [matDatepickerFilter]="daysFilter" [matDatepicker]="startDate" name="startDay" [(ngModel)]="formModel.startDay">
     <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
     <mat-datepicker #startDate></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>End Date</mat-label>
-    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="endDate" name="endDay" [(ngModel)]="formModel.endDay">
+    <input matInput [matDatepickerFilter]="daysFilter" [matDatepicker]="endDate" name="endDay" [(ngModel)]="formModel.endDay">
     <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
     <mat-datepicker #endDate></mat-datepicker>
   </mat-form-field>

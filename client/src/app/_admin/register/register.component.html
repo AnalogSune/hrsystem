@@ -1,82 +1,87 @@
 <div class="container">
-  <form #registerForm="ngForm" (ngSubmit)="register()">
-  <table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
-    <thead >
-        <tr >
-            <th>Email</th>
-            <th><input type="text" name="email" required email [(ngModel)]="user.email"></th>
-        </tr>
-        <tr >
-            <th>Password</th>
-            <th><input type="password" name="password" required [(ngModel)]="user.password" ></th>
-        </tr>
-        <tr >
-            <th>Confirm Password</th>
-            <th><input type="password" name="passConfirm" required [(ngModel)]="passConfirm"></th>
-        </tr>
-        <tr >
-            <th>First Name</th>
-            <th><input type="text" name="fname" required [(ngModel)]="user.fName"></th>
-        </tr>
-        <tr >
-            <th>Last Name</th>
-            <th><input type="text" name="lname" required [(ngModel)]="user.lName"></th>
-        </tr>
-        <tr >
-            <th>Phone Number</th>
-            <th><input type="tel" name="phonenumber" [(ngModel)]="user.phoneNumber"></th>
-        </tr>
-        <tr >
-            <th>Address</th>
-            <th><input type="text" name="address" [(ngModel)]="user.address"></th>
-        </tr>
-        <tr >
-            <th>Is Admin</th>
-            <th><input type="checkbox" name="isadmin" [(ngModel)]="user.isAdmin"></th>
-        </tr>
-        
-        
-        
-        <tr *ngIf="departmentsExist()">
-            <th>Department</th>
-            <select  [(ngModel)]="user.departmentId" name="departmentId"  (ngModelChange)="updateDepartment()">
-                <option *ngFor="let dep of departments | keyvalue" [ngValue]="dep.value.id">{{dep.value.name}}</option>
-            </select>
-        </tr>
-        
-        <tr *ngIf="!departmentsExist()">
-            <th>Department</th>
-            <th>No Departments Available</th>
-        </tr>
+    <form class="registerForm" #registerForm="ngForm" (ngSubmit)="register()">
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput name="email" [(ngModel)]="user.email" email required>
+    </mat-form-field>
 
-        <tr *ngIf="rolesExist()">
-            <th>Role</th>
-            <select  [(ngModel)]="user.roleId" name="roleId">
-                <option *ngFor="let role of roles" [ngValue]="role.id">{{role.roleName}}</option>
-            </select>
-        </tr>
-        
-        <tr *ngIf="!rolesExist()">
-            <th>Role</th>
-            <th>No Roles Available</th>
-        </tr>
-        
-        <tr >
-            <th>Date of Birth</th>
-            <th><input type="date" name="dateofbirth"  [(ngModel)]="user.dateOfBirth"></th>
-        </tr>
-        <tr >
-            <th>Country</th>
-            <th><input type="text" name="country" [(ngModel)]="user.country"></th>
-        </tr>
-        <tr >
-          <th>Nationality</th>
-          <th><input type="text" name="nationality" [(ngModel)]="user.nationality"></th>
-      </tr>
-    </thead>
-    <div class="container ">
-    <button type="submit" class="btn btn-success" [disabled]="!registerForm.valid">Register </button></div>
-  </table>
-</form>
-  
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput name="password" [(ngModel)]="user.password" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Confirm Password</mat-label>
+        <input type="password" matInput name="confirmPassword" [(ngModel)]="passConfirm" required>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="departmentsExist()" appearance="fill" class="col">
+        <mat-label>Department</mat-label>
+        <mat-select name="department" [(ngModel)]="user.departmentId" required  (ngModelChange)="updateDepartment()">
+        <mat-option *ngFor="let dep of departments | keyvalue" [value]="dep.value.id" >{{dep.value.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!departmentsExist()" class="col">
+        <mat-label>Department</mat-label>
+        <input type="text" [disabled]="true" matInput value="No Departments Available!">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="rolesExist()" appearance="fill" class="col">
+        <mat-label>Role</mat-label>
+        <mat-select name="roleId" [(ngModel)]="user.roleId" required>
+        <mat-option *ngFor="let role of roles" [value]="role.id" >{{role.roleName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!rolesExist()" class="col">
+        <mat-label>Role</mat-label>
+        <input type="text" [disabled]="true" matInput value="No Roles Available for this Department!">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>First Name</mat-label>
+        <input #fname maxlength="20" matInput name="fName" [(ngModel)]="user.fName" required>
+        <mat-hint align="end">{{fname.value?.length || 0}}/20</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Last Name</mat-label>
+        <input #lname maxlength="30" matInput name="lName" [(ngModel)]="user.lName" required>
+        <mat-hint align="end">{{lname.value?.length || 0}}/30</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Date of Birth</mat-label>
+        <input name="dateOfBirth" matInput [matDatepicker]="picker" [(ngModel)]="user.dateOfBirth" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Phone Number</mat-label>
+        <input #pnumber maxlength="12" matInput name="phoneNumber" [(ngModel)]="user.phoneNumber" required>
+        <mat-hint align="end">{{pnumber.value?.length || 0}}/12</mat-hint>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Address</mat-label>
+        <input matInput name="address" [(ngModel)]="user.address" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Country</mat-label>
+        <input matInput name="country" [(ngModel)]="user.country" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="col">
+        <mat-label>Nationality</mat-label>
+        <input matInput name="nationality" [(ngModel)]="user.nationality" required>
+    </mat-form-field>
+
+    <p>
+    <button class="col" mat-raised-button type="submit" color="primary" [disabled]="!registerForm.valid">Register </button>
+    </p>
+    </form>
+    
 </div>

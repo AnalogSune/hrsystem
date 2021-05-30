@@ -18,7 +18,7 @@
     
     <ng-container matColumnDef="meetingLink">
       <th mat-header-cell *matHeaderCellDef> Link </th>
-      <td mat-cell *matCellDef="let element"> {{element.meetingLink}} </td>
+      <td mat-cell *matCellDef="let element"><a [routerLink]="" queryParamsHandling="preserve" (click)="openLink(element.meetingLink)"> {{element.meetingLink}} </a> </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

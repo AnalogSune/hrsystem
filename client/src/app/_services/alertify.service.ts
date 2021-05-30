@@ -9,10 +9,10 @@ export class AlertifyService {
 
   constructor() { }
 
-  confirm(message: string, then: () => any) {
+  confirm(message: string, then: () => any, title: string = "Confirm") {
     alertify.confirm(message, (e: any) => {
       then();
-    });
+    }).set({title:title}).set({labels:{ok:'Yes', cancel: 'No'}});;
   }
 
   success(message: string) {

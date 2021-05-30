@@ -55,6 +55,10 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from '@angular/material/card';
 import {MatSortModule} from '@angular/material/sort';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CreateTaskComponent } from './create-task/create-task.component';
+import { CreateMeetingComponent } from './create-meeting/create-meeting.component';
+import { CreateDepartmentComponent } from './_admin/create-department/create-department.component';
 
 export function getToken()
 {
@@ -62,7 +66,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [													
+  declarations: [															
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -73,6 +77,7 @@ export function getToken()
     PostsComponent,
     TimePipe,
     RequestsComponent,
+    CreateDepartmentComponent,
     ShiftsComponent,
     ProfileViewerComponent,
     RegisterComponent,
@@ -83,7 +88,9 @@ export function getToken()
     RecruitmentComponent,
     TasksComponent,
     MeetingsComponent,
-    MeetingsTableComponent
+    MeetingsTableComponent,
+      CreateTaskComponent,
+      CreateMeetingComponent
    ],
   imports: [
     BrowserModule,
@@ -94,6 +101,7 @@ export function getToken()
     MatSortModule,
     MatPaginatorModule,
     MatTabsModule,
+    MatDialogModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,
     MatBadgeModule,

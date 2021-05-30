@@ -1,0 +1,14 @@
+.container{
+    margin-top: 50px;
+    margin-left: 20px;
+  }
+
+mat-form-field{
+    width: 700px;
+}
+
+button.col {
+    margin-top:20px;
+    margin-bottom: 30px;
+    max-width: 200px;
+  }

@@ -1,0 +1,45 @@
+<form #form="ngForm" (submit)="createMeeting()">
+  <p>
+    <mat-form-field appearance="standard">
+    <mat-label>Name</mat-label>
+    <input required [(ngModel)]="meetingCreationModel.description" name="description" cdkTextareaAutosize matInput placeholder="Name">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="fill">
+    <mat-label>Select Department</mat-label>
+    <mat-select required [(ngModel)]="meetingCreationModel.departmentId" name="departmentId" >
+    <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+    </mat-select>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+    <input required [(ngModel)]="meetingCreationModel.date" name="date" matInput type="datetime-local">
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+    <input required [(ngModel)]="meetingCreationModel.durationHours" name="durationHours" matInput type="number">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-radio-group [(ngModel)]="meetingCreationModel.meetingType" name="meetingType" aria-label="Select an option">
+    <mat-radio-button style="margin-right: 10px;" [value]=0 >Training</mat-radio-button>
+    <mat-radio-button [value]=1 >Meeting</mat-radio-button>
+    </mat-radio-group>
+  </p>
+
+  <mat-form-field style="width: 500px;">
+  <mat-label>Meeting Link</mat-label>
+  <input required [(ngModel)]="meetingCreationModel.meetingLink" name="meetingLink" matInput placeholder="Meeting Link">
+  </mat-form-field>
+
+  <section>
+    <button [disabled]="!form.valid" mat-raised-button type="submit">Submit</button>
+  </section>
+
+</form>

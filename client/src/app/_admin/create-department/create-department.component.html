@@ -1,0 +1,8 @@
+
+<form #form="ngForm" (ngSubmit)="close()">
+<mat-form-field style="width: 300px; margin-right: 20px;" appearance="fill">
+  <mat-label>Department Name</mat-label>
+  <input name="depName" [(ngModel)]="departmentname" matInput>
+</mat-form-field>
+<button mat-raised-button class="btn-success" type="submit" >Add Department</button>
+</form>

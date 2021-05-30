@@ -1,29 +1,31 @@
-<mat-form-field appearance="fill">
-  <mat-label>Deadline filter</mat-label>
-  <mat-select [(ngModel)]="searchDto.isOverdue" (ngModelChange)="getTasks()">
-    <mat-option [value]="null">All Tasks</mat-option>
-    <mat-option [value]="true">Overdue</mat-option>
-    <mat-option [value]="false">Ongoing</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="container" style="margin-left: 0 !important;">
+  <div class="row ">
+    <div class="col task-box-search">
+      <mat-form-field appearance="fill">
+        <mat-label>Deadline filter</mat-label>
+        <mat-select [(ngModel)]="searchDto.isOverdue" (ngModelChange)="getTasks()">
+          <mat-option [value]="null">All Tasks</mat-option>
+          <mat-option [value]="true">Overdue</mat-option>
+          <mat-option [value]="false">Ongoing</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-<mat-radio-group aria-label="Select an option"  [(ngModel)]="searchDto.status" (ngModelChange)="getTasks()">
-  <mat-radio-button [value]="null">All</mat-radio-button>
-  <mat-radio-button [value]="0">Active</mat-radio-button>
-  <mat-radio-button [value]="1">Completed</mat-radio-button>
-</mat-radio-group>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="searchDto.status" (ngModelChange)="getTasks()">
+        <mat-radio-button [value]="null" style="margin-left: 10px;">All</mat-radio-button>
+        <mat-radio-button [value]="0">Active</mat-radio-button>
+        <mat-radio-button [value]="1">Completed</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    
+    <div class="col">
+      <button class="createTaskButton" *ngIf="isAdmin()" mat-raised-button (click)="openDialog()">Add New Task</button>
+    </div>
+  </div>
+</div>
 
-<form *ngIf="isAdmin()" #requestForm="ngForm" (ngSubmit)="submit()">
-  <input class="form-control" type="text" name="title" required [(ngModel)]="taskCreation.title">
-  <input class="form-control" type="text" name="description" required [(ngModel)]="taskCreation.description">
-  <input class="form-control" type="date" name="startTime" required [(ngModel)]="taskCreation.startTime">
-  <input class="form-control" type="number" name="duration" required [(ngModel)]="taskCreation.duration">
-  <app-search-bar (onSubmit)="userSelected($event)"></app-search-bar>
-  <button [disabled]="!requestForm.valid" type="submit" >Submit Request</button>
-</form>
 
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let task of tasks">
+  <mat-expansion-panel *ngFor="let task of tasks" class="tasks-container">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Task: {{task.title}} {{'&emsp;'}} Employee: {{task.employee.fName}} {{task.employee.lName}}{{'&emsp;'}}
@@ -47,7 +49,7 @@
     <mat-form-field style="width: 500px;">
       <textarea cdkTextareaAutosize matInput #textArea placeholder="Subtask Description"></textarea>
     </mat-form-field>
-      <button mat-raised-button (click)="addSubtask(textArea.value, task)"><i class="fa fa-plus"></i> Add Subtask</button>
+      <button class="addSubButton" mat-raised-button (click)="addSubtask(textArea.value, task)"><i class="fa fa-plus"></i> Add Subtask</button>
     </div>
     <mat-selection-list #subTasks (selectionChange)="completeSubTask($event.option._value)">
       <mat-list-option [disabled]="subTask.status==1" [selected]="subTask.status==1" [value]="subTask" *ngFor="let subTask of task.subTasks">

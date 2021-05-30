@@ -49,8 +49,9 @@ export class RequestsComponent implements OnInit {
     }
   }
 
-  myFilter = (d: Date | null): boolean => {
-    return d.getDate() >= (new Date().getDate());
+  daysFilter = (d: Date | null): boolean => {
+    if (d == null) return false;
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1) >= (new Date());
   }
 
   submit()
@@ -63,7 +64,8 @@ export class RequestsComponent implements OnInit {
 
     let endDate = new Date(this.formModel.endDay);
     let startDate = new Date(this.formModel.startDay);
-
+    endDate.setMinutes(-endDate.getTimezoneOffset());
+    startDate.setMinutes(-startDate.getTimezoneOffset());
     let diff =  (endDate.getFullYear() - startDate.getFullYear()) * 365 + 
                 (endDate.getMonth() - startDate.getMonth()) * 30 + 
                 (endDate.getDate() - startDate.getDate()) + 1;
@@ -83,11 +85,13 @@ export class RequestsComponent implements OnInit {
 
     const requestDto: Request = {
       employeeId: this.authService.getUserId(),
-      date: new Date(this.formModel.startDay),
-      endDate: new Date(this.formModel.endDay),
+      date: new  Date(startDate),
+      endDate: new  Date(endDate),
       requestType:this.formModel.requestType,
       status: 0
     };
+
+    console.log(requestDto);
     
     this.requestService.makeRequest(requestDto).subscribe(next => {
       this.alertify.success('Request made successfully!');

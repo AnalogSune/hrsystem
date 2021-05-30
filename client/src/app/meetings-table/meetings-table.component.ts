@@ -7,6 +7,7 @@ import { MeetingService } from '../_services/meeting.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
+import { UrlResolver } from '@angular/compiler';
 
 @Component({
   selector: 'app-meetings-table',
@@ -52,6 +53,14 @@ export class MeetingsTableComponent implements OnInit {
     }, error => {
       this.alertifyService.error("unable to retrieve meetings", error);
     })
+  }
+
+  openLink(link: string) {
+    if (!link.startsWith('http'))
+    {
+      link = 'http://' + link;
+    }
+    window.open(link, "_blank");
   }
 
 }

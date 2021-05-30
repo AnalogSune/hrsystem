@@ -20,7 +20,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button [routerLink]="['/profile']" [queryParams]="{userId: user.id}">PROFILE</button>
-      <button mat-raised-button color="warn" *ngIf="isAdmin() && !isUser(user.id)"(click)="deleteUser(user.id)">DELETE</button>
+      <button mat-raised-button color="warn" *ngIf="isAdmin() && !isUser(user.id)"(click)="confirmDelete(user.id)">DELETE</button>
     </mat-card-actions>
   </mat-card>
 </div>

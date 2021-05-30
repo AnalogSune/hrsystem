@@ -68,4 +68,10 @@ export class CompanyComponent implements OnInit {
     });
   }
 
+  confirmDelete(id: number){
+    this.alertify.confirm("Are you sure you want to delete this user?", () =>{
+      this.deleteUser(id)
+    })
+  }
+
 }

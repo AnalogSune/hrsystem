@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { config } from 'rxjs';
+import { CreateTaskComponent } from '../create-task/create-task.component';
 import { SubTask, SubTaskCreationDto, Task, TaskCreationDTO, TaskSearchDto } from '../_models/tasks';
 import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
@@ -11,12 +14,11 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent implements OnInit {
-  taskCreation: TaskCreationDTO = {};
   subTaskCreation: SubTaskCreationDto = {};
   tasks: Task[] = undefined;
   searchDto: TaskSearchDto = {status:null, isOverdue:null};
 
-  constructor(private authService: AuthService, private taskService: TaskService,private alertifyService: AlertifyService) { }
+  constructor(private authService: AuthService, private taskService: TaskService,private alertifyService: AlertifyService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getTasks();
@@ -64,10 +66,6 @@ export class TasksComponent implements OnInit {
     return this.authService.isAdmin();
   }
 
-  userSelected(event) {
-    this.taskCreation.employeeId = event;
-  }
-
   completeSubTask(subtask: SubTask) {
     console.log(subtask.id);
     if (subtask.status != 0) return;
@@ -99,14 +97,26 @@ export class TasksComponent implements OnInit {
     })
   }
 
-  submit() {
-    if (!this.taskCreation.employeeId) {this.alertifyService.error('Select an employee!'); return;}
-    this.taskService.createTask(this.taskCreation).subscribe(t => {
+  submit(task: TaskCreationDTO) {
+    if (!task.employeeId) {this.alertifyService.error('Select an employee!'); return;}
+    this.taskService.createTask(task).subscribe(t => {
       this.alertifyService.success('Task Created!');
       this.tasks.push(t);
     }, error => {
       this.alertifyService.error('Unable to create task', error);
     })
+  }
+
+  openDialog() {
+    const ref = this.dialog.open(CreateTaskComponent, {width: 'auto'});
+    ref.afterClosed().subscribe(r => {
+      this.submit(r);
+    });
+  }
+
+  daysFilter = (d: Date | null): boolean => {
+    if (d == null) return false;
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1) >= (new Date());
   }
 
 }
