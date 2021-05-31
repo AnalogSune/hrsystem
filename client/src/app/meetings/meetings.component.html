@@ -1,4 +1,4 @@
-<button class="newMeetingButton" mat-raised-button (click)="openDialog()">Create New Meeting</button>
+<button *ngIf="isAdmin()" class="newMeetingButton" mat-raised-button (click)="openDialog()">Create New Meeting</button>
 
 <mat-tab-group class="meetingTable">
   <mat-tab label="Trainings"> 

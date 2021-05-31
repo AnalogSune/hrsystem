@@ -1,16 +1,7 @@
-<nav class="hr-nav">
+<nav class="hr-nav bgCol-dark">
         <a class="hr-nav-item" href="#">HR System</a>
         <app-search-bar class="hr-nav-item" (onSubmit)="submit($event)"></app-search-bar>
         <div class="hr-nav-item-right" >
-            <div class="dropdown" dropdown>
-              <span class="mr-1">
-              </span>
-              <a class="dropdown-toggle" style="font-size: 140%;" dropdownToggle>
-                My profile {{email()}}
-              </a>
-              <div class="dropdown-menu mt-3" *dropdownMenu>
-                <a class="dropdown-item" (click)="logout()" style="color: black;"><i class="fa fa-sign-out mr-1"></i>Logout</a>
-              </div>
-            </div>
+          <a class="logoutBtn" (click)="logout()" style="color: white;"><i class="fa fa-sign-out mr-1"></i>Logout</a>
         </div>
 </nav>

@@ -19,8 +19,11 @@ export class PostsComponent implements OnInit {
   }
 
   submitPost() {
+    if (this.postContent)
     this.adminService.makePost({publisherid: this.authService.getCurrentUser().id, content: this.postContent}).subscribe(next => {
       this.getPosts();
+      this.postContent = ""
+      this.alertify.success("New post was added");
     }, error => {
       this.alertify.error('Unable to post message!', error);
     })

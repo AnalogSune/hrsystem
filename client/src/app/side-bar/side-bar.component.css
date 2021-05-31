@@ -1,14 +1,6 @@
 .rightbar {
-    /* width: 200px;
-    position:absolute;
-    left: 0;
-    background-color:rgb(66, 66, 66);
-    min-height: 100%; */
     display:flex;
     flex-direction: column;
-    /* background: none repeat scroll 0 0 rgb(231, 231, 226);
-    flex-direction: column;
-    flex: auto; */
 }
 .rightbar a {
     color: white;
@@ -17,7 +9,6 @@
     text-decoration: none;
 }
 .rightbar div {
-    background-color: rgb(38, 37, 48);
     margin: auto;
     width: 100%;
     border-bottom: 1px solid rgb(22, 22, 27);
@@ -27,8 +18,8 @@
     -moz-transition:all 0.3s ease;
     -o-transition:all 0.3s ease;     
     transition:all 0.3s ease;
-    color: rgb(184, 179, 179);
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(255, 255, 255);
+    font-family:Questrial;
     font-size: medium;
 }
 

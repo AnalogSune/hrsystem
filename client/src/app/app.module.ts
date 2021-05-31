@@ -59,6 +59,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { CreateMeetingComponent } from './create-meeting/create-meeting.component';
 import { CreateDepartmentComponent } from './_admin/create-department/create-department.component';
+import { CreateShiftComponent } from './_admin/create-shift/create-shift.component';
+import { RecruitmentAdminnotesComponent } from './_admin/recruitment-adminnotes/recruitment-adminnotes.component';
+import { RecruitmentCoverletterComponent } from './_admin/recruitment-coverletter/recruitment-coverletter.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export function getToken()
 {
@@ -66,10 +72,12 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [															
+  declarations: [																
     AppComponent,
     NavComponent,
     SideBarComponent,
+    RecruitmentCoverletterComponent,
+    RecruitmentAdminnotesComponent,
     HomeComponent,
     SearchBarComponent,
     LoginPageComponent,
@@ -87,19 +95,23 @@ export function getToken()
     CvComponent,
     RecruitmentComponent,
     TasksComponent,
+    CreateShiftComponent,
     MeetingsComponent,
     MeetingsTableComponent,
       CreateTaskComponent,
-      CreateMeetingComponent
+      CreateMeetingComponent,
+      ChangePasswordComponent
    ],
   imports: [
     BrowserModule,
     MatTooltipModule,
     AppRoutingModule,
     MatSelectModule,
+    ReactiveFormsModule,
     ClipboardModule,
     MatSortModule,
     MatPaginatorModule,
+    MatGridListModule,
     MatTabsModule,
     MatDialogModule,
     MatDatepickerModule,

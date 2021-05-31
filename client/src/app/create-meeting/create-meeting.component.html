@@ -1,8 +1,8 @@
 <form #form="ngForm" (submit)="createMeeting()">
   <p>
     <mat-form-field appearance="standard">
-    <mat-label>Name</mat-label>
-    <input required [(ngModel)]="meetingCreationModel.description" name="description" cdkTextareaAutosize matInput placeholder="Name">
+    <mat-label>Description</mat-label>
+    <input required [(ngModel)]="meetingCreationModel.description" name="description" cdkTextareaAutosize matInput placeholder="Description">
     </mat-form-field>
   </p>
 
@@ -17,11 +17,13 @@
 
   <p>
     <mat-form-field>
+    <mat-label>Date</mat-label>
     <input required [(ngModel)]="meetingCreationModel.date" name="date" matInput type="datetime-local">
     </mat-form-field>
   </p>
   <p>
     <mat-form-field>
+    <mat-label>Duration (hours)</mat-label>
     <input required [(ngModel)]="meetingCreationModel.durationHours" name="durationHours" matInput type="number">
     </mat-form-field>
   </p>

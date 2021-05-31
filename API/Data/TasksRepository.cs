@@ -65,10 +65,18 @@ namespace API.Data
 
         public async Task<bool> CompleteSubTask(int taskId)
         {
-            var newTask = await _context.SubTasks.Where(t => t.Id == taskId).FirstOrDefaultAsync();
+            var newTask = await _context.SubTasks
+                .Where(t => t.Id == taskId)
+                .FirstOrDefaultAsync();
+
             newTask.Status = TaskStatus.Completed;
-            var tsk = await _context.Tasks.Where(t => t.Id == newTask.TasksId).Include(t => t.SubTasks).FirstOrDefaultAsync();
+
+            var tsk = await _context.Tasks
+                .Where(t => t.Id == newTask.TasksId)
+                .Include(t => t.SubTasks).FirstOrDefaultAsync();
+
             TaskStatus status = TaskStatus.Completed;
+
             foreach (var st in tsk.SubTasks)
             {
                 if (st.Status == TaskStatus.InProgress)
@@ -77,6 +85,7 @@ namespace API.Data
                     break;
                 }
             }
+            
             tsk.Status = status;
             return (await _context.SaveChangesAsync()) > 0;
         }

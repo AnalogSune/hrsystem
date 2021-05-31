@@ -19,7 +19,7 @@
       <p><b>Department: </b>{{user?.inDepartment?.name || 'No department'}} - {{user?.role?.roleName || 'No role'}}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button [routerLink]="['/profile']" [queryParams]="{userId: user.id}">PROFILE</button>
+      <button mat-raised-button color="primary" [routerLink]="['/profile']" [queryParams]="{userId: user.id}">PROFILE</button>
       <button mat-raised-button color="warn" *ngIf="isAdmin() && !isUser(user.id)"(click)="confirmDelete(user.id)">DELETE</button>
     </mat-card-actions>
   </mat-card>

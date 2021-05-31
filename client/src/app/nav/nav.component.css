@@ -1,4 +1,4 @@
-.dropdown-toggle, .dropdown-item {
+.dropdown-toggle, .logoutBtn {
     cursor: pointer;
 }
 
@@ -12,7 +12,6 @@
 
 .hr-nav a {
   color: aliceblue;
-  font-weight: bold;
   font-size: large;
   transition: all .3s;
 }
@@ -26,6 +25,7 @@
   margin-left: 25px;
   align-self: center;
   justify-self: left;
+  font-family: Questrial;
 }
 
 .hr-nav .hr-nav-item-right {

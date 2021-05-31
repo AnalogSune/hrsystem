@@ -29,7 +29,6 @@ namespace API.Data
 
         public async Task<Department> CreateDepartment(DepartmentDto department)
         {
-            // await _context.Roles.AddRangeAsync(department.DepartmentRoles);
             Department newDepartment = _mapper.Map<Department>(department);
             await _context.Departments.AddAsync(newDepartment);
 

@@ -1,24 +1,39 @@
-<ng-template [ngIf]="cvs!=undefined" [ngIfElse]="loading">
-  <table class="table table-bordered m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
-    <thead >
-      <tr >
-        <th>Name</th>
-        <th>Email</th>
-        <th>Cover Letter</th>
-        <th>Notes</th>
-        <th>CV File</th>
-        <th></th>
-      </tr>
-      <tr *ngFor="let cv of cvs" >
-        <th >{{cv.fname}} {{cv.lname}}</th>
-        <th >{{cv.email}}</th>
-        <th style="word-wrap: break-word; max-width: 300px;">{{cv.coverLetter}}</th>
-        <th><textarea name="" [(ngModel)]="cv.adminNote" cols="30" rows="10"></textarea></th>
-        <th><button class="btn btn-success" (click)="downloadCV(cv.fileUrl)"><i class="fa fa-download"></i></button></th>
-        <button (click)="updateCV(cv)">Update</button>
-        <button (click)="deleteCV(cv.id)">Delete</button>
-      </tr>
-    </thead>
-  </table>
+<ng-template [ngIf]="dataSource!=undefined" [ngIfElse]="loading">
+  <div class="mat-elevation-z8" >
+    <table matSort (matSortChange)="sortData($event)" mat-table [dataSource]="dataSource" style="width: 100%;">
+  
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fname}} {{element.lname}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="cover">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CoverLetter </th>
+        <td mat-cell *matCellDef="let element"><button   mat-raised-button type="button"  (click)="openCoverDialog(element.coverLetter)">View Cover Letter</button></td>
+      </ng-container>
+      
+      <ng-container matColumnDef="notes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Notes </th>
+        <td mat-cell *matCellDef="let element"><button   mat-raised-button type="button"  (click)="openNotesDialog(element.adminNote, element)">Edit Notes</button></td>
+      </ng-container>
+  
+      <ng-container matColumnDef="cvFile">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+        <td mat-cell *matCellDef="let element"><button class="btn btn-success" mat-raised-button type="button" (click)="downloadCV(element.fileUrl)"><i class="fa fa-download"></i></button> 
+        <button mat-raised-button type="button" class="deleteButton" color="warn" (click)="deleteCV(element.id)">Delete</button> </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+  
 </ng-template>
 <ng-template #loading><mat-spinner class="spinner"></mat-spinner></ng-template>

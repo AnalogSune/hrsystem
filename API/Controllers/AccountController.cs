@@ -62,7 +62,7 @@ namespace API.Controllers
         public async Task<IActionResult> ChangePassword(int id, string password)
         {
 
-            if (User.IsAdmin())
+            if (User.IsAdmin() || User.GetId() == id)
             {
                 return Ok(await _authRepository.ChangePassword(id, password));
             }

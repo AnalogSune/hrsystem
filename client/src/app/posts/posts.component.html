@@ -1,14 +1,19 @@
+
 <div class="post-container">
-  <div *ngFor="let post of this.postsMade" >
-    <div class="post">
-      {{post.content}}
+    <div *ngFor="let post of this.postsMade" class="post-cont-small" >
+      <div class="post">
+        {{post.content}}
+      </div>
       <div class="post-info">{{post.publisherName || "Unnamed"}}: {{post.timeCreated | time}}</div>
     </div>
-  </div>
 </div>
 <div *ngIf="isAdmin()" class="make-post-container">
-  <form class="mt-2" (ngSubmit)="this.submitPost()">  
-    <textarea type="text" placeholder="Write a post" name="content" [(ngModel)]="this.postContent"></textarea>
-    <button type="submit" class="ml-2">POST</button>
+  <form #postForm="ngForm" class="mt-2" (ngSubmit)="this.submitPost()">  
+    <mat-form-field>
+      <mat-label>Make a post</mat-label>
+      <textarea #postContentElm maxlength="250" class="textarea" name="postContent" [(ngModel)]="this.postContent" matInput required></textarea>
+      <mat-hint align="end">{{postContentElm.value?.length || 0}}/250</mat-hint>
+    </mat-form-field>
+    <button [disabled]="!postForm.valid" class="postbtn" mat-raised-button type="submit">POST</button>
   </form>
 </div>

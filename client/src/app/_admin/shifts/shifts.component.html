@@ -1,26 +1,24 @@
 
 <ng-template [ngIf]="shifts!=undefined" [ngIfElse]="loading">
-<form #shiftForm="ngForm"  (ngSubmit)="submit()">
-Name<input type="text" name="name" [(ngModel)]="newShift.name" required>
-Start Time<timepicker name="startTime" [(ngModel)]="newShift.startTime" required></timepicker>
-Duration<input type="number" name="duration" [(ngModel)]="newShift.duration" min="1" required>
-<button type="submit" class="btn btn-success" [disabled]="!shiftForm.valid">Register </button>
-</form>
-<table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
-    <thead>
-      <tr>
-          <th>Name</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-      </tr>
-      <tr *ngFor="let shift of shifts">
-        <th>{{shift.name}}</th>
-        <th>{{shift.startTime | date: 'HH:mm'}}</th>
-        <th>{{shift.endTime | date: 'HH:mm'}}</th>
-        <th><button (click)="deleteShift(shift.id)">Delete</button></th>
-    </tr>
-    </thead>
-</table>
+    <button mat-raised-button type="button" class="create-btn" (click)="openDialog()">Create Shift</button>
+    <table class="table table-striped table-borderless" style="max-width: 500px !important;" >
+        <thead class="thead-light">
+          <tr>
+            <th>Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="shifts != undefined">
+            <tr *ngFor="let shift of shifts">
+                <th  class="align-middle">{{shift.name}}</th>
+                <th  class="align-middle">{{shift.startTime | date: 'HH:mm'}}</th>
+                <th  class="align-middle">{{shift.endTime | date: 'HH:mm'}}</th>
+                <th  class="align-middle"><button mat-raised-button color="warn" (click)="deleteShift(shift.id)">Delete</button></th>
+            </tr>
+        </tbody>
+      </table>
 
 </ng-template>
 

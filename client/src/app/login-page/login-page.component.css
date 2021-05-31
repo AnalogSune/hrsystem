@@ -57,6 +57,10 @@
     border-top-right-radius: 10px;
 }
 
+mat-form-field{
+    width: 250px;
+}
+
 .window-item {
     flex: auto;
     max-height: 40px;
@@ -64,29 +68,8 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-input {
-    background: transparent;
-    background-color: rgba(228, 226, 224, 0);
-    box-shadow: 0px 1px black;
-    color: rgb(67, 64, 71);
-    border-radius: 0px;
-    border: 0px;
-    width: 100%;
-    height: 40%;
-    margin-top: -10px;
-}
-
 button[type=submit] {
     border-radius: 100px !important;
     margin-top: 30px;
     width: 90%;
-}
-
-input:focus {
-    border: 2px solid rgb(255, 239, 21) !important;
-    outline: none;
-}
-textarea:focus {
-    border: 0px;
-    outline: none;
 }

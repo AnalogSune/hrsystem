@@ -1,17 +1,9 @@
 <ng-template class="container" [ngIf]="updateUser!= undefined" [ngIfElse]="loading">
-
-    
-<form (ngSubmit)="changePassword(updateUser.id)" #form="ngForm">
-    <button *ngIf="isAdmin()" [disabled]="!form.valid || !form.dirty" type="submit">Change Password</button>
-    <input *ngIf="isAdmin()" name="pass" minlength="6" type="password" [(ngModel)]="password">
-</form>
-    
-
 <img *ngIf="updateUser.pictureUrl==undefined" class="" style="width: 220px; height: 220px;" src="../../assets/user.png" alt="OOps">
 <img *ngIf="updateUser.pictureUrl!=undefined" class="" style="width: 220px; height: 220px;" src={{updateUser.pictureUrl}} alt="OOps">
 
 <input #fileUpload type="file" class="file-upload" style="display: none;" (change)="uploadPhoto($event)">
-<button id="change_profile_btn" *ngIf="isUser()" (click)="fileUpload.click()" class="fa fa-camera fa-fw mr-1"></button>
+<button id="change_profile_btn" *ngIf="isUser()" (click)="fileUpload.click()" class="fa fa-camera fa-fw mr-1 bgCol-light"></button>
 
 <div class="container">
     <form #userForm="ngForm" (ngSubmit)="saveChanges()">
@@ -79,6 +71,9 @@
     </p>
     </form>
     
+    <p *ngIf="isAdmin() || isUser()">
+    <button type="button" mat-raised-button (click)="openDialog(updateUser.id)">Change Password</button>
+    </p>
 </div>
 
 </ng-template>

@@ -81,6 +81,12 @@ namespace API.Data
             builder.Entity<Department>()
                 .HasIndex(r => r.Name)
                 .IsUnique();
+
+            builder.Entity<CalendarEntry>()
+                .HasOne(w => w.Shift)
+                .WithMany()
+                .HasForeignKey(w => w.ShiftId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

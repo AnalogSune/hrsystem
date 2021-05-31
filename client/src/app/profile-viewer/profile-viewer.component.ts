@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, } from '@angular/router';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { AppUser, UserUpdate } from '../_models/appuser';
 import { Department, Role } from '../_models/department';
 import { AdminService } from '../_services/admin.service';
@@ -15,13 +17,13 @@ import { UserService } from '../_services/user.service';
 export class ProfileViewerComponent implements OnInit {
 
   updateUser: UserUpdate = {};
-  password: string;
   departments: Map<number, Department> = new Map<number, Department>();
   userDepartmentId: number = -1;
   userRoleId: number = -1;
 
   constructor(private authService: AuthService, private userService: UserService,
-    private routerParams: ActivatedRoute, private adminService: AdminService, private alertify: AlertifyService) { }
+    private routerParams: ActivatedRoute, private adminService: AdminService, private alertify: AlertifyService,
+    private dialog: MatDialog) { }
 
   public get roles(): Role[] {
     return this.departments.get(this.updateUser.departmentId)?.departmentRoles;
@@ -92,8 +94,8 @@ export class ProfileViewerComponent implements OnInit {
     });
   }
 
-  changePassword(id: number) {
-    this.adminService.changePassword(id, this.password).subscribe(next => {
+  changePassword(id: number, pass: string) {
+    this.adminService.changePassword(id, pass).subscribe(next => {
       this.alertify.success('Password changed successfully!');
     }, error => {
       this.alertify.error('Unable to change password!', error);
@@ -129,6 +131,14 @@ export class ProfileViewerComponent implements OnInit {
       this.alertify.success("User Updated!");
     }, error => {
       this.alertify.error("Could not Update user!");
+    })
+  }
+
+  openDialog(userId: number) {
+    const ref = this.dialog.open(ChangePasswordComponent);
+    ref.afterClosed().subscribe(r => {
+      if (r)
+        this.changePassword(userId, r);
     })
   }
 }

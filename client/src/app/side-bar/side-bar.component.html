@@ -1,15 +1,15 @@
 
-<div class="rightbar" id="rightMenu">
-  <a [routerLink]="['/home']"><div><i class="fa fa-home fa-fw mr-1"></i>DASHBOARD</div></a>
-  <a [routerLink]="['/calendar']"><div><i class="fa fa-calendar fa-fw mr-1"></i>CALENDAR</div></a>
-  <a [routerLink]="['/profile']"><div><i class="fa fa-user fa-fw mr-1"></i>MY PROFILE</div></a>
-  <a [routerLink]="['/company']"><div><i class="fa fa-users fa-fw mr-1"></i>COMPANY</div></a>
-  <a [routerLink]="['/documents']"><div><i class="fa fa-folder-open fa-fw mr-1"></i>DOCUMENTS</div></a>
-  <a [routerLink]="['/requests']"><div><i class="fa fa-plane fa-fw mr-1"></i>REQUESTS</div></a>
-  <a [routerLink]="['/tasks']"><div><i class="fa fa-tasks fa-fw mr-1"></i>TASKS</div></a>
-  <a [routerLink]="['/meetings']"><div><i class="fa fa-exclamation-circle fa-fw mr-1"></i>MEETINGS</div></a>
-  <a *ngIf="isAdmin()" [routerLink]="['/admin/register']"><div><i class="fa fa-plus fa-fw mr-1"></i>REGISTER</div></a>
-  <a *ngIf="isAdmin()" [routerLink]="['/admin/departments']"><div><i class="fa fa-building fa-fw mr-1"></i>DEPARTMENTS</div></a>
-  <a *ngIf="isAdmin()" [routerLink]="['/admin/shifts']"><div><i class="fa fa-history fa-fw mr-1"></i>SHIFTS</div></a>
-  <a *ngIf="isAdmin()" [routerLink]="['/admin/recruitment']"><div><i class="fa fa-user-plus fa-fw mr-1"></i>RECRUITMENT</div></a>
+<div class="rightbar bgCol-dark" id="rightMenu">
+  <a [routerLink]="['/home']"><div><i class="fa fa-home fa-fw mr-1"></i>Dashboard</div></a>
+  <a [routerLink]="['/calendar']"><div><i class="fa fa-calendar fa-fw mr-1"></i>Calendar</div></a>
+  <a [routerLink]="['/profile']"><div><i class="fa fa-user fa-fw mr-1"></i>My Profile</div></a>
+  <a [routerLink]="['/company']"><div><i class="fa fa-users fa-fw mr-1"></i>Company</div></a>
+  <a [routerLink]="['/documents']"><div><i class="fa fa-folder-open fa-fw mr-1"></i>Documents</div></a>
+  <a [routerLink]="['/requests']"><div><i class="fa fa-plane fa-fw mr-1"></i>Requests</div></a>
+  <a [routerLink]="['/tasks']"><div><i class="fa fa-tasks fa-fw mr-1"></i>Tasks</div></a>
+  <a [routerLink]="['/meetings']"><div><i class="fa fa-exclamation-circle fa-fw mr-1"></i>Meetings</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/register']"><div><i class="fa fa-plus fa-fw mr-1"></i>Register</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/departments']"><div><i class="fa fa-building fa-fw mr-1"></i>Departments</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/shifts']"><div><i class="fa fa-history fa-fw mr-1"></i>Shifts</div></a>
+  <a *ngIf="isAdmin()" [routerLink]="['/admin/recruitment']"><div><i class="fa fa-user-plus fa-fw mr-1"></i>Recruitment</div></a>
 </div>

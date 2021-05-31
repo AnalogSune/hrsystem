@@ -404,7 +404,8 @@ namespace API.Data.Migrations
                 {
                     b.HasOne("API.Entities.WorkShift", "Shift")
                         .WithMany()
-                        .HasForeignKey("ShiftId");
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Shift");
                 });

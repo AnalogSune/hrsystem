@@ -1,39 +1,60 @@
 .post-container {
-    min-height: 250px;
+    min-height: 79%;
     min-width: 400px;
-    margin: 5px;
+    margin: 15px;
+    margin-top: 25px;
     border-radius: 6px;
     border: 1px solid rgba(102, 97, 117, 0.39);
-    max-height: 200px;
+    max-height: 80%;
     display: block;
     overflow:auto;
-    max-width: 120px;
+    height: auto;
     word-wrap: break-word;
+    background-color: rgba(255, 255, 255, 0.514);
 }
 
 .post {
-    box-shadow: 0px 1px rgba(0, 0, 0, 0.178);
     user-select: none;
     text-align: center;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-overflow:clip;
+    display: block;
+    min-height: 70px;
+}
+
+.post-cont-small{
+    box-shadow: 0px 1px rgba(0, 0, 0, 0.178);
 }
 
 .post-info {
     font-size: smaller;
     font-family: 'Courier New', Courier, monospace;
     color:rgb(82, 104, 104);
+    text-align: center;
 }
 
-.post:hover {
-    background-color: rgb(221, 221, 187);
+.post-cont-small:hover {
+    background-color: rgba(209, 209, 198, 0.192);
 }
 
 .make-post-container {
     min-height: 80px;
     min-width: 400px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+}
+
+mat-form-field {
+    width: 80%;
+    margin-left:20px;
+}
+
+.textarea{
+    float: left;
+    resize: none;
+    height: 50px;
+}
+
+.postbtn{
+    margin-top: 10px !important;
+    margin-left: 40px;
 }

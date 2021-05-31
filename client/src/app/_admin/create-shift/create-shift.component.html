@@ -1,0 +1,17 @@
+<form #shiftForm="ngForm"  (ngSubmit)="submit()" [formGroup]="shiftFormGroup">
+  <mat-form-field style="width: 300px; margin-right: 20px;" appearance="fill">
+    <mat-label>Shift Name</mat-label>
+    <input type="text" name="name" [(ngModel)]="newShift.name" required matInput formControlName="name">
+  </mat-form-field>
+  
+  <mat-form-field style="width: 300px; margin-right: 20px;" appearance="fill">
+    <mat-label>Start Time</mat-label>
+    <input type="time" name="startTime" [(ngModel)]="shiftTime" formControlName="startTime" required matInput>
+  </mat-form-field>
+  
+  <mat-form-field style="width: 300px; margin-right: 20px;" appearance="fill">
+    <mat-label>Duration</mat-label>
+    <input type="number" name="duration" step="1" [(ngModel)]="newShift.duration" formControlName="durationControl" required matInput>
+  </mat-form-field>
+  <button mat-raised-button type="submit" class="btn btn-success" [disabled]="!shiftForm.valid">Create</button>
+</form>

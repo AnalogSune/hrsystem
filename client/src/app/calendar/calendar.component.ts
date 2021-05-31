@@ -76,6 +76,7 @@ export class CalendarComponent implements OnInit {
     calendarColorsBg: string[] = ['workColor-bg', 'doColor-bg', 'wfhColor-bg', 'sdColor-bg', 'selColor-bg']
 
     @Input() view: 'week' | 'month' = 'month';
+    @Input() maxHeight: string = undefined;
 
     public get _view() {
         return this.view
@@ -122,6 +123,11 @@ export class CalendarComponent implements OnInit {
         });
         this.updateDates();
         this.getShifts();
+        if (!this.maxHeight)
+            if (!this.isAdmin())
+                this.maxHeight="75vh";
+            else
+                this.maxHeight="60vh";
     }
 
     isAdmin() {

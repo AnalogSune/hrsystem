@@ -60,6 +60,9 @@ namespace API.Data
             {
                 await CalculateEntries(calendarEntry, entries[i]);
             }
+
+            if (calendarEntry.Type == CalendarType.SickDay || calendarEntry.Type == CalendarType.DayOff)
+                calendarEntry.ShiftId = null;
             
             if (calendarEntry.CreateNewEntry)
                 await _context.Calendar.AddAsync(_mapper.Map<CalendarEntry>(calendarEntry));

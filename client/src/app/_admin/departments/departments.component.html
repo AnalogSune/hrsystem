@@ -38,37 +38,5 @@
     </tbody>
   </table>
 
-  <!-- <div class="container">
-<div class="container row">
-  <div class="row">Departments</div>
-  <div class="dropdown row ml-5" dropdown>
-    <span class="mr-1">
-    </span>
-    <a class="dropdown-toggle" style="font-size: 140%;" dropdownToggle>
-      <div *ngIf="department != undefined">{{department.name || ""}}</div>
-    </a>
-    <button type="button" class="btn btn-success row ml-2" (click)="deleteDepartment()">Delete</button>
-    <div class="dropdown-menu mt-3" *dropdownMenu>
-      <a *ngFor="let d of departments" class="dropdown-item" (click)="selectedDepartment(d)" style="color: black;"><i class="fa fa-user mr-1"></i>{{d.name}}</a>
-    </div>
-  </div>
-</div>
-<table class="table table-bordered" style="background-color: rgba(255, 255, 255, 0.192);">
-  <thead *ngIf="department != undefined">
-      <tr *ngFor="let role of department.departmentRoles">
-        <th>{{role.roleName}}</th>
-        <th><button type="button" class="btn btn-success row mr-5" (click)="deleteRole(role.id)">Delete</button></th>
-      </tr>
-  </thead>
-  <div class="container row ml-1">
-    <button type="button" class="btn btn-success row mr-5" (click)="addDepartment()">Add Department</button>
-  <input type="text" name="name" [(ngModel)]="departmentname">
-  </div>
-  <div class="container row ml-1">
-    <button type="button" class="btn btn-success row mr-5" (click)="addRole()">Add Role</button>
-  <input type="text" name="name" [(ngModel)]="rolename">
-  </div>
-</table>
-</div> -->
 </ng-template>
 <ng-template #loading><mat-spinner class="spinner"></mat-spinner></ng-template>

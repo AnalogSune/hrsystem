@@ -24,8 +24,7 @@ namespace API.Entities
         public DateTime EndDate { get; set; }
 
         public CalendarType Type { get; set; }
-
-        [ForeignKey("WorkShift")]
+    
         public int? ShiftId { get; set; }
         
         public WorkShift Shift { get; set; }

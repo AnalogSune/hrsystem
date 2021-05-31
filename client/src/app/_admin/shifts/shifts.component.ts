@@ -1,8 +1,10 @@
 import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Shift } from 'src/app/_models/shift';
 import { AdminService } from 'src/app/_services/admin.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
+import { CreateShiftComponent } from '../create-shift/create-shift.component';
 
 @Component({
   selector: 'app-shifts',
@@ -10,18 +12,18 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
   styleUrls: ['./shifts.component.css']
 })
 export class ShiftsComponent implements OnInit {
-  newShift: Shift = {};
   shifts: Shift[];
 
-  constructor(private adminService: AdminService, private alertify: AlertifyService) { }
+  constructor(private adminService: AdminService, private alertify: AlertifyService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getShifts();
   }
 
-  submit() {
-    this.newShift.startTime.setMinutes(this.newShift.startTime.getMinutes() - this.newShift.startTime.getTimezoneOffset());
-    this.adminService.createWorkShift(this.newShift).subscribe(shift => {
+  createShift(shift: Shift) {
+    if (!shift.startTime || !shift.name || !shift.duration) return;
+    shift.startTime.setMinutes(shift.startTime.getMinutes() - shift.startTime.getTimezoneOffset());
+    this.adminService.createWorkShift(shift).subscribe(shift => {
       this.alertify.success('Shift created!');
       this.getShifts();
     }, error => {
@@ -44,6 +46,14 @@ export class ShiftsComponent implements OnInit {
     }, error => {
       this.alertify.error('Unable to delete shift!', error);
     })
+  }
+
+  openDialog() {
+    const ref = this.dialog.open(CreateShiftComponent);
+    ref.afterClosed().subscribe(r => {
+      if (r)
+        this.createShift(r);
+    });
   }
 
 }
