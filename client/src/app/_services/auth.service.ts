@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ReplaySubject } from 'rxjs';
@@ -52,6 +52,10 @@ export class AuthService {
     return false;
   }
 
+  sendPasswordChangeEmail(email: string) {
+    return this.http.post(this.baseUrl + 'account/password/mail/' + email, {});
+  }
+
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login/', model)
     .pipe(
@@ -63,6 +67,11 @@ export class AuthService {
         }
       })
     );
+  }
+
+
+  changePassword(id: number, password: string, headers?: HttpHeaders) {
+    return this.http.post(this.baseUrl + "account/password/" + id + "/" + password, {}, { headers });
   }
 
   isLoggedIn(): boolean {

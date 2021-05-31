@@ -36,10 +36,10 @@
       </mat-select>
       </mat-form-field>
     </div>
-    <div class="row container" style="margin-left: 10%;">
-      <button mat-mini-fab color="primary" style="align-self: center; margin-bottom: 10px;" (click)="prevMonth()"><mat-icon>arrow_left</mat-icon></button>
-      <div class="text-center m-auto font-weight " style="font-size: 160%;">{{this.dateRangeStr}}</div>
-      <button mat-mini-fab color="primary" style="align-self: center; margin-bottom: 10px; margin-right: 10px;" (click)='nextMonth()'><mat-icon>arrow_right</mat-icon></button>
+    <div class="row flex-grow-1 justify-content-center align-items-center text-center">
+      <button mat-mini-fab color="primary" class="flex-grow-0" (click)="prevMonth()"><mat-icon>arrow_left</mat-icon></button>
+      <div class="flex-grow-1" style="font-size: 160%; max-width: 70%;">{{this.dateRangeStr}}</div>
+      <button mat-mini-fab color="primary"  class="flex-grow-0" (click)='nextMonth()'><mat-icon>arrow_right</mat-icon></button>
     </div>
   </div>
   </div>
@@ -54,7 +54,8 @@
       <tbody>
         <tr *ngFor="let user of employees" >
             <th class="text-nowrap">{{user.fName}} {{user.lName}}</th>
-            <th matRipple [matRippleUnbounded]="false" scope="col" *ngFor="let date of dates" container="body" style="padding-left: 0 !important;padding-right: 0 !important;" [ngbTooltip]="getShiftStr(date, user.id)"
+            <th matRipple [matRippleUnbounded]="false" scope="col" *ngFor="let date of dataSource.data" container="body" 
+              style="padding-left: 0 !important;padding-right: 0 !important;" [ngbTooltip]="getShiftStr(date, user.id)"
                 (click)="dateClicked(date, user.id)" class="text-center ">
                 <div [ngClass]="getColor(date, user.id)" >
                   {{date | date : 'dd'}}</div>          

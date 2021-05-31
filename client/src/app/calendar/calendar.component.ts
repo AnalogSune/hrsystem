@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Inject } from '@angular/core';
+import { ElementRef, HostListener, Inject } from '@angular/core';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppUser } from '../_models/appuser';
@@ -63,13 +63,11 @@ class DateRange {
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-    dates: Date[];
     scheduleEntries: ScheduleEntry[];
     employees: AppUser[];
     datesSelected: DateRange = new DateRange();
     workShifts: Map<number, Shift> = new Map<number, Shift>();
     workShiftId: number;
-    workShiftName: string= "asdasd";
     scheduleType: ScheduleType = 0;
     dataSource:  MatTableDataSource<Date>;
     calendarColors: string[] = ['workColor', 'doColor', 'wfhColor', 'sdColor', 'selColor']
@@ -91,7 +89,7 @@ export class CalendarComponent implements OnInit {
     @Input() showViews: boolean = true;
 
     public get numDays(): number {
-        return (this.view == 'week'? 7 : 30);
+        return (this.view == 'week'? 7 : 31);
     }
 
     public get endDate(): Date {
@@ -108,14 +106,20 @@ export class CalendarComponent implements OnInit {
         
         return this.datePipe.transform(this.startDate, 'dd-MMMM-y') + ' - ' + this.datePipe.transform(this.endDate, 'dd-MMMM-y');
     }
+    
+    @HostListener('document:click', ['$event'])
+    clickout(event) {
+        if(!this.eRef.nativeElement.contains(event.target)) {
+            this.datesSelected.clear()
+        }
+    }
 
     constructor(private userService: UserService, private datePipe: DatePipe, private authService: AuthService, 
-        private adminService: AdminService, private alertify: AlertifyService) 
+        private adminService: AdminService, private alertify: AlertifyService, private eRef: ElementRef) 
     {
     }
 
     ngOnInit(): void {
-        // this.dates = this.getDates();
         this.startDate = new Date();
         this.userService.getUsers()
         .subscribe(next => {
@@ -157,7 +161,6 @@ export class CalendarComponent implements OnInit {
     }
 
     private updateDates() {
-        this.dates = this.getDates();
         this.dataSource = new MatTableDataSource<Date>(this.getDates());
         this.userService.getSchedule(new ScheduleSearchDto(this.startDate, this.endDate))
         .subscribe(next => {
@@ -200,12 +203,25 @@ export class CalendarComponent implements OnInit {
     }
 
     getColor(date: Date, id: number): string {
+        let isStartSel: boolean = this.datesSelected.isStart(date);
+        let isEndSel: boolean = this.datesSelected.isEnd(date);
+        let isStartEntry: boolean = new Date(this.getScheduleEntry(date, id)?.startDate).getDate() === date.getDate();
+        let isEndEntry: boolean = new Date(this.getScheduleEntry(date, id)?.endDate).getDate() === date.getDate();
+        let isSel: boolean = this.datesSelected.isInRange(date);
+        let sameId: boolean = this.datesSelected.employeeId == id;
+
         let classStr = "";
-        if (this.datesSelected.isStart(date))
-            classStr += "round-left "
-        if (this.datesSelected.isEnd(date))
-            classStr += "round-right "
-        if (this.datesSelected.isInRange(date) && this.datesSelected.employeeId == id) 
+
+        if ( sameId && !((isStartEntry || isEndEntry) && isSel && !isEndSel && !isStartSel) )
+        {
+            if (isStartSel || isStartEntry)
+                classStr += "round-left "
+            if (isEndSel || isEndEntry)
+                classStr += "round-right "
+        }
+            
+
+        if (isSel && sameId) 
             classStr += this.calendarColorsBg[4];
         else
             classStr += this.calendarColorsBg[this.getScheduleType(date, id)];
@@ -240,8 +256,8 @@ export class CalendarComponent implements OnInit {
         if (!this.datesSelected.isValid() ||
             (!this.workShiftId && this.scheduleType == ScheduleType.Working && create)) return;
         let entry: ScheduleEntry = {
-            startDate: this.datesSelected.startDate,
-            endDate: this.datesSelected.endDate,
+            startDate:new Date(this.datesSelected.startDate),
+            endDate: new Date(this.datesSelected.endDate.toUTCString()),
             employeeId: this.datesSelected.employeeId,
             type: this.scheduleType,
             shiftId: this.workShiftId,

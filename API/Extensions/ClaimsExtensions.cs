@@ -12,11 +12,15 @@ namespace API.Extensions
         }
         public static int GetId(this ClaimsPrincipal user)
         {
-            return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            int res = -1;
+            int.TryParse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value, out res);
+            return res;
         }
         public static bool IsAdmin(this ClaimsPrincipal user)
         {
-            return bool.Parse(user.FindFirst("isadmin")?.Value);
+            bool res = false;
+            bool.TryParse(user.FindFirst("isadmin")?.Value, out res);
+            return res;
         }
     }
 }

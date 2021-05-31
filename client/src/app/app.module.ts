@@ -65,6 +65,8 @@ import { RecruitmentCoverletterComponent } from './_admin/recruitment-coverlette
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
+import { PasswordChangeEmailDialogComponent } from './password-change-email-dialog/password-change-email-dialog.component';
 
 export function getToken()
 {
@@ -72,7 +74,7 @@ export function getToken()
 }
 
 @NgModule({
-  declarations: [																
+  declarations: [																		
     AppComponent,
     NavComponent,
     SideBarComponent,
@@ -100,7 +102,9 @@ export function getToken()
     MeetingsTableComponent,
       CreateTaskComponent,
       CreateMeetingComponent,
-      ChangePasswordComponent
+      ChangePasswordComponent,
+      PasswordChangeComponent,
+      PasswordChangeEmailDialogComponent
    ],
   imports: [
     BrowserModule,

@@ -13,11 +13,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(private authService: AuthService) { }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   ngAfterViewInit(): void {
+    if (this.isLoggedIn())
+    {
     if (!this.authService.isAdmin())
       this.calendar.maxHeight = "60vh";
     else
       this.calendar.maxHeight="45vh";
+    }
   }
 
   ngOnInit() {

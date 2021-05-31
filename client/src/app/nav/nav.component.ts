@@ -26,6 +26,8 @@ export class NavComponent implements OnInit {
 
   logout(){
     localStorage.removeItem('email');
+    localStorage.removeItem('user');
+    localStorage.removeItem('departmentId');
     localStorage.removeItem('token');
   }
 

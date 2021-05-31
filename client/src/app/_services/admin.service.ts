@@ -54,10 +54,6 @@ export class AdminService {
     return this.http.delete(this.baseUrl + "admin/users/" + id);
   }
 
-  changePassword(id: number, password: string) {
-    return this.http.post(this.baseUrl + "account/password/" + id + "/" + password, {});
-  }
-
   updateRequest(id: number, status: RequestStatus) {
     return this.http.post(this.baseUrl + "requests/" + id + "/" + status, {});
   }

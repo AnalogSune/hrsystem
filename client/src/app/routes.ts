@@ -13,9 +13,12 @@ import { ShiftsComponent } from './_admin/shifts/shifts.component';
 import { AdminAuthGuard, AuthGuard } from './_guards/auth.guard';
 import { TasksComponent } from './tasks/tasks.component';
 import { MeetingsComponent } from './meetings/meetings.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 export const appRoutes: Routes = [
     {path : '', component: HomeComponent},
+    {path : 'password', component: PasswordChangeComponent},
     {
         path: '',
         runGuardsAndResolvers: 'always',

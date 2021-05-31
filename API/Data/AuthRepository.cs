@@ -18,10 +18,13 @@ namespace API.Data
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
+        private readonly IMailService _mailService;
 
-        public AuthRepository(DataContext context, ITokenService tokenService, IMapper mapper, IFileService fileService)
+        public AuthRepository(DataContext context, ITokenService tokenService, IMapper mapper, IFileService fileService,
+            IMailService mailService)
         {
             _fileService = fileService;
+            _mailService = mailService;
             _mapper = mapper;
             _context = context;
             _tokenService = tokenService;
@@ -78,6 +81,7 @@ namespace API.Data
 
             return await _context.SaveChangesAsync() > 0;
         } 
+        
 
         public async Task<bool> UserExists(string username) => await _context.Users.AnyAsync(x => x.Email == username.ToLower());
         public async Task<bool> IsAdmin(int id) => (await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync()).IsAdmin == true;
@@ -89,6 +93,22 @@ namespace API.Data
                 .Select(x => x.Email)
                 .SingleOrDefaultAsync();
             return userEmail;
-        } 
+        }
+
+        public async Task<bool> ChangePasswordEmail(string email)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
+            if (user == null) return false;
+
+            var token = _tokenService.CreateSimpleToken(user);
+
+            await _mailService.SendMessage("HR System: Password change",
+            "<!DOCTYPE html><p><h1>You requested a password change.</h1></p>" +
+            $"<p><a href='https://localhost:4200/password?token={token}'>Click here to change your password!</a></p>",
+            email,
+            user.FName + " " + user.LName);
+
+            return true;
+        }
     }
 }

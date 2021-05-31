@@ -30,6 +30,7 @@ namespace API.Extensions
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<ICVRepository, CVRepository>();
             services.AddSingleton<ILogService, LogService>();
+            services.AddSingleton<IMailService, MailService>();
 
             services.AddDbContext<DataContext>(options =>
             {

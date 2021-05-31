@@ -15,13 +15,13 @@
 }
 
 .round-left {
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .round-right {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 #calendar-table > .table-cont{

@@ -110,7 +110,8 @@ export class TasksComponent implements OnInit {
   openDialog() {
     const ref = this.dialog.open(CreateTaskComponent, {width: 'auto'});
     ref.afterClosed().subscribe(r => {
-      this.submit(r);
+      if (r)
+        this.submit(r);
     });
   }
 

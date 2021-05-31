@@ -9,22 +9,15 @@
 </div> -->
 
 <body class="bgCol">
-<div *ngIf="this.isLoggedIn(); else loginPage">
-    <app-nav>
+    <div *ngIf="this.isLoggedIn();">
+    <app-nav  >
     </app-nav>
-    <div class="side-bar-container bgCol-dark">
+    <div class="side-bar-container bgCol-dark" >
         <app-side-bar></app-side-bar>
+    </div>
     </div>
     <div class="content-container">
         <router-outlet></router-outlet>
     </div>
-</div>
-<ng-template #loginPage>
-    <img src="../assets/pexels-fwstudio-163999.jpg" class="bg">
-        <mat-tab-group animationDuration="0ms" >
-            <mat-tab label="Login"> <app-login-page></app-login-page> </mat-tab>
-            <mat-tab label="Send CV"> <app-cv></app-cv> </mat-tab>
-        </mat-tab-group>
-</ng-template>
     
 </body>

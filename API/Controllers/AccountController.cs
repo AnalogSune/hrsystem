@@ -25,10 +25,13 @@ namespace API.Controllers
         private IAuthRepository _authRepository;
         private IMapper _mapper;
         private readonly ILogService _logService;
+        private readonly IMailService _mailService;
 
-        public AccountController(IAuthRepository authRepository, IMapper mapper, ILogService LogService)
+        public AccountController(IAuthRepository authRepository, IMapper mapper, ILogService LogService,
+            IMailService mailService)
         {
             _logService = LogService;
+            _mailService = mailService;
             _authRepository = authRepository;
             _mapper = mapper;
         }
@@ -41,6 +44,12 @@ namespace API.Controllers
             string adminEmail = await _authRepository.GetEmailById(User.GetId());
             await _logService.RegisterLogFile(registerDto, adminEmail);
 
+            await _mailService.SendMessage("Registration", 
+                "<!DOCTYPE html><html><head><meta charset='UTF-8'></head> " +
+                $"<body><h1>Welcome to our hr system, {registerDto.FName}! &#128512</h1>" +
+                "<p><a href='https://perkos.hr.com'>Click here to start</a></p></body></html>"
+                , registerDto.Email, registerDto.FName);
+            
             return Ok(await _authRepository.Register(registerDto));
         }
 
@@ -61,13 +70,18 @@ namespace API.Controllers
         [HttpPost("password/{id}/{password}")]
         public async Task<IActionResult> ChangePassword(int id, string password)
         {
-
             if (User.IsAdmin() || User.GetId() == id)
             {
                 return Ok(await _authRepository.ChangePassword(id, password));
             }
 
             return Unauthorized("You need administrative rights to do this!");
+        }
+
+        [HttpPost("password/mail/{email}")]
+        public async Task<IActionResult> ChangePasswordEmail(string email)
+        {
+            return Ok(await _authRepository.ChangePasswordEmail(email));
         }
 
     }

@@ -27,7 +27,7 @@ export class MeetingsTableComponent implements OnInit {
     private meetingService: MeetingService, private adminService: AdminService) { }
 
   ngOnInit() {
-    setTimeout(()=>{this.dataSource.paginator = this.paginator;}, 200);
+    setTimeout(()=>{this.dataSource != undefined ? this.dataSource.paginator = this.paginator:undefined;}, 200);
     this.update();
   }
 

@@ -95,7 +95,7 @@ export class ProfileViewerComponent implements OnInit {
   }
 
   changePassword(id: number, pass: string) {
-    this.adminService.changePassword(id, pass).subscribe(next => {
+    this.authService.changePassword(id, pass).subscribe(next => {
       this.alertify.success('Password changed successfully!');
     }, error => {
       this.alertify.error('Unable to change password!', error);

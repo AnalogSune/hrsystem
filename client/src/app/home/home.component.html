@@ -1,4 +1,5 @@
-<mat-grid-list gutterSize="20px" cols="2" rowHeight="7:2" >
+<div  *ngIf="isLoggedIn() else notLoggedIn">
+<mat-grid-list gutterSize="20px" cols="2" rowHeight="7:2">
   <mat-grid-tile class="tile"  rowspan="3">
     <div class="box-style">
         <app-posts></app-posts>
@@ -21,3 +22,8 @@
   </div>
   </mat-grid-tile>
 </mat-grid-list>
+</div>
+
+<ng-template #notLoggedIn>
+    <app-login-page></app-login-page>
+</ng-template>

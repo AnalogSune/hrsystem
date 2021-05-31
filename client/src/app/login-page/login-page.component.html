@@ -1,18 +1,24 @@
-<div class="login-window">
-  <!-- <div class="window-header">Login Page</div> -->
-  <form #loginForm="ngForm" (ngSubmit)="login()">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input type="email" #emailElm matInput name="email" [(ngModel)]="loginInfo.email" email required>
-    </mat-form-field>
-    
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input type="password"matInput name="pass" [(ngModel)]="loginInfo.password" required>
-    </mat-form-field>
-    
-    <button [disabled]="!loginForm.valid" class="btn btn-success window-item" type="submit">Login</button>
-    <div class="window-item text-small window-tooltip" data-toggle="tooltip" data-placement="right" 
-      title="Contact your administrator in order to change your password">Forgot your password?</div>
-  </form>
+<div class="cont">
+<img src="../../assets/pexels-fwstudio-163999.jpg" class="bg">
+<mat-tab-group animationDuration="0ms" >
+    <mat-tab label="Login"> 
+      <div class="login-window">
+        <form #loginForm="ngForm" (ngSubmit)="login()">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input type="email" #emailElm matInput name="email" [(ngModel)]="loginInfo.email" email required>
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input type="password"matInput name="pass" [(ngModel)]="loginInfo.password" required>
+          </mat-form-field>
+          
+          <button [disabled]="!loginForm.valid" class="btn btn-success window-item" type="submit">Login</button>
+            <a class="btn btn-link window-item text-small" (click)="openDialog()">Forgot your password?</a>
+      </form>
+      </div> 
+    </mat-tab>
+    <mat-tab label="Send CV"> <app-cv></app-cv> </mat-tab>
+</mat-tab-group> 
 </div>
