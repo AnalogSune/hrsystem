@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using API.Interfaces;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Services
 {

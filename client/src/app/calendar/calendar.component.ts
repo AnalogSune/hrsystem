@@ -212,11 +212,11 @@ export class CalendarComponent implements OnInit {
 
         let classStr = "";
 
-        if ( sameId && !((isStartEntry || isEndEntry) && isSel && !isEndSel && !isStartSel) )
+        if (!((isStartEntry || isEndEntry) && (isSel && sameId) && !(isEndSel && !sameId) && !(isStartSel && !sameId)) )
         {
-            if (isStartSel || isStartEntry)
+            if ((isStartSel && sameId) || isStartEntry)
                 classStr += "round-left "
-            if (isEndSel || isEndEntry)
+            if ((isEndSel && sameId) || isEndEntry)
                 classStr += "round-right "
         }
             

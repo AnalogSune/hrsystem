@@ -4,7 +4,9 @@
       <div class="post">
         {{post.content}}
       </div>
-      <div class="post-info">{{post.publisherName || "Unnamed"}}: {{post.timeCreated | time}}</div>
+      <div class="post-info">
+        <a [routerLink]="['/profile']" class="post-info" [queryParams]="{userId: post.publisherId}">{{post.publisherName || "Unnamed"}}</a> : {{post.timeCreated | time}}
+      </div>
     </div>
 </div>
 <div *ngIf="isAdmin()" class="make-post-container">
@@ -15,5 +17,6 @@
       <mat-hint align="end">{{postContentElm.value?.length || 0}}/250</mat-hint>
     </mat-form-field>
     <button [disabled]="!postForm.valid" class="postbtn" mat-raised-button type="submit">POST</button>
+    
   </form>
 </div>

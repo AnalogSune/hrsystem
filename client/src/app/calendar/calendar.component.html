@@ -48,7 +48,7 @@
       <thead>
           <tr class="thead-light"  style="position: sticky;">
               <th class="sticky-top" style="width: 200px">Employee</th>
-              <th class="sticky-top" scope="col" *ngFor="let date of dates">{{date | date : 'EEEEEE'}}</th>
+              <th class="sticky-top" scope="col" *ngFor="let date of dataSource.data">{{date | date : 'EEEEEE'}}</th>
           </tr>
       </thead>
       <tbody>

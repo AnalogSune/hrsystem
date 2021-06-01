@@ -29,6 +29,7 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('user');
     localStorage.removeItem('departmentId');
     localStorage.removeItem('token');
+    this.router.navigate(['']);
   }
 
   submit(event) {

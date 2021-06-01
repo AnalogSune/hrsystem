@@ -1,34 +1,40 @@
 
-<form #cvForm="ngForm" class="container" style="max-width: 500px;" (ngSubmit)="submit()">
-  <div class="col form-cont" >
-
-    <mat-form-field appearance="fill" class="col">
+<form #cvForm="ngForm" class="container" style="background-color: white; max-width: 50%; margin-top: 10px;" (ngSubmit)="submit()">
+    <div class="form-group">
+    <mat-form-field appearance="fill" class="form-outline mb-2 col">
       <mat-label>First Name</mat-label>
-      <input type="text" #nameElm minlength="5" maxlength="20" matInput name="fName" [(ngModel)]="cvModel.fName" required>
+      <input type="text" #nameElm minlength="5" maxlength="20" matInput name="fName"  [(ngModel)]="cvModel.fName" required>
       <mat-hint align="end">{{nameElm.value?.length || 0}}/20</mat-hint>
     </mat-form-field>
-
-    <mat-form-field appearance="fill"  class="col">
+  </div>
+  <div class="form-group">
+    <mat-form-field appearance="fill" class="form-outline mb-2 col" >
       <mat-label>Last Name</mat-label>
-      <input type="text" #lNameElm minlength="5" maxlength="20" matInput name="lName" [(ngModel)]="cvModel.lName" required>
+      <input type="text" #lNameElm minlength="5" maxlength="20"  class="form-control" matInput name="lName" [(ngModel)]="cvModel.lName" required>
       <mat-hint align="end">{{lNameElm.value?.length || 0}}/20</mat-hint>
     </mat-form-field>
+  </div>
 
-    <mat-form-field appearance="fill"  class="col">
+  <div class="form-group">
+    <mat-form-field appearance="fill" class="form-outline mb-2 col">
       <mat-label>Cover Letter</mat-label>
-      <textarea rows="8" cols="40" #coverLetterElm maxlength="250" class="textarea" name="coverLetter" [(ngModel)]="cvModel.coverLetter" matInput required></textarea>
+      <textarea rows="4" cols="25" #coverLetterElm maxlength="250" class="textarea" name="coverLetter" [(ngModel)]="cvModel.coverLetter" matInput required></textarea>
       <mat-hint align="end">{{coverLetterElm.value?.length || 0}}/250</mat-hint>
     </mat-form-field>
+  </div>
 
-    <mat-form-field appearance="fill" class="col" >
+  <div class="form-group">
+    <mat-form-field appearance="fill" class="form-outline mb-2 col">
       <mat-label>Email</mat-label>
       <input type="email" matInput name="email" [(ngModel)]="cvModel.email" email required>
     </mat-form-field>
+  </div>
 
-    <input #fileUpload type="file" class="file-upload col" style="display: none;" name="cvFile" (change)="uploadCV($event)" required>
+  <div class="form-group">
+    <input #fileUpload type="file" class="file-upload" style="display: none;" name="cvFile" (change)="uploadCV($event)" required>
 
-    <button mat-raised-button class="col" type="button"(click)="fileUpload.click()">Upload CV (Max: 2MB) in jpg, png or doc form</button>
-    <button mat-raised-button class="col sendBtn" type="submit" [disabled]="!cvForm.valid">Send</button>
+    <button mat-raised-button class="form-outline col"   type="button"(click)="fileUpload.click()">Upload CV (Max: 2MB) in jpg, png or doc form</button>
+    <button mat-raised-button class="form-outline sendBtn col" type="submit" [disabled]="!cvForm.valid">Send</button>
 
   </div>
 </form>

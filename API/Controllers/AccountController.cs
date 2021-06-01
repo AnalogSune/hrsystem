@@ -47,7 +47,7 @@ namespace API.Controllers
             await _mailService.SendMessage("Registration", 
                 "<!DOCTYPE html><html><head><meta charset='UTF-8'></head> " +
                 $"<body><h1>Welcome to our hr system, {registerDto.FName}! &#128512</h1>" +
-                "<p><a href='https://perkos.hr.com'>Click here to start</a></p></body></html>"
+                "<p><a href='https://localhost:4200'>Click here to start</a></p></body></html>"
                 , registerDto.Email, registerDto.FName);
             
             return Ok(await _authRepository.Register(registerDto));

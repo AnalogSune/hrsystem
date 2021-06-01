@@ -110,12 +110,16 @@ namespace API.Data
             }
             else if (startOffset > 0 && endOffset <= 0)
             {
-                if (entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId)
+                if (entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId || !entry1.CreateNewEntry)
+                {
                     entry2.EndDate = entry1.StartDate.AddDays(-1);
+                    
+                }
                 else
                 {
                     entry1.StartDate = entry2.StartDate;
                     _context.Calendar.Remove(entry2);
+                    
                 }
             }
             else if (startOffset <= 0 && endOffset > 0)
