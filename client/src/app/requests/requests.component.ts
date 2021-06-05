@@ -90,8 +90,6 @@ export class RequestsComponent implements OnInit {
       requestType:this.formModel.requestType,
       status: 0
     };
-
-    console.log(requestDto);
     
     this.requestService.makeRequest(requestDto).subscribe(next => {
       this.alertify.success('Request made successfully!');
@@ -153,7 +151,7 @@ export class RequestsComponent implements OnInit {
       users.forEach(u => {
         this.users.set(u.id, u);
       })
-      console.log(users);
+      
     }, error => {
       this.alertify.error('Unable to retrieve users!', error);
     })

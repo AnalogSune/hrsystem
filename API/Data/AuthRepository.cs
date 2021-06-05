@@ -104,7 +104,7 @@ namespace API.Data
 
             await _mailService.SendMessage("HR System: Password change",
             "<!DOCTYPE html><p><h1>You requested a password change.</h1></p>" +
-            $"<p><a href='https://localhost:4200/password?token={token}'>Click here to change your password!</a></p>",
+            $"<p><a href='https://localhost:5001/password?token={token}'>Click here to change your password!</a></p>",
             email,
             user.FName + " " + user.LName);
 

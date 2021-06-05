@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="registerForm" #registerForm="ngForm" [(ngModel)]="user" (ngSubmit)="register()">
+    <form class="registerForm" #registerForm="ngForm" (ngSubmit)="register()">
     <mat-form-field appearance="fill" class="col">
         <mat-label>Email</mat-label>
         <input type="email" matInput name="email" [(ngModel)]="user.email" email required>
