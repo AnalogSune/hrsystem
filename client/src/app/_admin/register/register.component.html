@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="registerForm" #registerForm="ngForm" (ngSubmit)="register()">
+    <form class="registerForm" #registerForm="ngForm" [(ngModel)]="user" (ngSubmit)="register()">
     <mat-form-field appearance="fill" class="col">
         <mat-label>Email</mat-label>
         <input type="email" matInput name="email" [(ngModel)]="user.email" email required>
@@ -7,12 +7,12 @@
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Password</mat-label>
-        <input type="password" matInput name="password" [(ngModel)]="user.password" required>
+        <input type="password" matInput name="password" minlength="6" [(ngModel)]="user.password" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="col">
         <mat-label>Confirm Password</mat-label>
-        <input type="password" matInput name="confirmPassword" [(ngModel)]="passConfirm" required>
+        <input type="password" matInput name="confirmPassword" minlength="6" [(ngModel)]="passConfirm" required>
     </mat-form-field>
 
     <mat-form-field *ngIf="departmentsExist()" appearance="fill" class="col">
@@ -78,6 +78,10 @@
         <mat-label>Nationality</mat-label>
         <input matInput name="nationality" [(ngModel)]="user.nationality" required>
     </mat-form-field>
+
+    <p class="ml-3">
+        <mat-checkbox name="isAdmin" [(ngModel)]="user.isAdmin">Admin</mat-checkbox>
+    </p>
 
     <p>
     <button class="col" mat-raised-button type="submit" color="primary" [disabled]="!registerForm.valid">Register </button>

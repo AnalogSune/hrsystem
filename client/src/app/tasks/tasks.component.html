@@ -49,7 +49,7 @@
     <mat-form-field style="width: 500px;">
       <textarea cdkTextareaAutosize matInput #textArea placeholder="Subtask Description"></textarea>
     </mat-form-field>
-      <button class="addSubButton" mat-raised-button (click)="addSubtask(textArea.value, task)"><i class="fa fa-plus"></i> Add Subtask</button>
+      <button class="addSubButton" mat-raised-button (click)="addSubtask(textArea, task)"><i class="fa fa-plus"></i> Add Subtask</button>
     </div>
     <mat-selection-list #subTasks (selectionChange)="completeSubTask($event.option._value)">
       <mat-list-option [disabled]="subTask.status==1" [selected]="subTask.status==1" [value]="subTask" *ngFor="let subTask of task.subTasks">

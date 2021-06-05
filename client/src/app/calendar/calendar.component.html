@@ -46,16 +46,16 @@
   <div class="table-cont" [ngStyle]="{'max-height': maxHeight}">
   <table class="table table-striped table-borderless m-auto" style="background-color: rgba(255, 255, 255, 0.192);">
       <thead>
-          <tr class="thead-light"  style="position: sticky;">
-              <th class="sticky-top" style="width: 200px">Employee</th>
+          <tr class="thead-light"  style="position: sticky; z-index: 1;">
+              <th class="sticky-top" >Employee</th>
               <th class="sticky-top" scope="col" *ngFor="let date of dataSource.data">{{date | date : 'EEEEEE'}}</th>
           </tr>
       </thead>
       <tbody>
         <tr *ngFor="let user of employees" >
-            <th class="text-nowrap">{{user.fName}} {{user.lName}}</th>
+            <th>{{user.fName}} {{user.lName}}</th>
             <th matRipple [matRippleUnbounded]="false" scope="col" *ngFor="let date of dataSource.data" container="body" 
-              style="padding-left: 0 !important;padding-right: 0 !important;" [ngbTooltip]="getShiftStr(date, user.id)"
+              style="padding-left: 0 !important;padding-right: 0 !important;"  [ngbTooltip]="getShiftStr(date, user.id)"
                 (click)="dateClicked(date, user.id)" class="text-center ">
                 <div [ngClass]="getColor(date, user.id)" >
                   {{date | date : 'dd'}}</div>          

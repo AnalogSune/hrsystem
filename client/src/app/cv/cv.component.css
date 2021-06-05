@@ -1,0 +1,17 @@
+mat-form-field{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.container{
+    background-color: white; 
+    max-width: 30%; 
+    margin-top: 10px;
+    border-radius: 15px;
+    padding: 20px;
+}

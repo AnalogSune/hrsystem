@@ -10,8 +10,8 @@ import {LayoutModule} from '@angular/cdk/layout';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { RouterModule } from '@angular/router';
-import {ClipboardModule} from '@angular/cdk/clipboard';
-import {TimepickerModule} from 'ngx-bootstrap/timepicker';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -67,6 +67,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { PasswordChangeComponent } from './password-change/password-change.component';
 import { PasswordChangeEmailDialogComponent } from './password-change-email-dialog/password-change-email-dialog.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 export function getToken()
 {
@@ -117,6 +118,7 @@ export function getToken()
     MatPaginatorModule,
     MatGridListModule,
     MatTabsModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,

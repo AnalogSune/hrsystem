@@ -1,28 +1,27 @@
-<div  *ngIf="isLoggedIn() else notLoggedIn">
-<mat-grid-list gutterSize="20px" cols="2" rowHeight="7:2">
-  <mat-grid-tile class="tile"  rowspan="3">
+
+<mat-grid-list gutterSize="20px" cols="2" rowHeight="7:2"  *ngIf="isLoggedIn() else notLoggedIn">
+  <mat-grid-tile rowspan="3">
     <div class="box-style">
         <app-posts></app-posts>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile class="tile" rowspan="3" >
+  <mat-grid-tile rowspan="3" >
     <div class="box-style">
-        <app-calendar #calendar [view]="'week'" [showViews]="false"></app-calendar>
+        <app-calendar #calendar [view]="'week'" [maxHeight]="calendarHeight" [showViews]="false"></app-calendar>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile class="tile" rowspan="2"  colspan="2">
+  <mat-grid-tile rowspan="2"  colspan="2">
     <div class="box-style">
       <app-meetings></app-meetings>
   </div>
   </mat-grid-tile>
   
-  <mat-grid-tile class="tile" rowspan="2" colspan="2">
+  <mat-grid-tile rowspan="2" colspan="2">
     <div class="box-style">
       <app-tasks></app-tasks>
   </div>
   </mat-grid-tile>
 </mat-grid-list>
-</div>
 
 <ng-template #notLoggedIn>
     <app-login-page></app-login-page>

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AppUser } from 'src/app/_models/appuser';
-import { Form } from '@angular/forms';
+import { AbstractControl, Form, NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/_services/auth.service';
 import { AdminService } from 'src/app/_services/admin.service';
 import { Department, Role } from 'src/app/_models/department';
@@ -21,6 +21,8 @@ export class RegisterComponent implements OnInit {
   departments:  Map<number, Department> = new Map<number, Department>();
   roles: Role[] = [];
 
+  @ViewChild("registerForm") form: ElementRef<NgForm>;
+
   ngOnInit() {
     this.getDepartments();
   }
@@ -29,6 +31,8 @@ export class RegisterComponent implements OnInit {
     if (this.user.password == this.passConfirm)
       this.adminService.register(this.user).subscribe(res => {
         this.alertify.success('User was registered successfully!');
+        this.user = {};
+        this.passConfirm = "";
       }, error => {
         this.alertify.error('Failed to register user!', error);
       });

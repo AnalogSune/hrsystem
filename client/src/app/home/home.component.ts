@@ -7,9 +7,7 @@ import { AuthService } from '../_services/auth.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-
-  @ViewChild("calendar") calendar: CalendarComponent;
+export class HomeComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
@@ -17,14 +15,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.authService.isLoggedIn();
   }
 
-  ngAfterViewInit(): void {
-    if (this.isLoggedIn())
-    {
+  public get calendarHeight() : string {
     if (!this.authService.isAdmin())
-      this.calendar.maxHeight = "60vh";
-    else
-      this.calendar.maxHeight="45vh";
-    }
+       return "60vh";
+      else
+       return "45vh";
   }
 
   ngOnInit() {

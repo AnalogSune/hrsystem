@@ -38,4 +38,5 @@ export interface UserUpdate
     country?: string;
     dateOfBirth?: Date;
     nationality?: string;
+    isAdmin?: boolean;
 }

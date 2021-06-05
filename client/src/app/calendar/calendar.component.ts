@@ -106,13 +106,6 @@ export class CalendarComponent implements OnInit {
         
         return this.datePipe.transform(this.startDate, 'dd-MMMM-y') + ' - ' + this.datePipe.transform(this.endDate, 'dd-MMMM-y');
     }
-    
-    @HostListener('document:click', ['$event'])
-    clickout(event) {
-        if(!this.eRef.nativeElement.contains(event.target)) {
-            this.datesSelected.clear()
-        }
-    }
 
     constructor(private userService: UserService, private datePipe: DatePipe, private authService: AuthService, 
         private adminService: AdminService, private alertify: AlertifyService, private eRef: ElementRef) 
@@ -131,7 +124,7 @@ export class CalendarComponent implements OnInit {
             if (!this.isAdmin())
                 this.maxHeight="75vh";
             else
-                this.maxHeight="60vh";
+                this.maxHeight="55vh";
     }
 
     isAdmin() {
@@ -203,23 +196,10 @@ export class CalendarComponent implements OnInit {
     }
 
     getColor(date: Date, id: number): string {
-        let isStartSel: boolean = this.datesSelected.isStart(date);
-        let isEndSel: boolean = this.datesSelected.isEnd(date);
-        let isStartEntry: boolean = new Date(this.getScheduleEntry(date, id)?.startDate).getDate() === date.getDate();
-        let isEndEntry: boolean = new Date(this.getScheduleEntry(date, id)?.endDate).getDate() === date.getDate();
         let isSel: boolean = this.datesSelected.isInRange(date);
         let sameId: boolean = this.datesSelected.employeeId == id;
 
-        let classStr = "";
-
-        if (!((isStartEntry || isEndEntry) && (isSel && sameId) && !(isEndSel && !sameId) && !(isStartSel && !sameId)) )
-        {
-            if ((isStartSel && sameId) || isStartEntry)
-                classStr += "round-left "
-            if ((isEndSel && sameId) || isEndEntry)
-                classStr += "round-right "
-        }
-            
+        let classStr = "";            
 
         if (isSel && sameId) 
             classStr += this.calendarColorsBg[4];

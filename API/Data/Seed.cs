@@ -16,6 +16,7 @@ namespace DatingApp.API.Data
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 user.Email = "admin@admin.com";
+                user.IsAdmin = true;
                 context.Users.Add(user);
 
                 context.SaveChanges();

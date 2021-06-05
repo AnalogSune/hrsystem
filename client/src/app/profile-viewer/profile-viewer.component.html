@@ -66,6 +66,16 @@
         <input [disabled]="!isAdmin()" matInput name="nationality" [(ngModel)]="updateUser.nationality" required>
     </mat-form-field>
 
+    <mat-form-field appearance="fill" class="col" *ngIf="isUser() || isAdmin()">
+        <mat-label>Days Off Left</mat-label>
+        <input [disabled]="true" matInput name="daysOff" [(ngModel)]="updateUser.daysOffLeft">
+    </mat-form-field>
+
+    <p *ngIf="isAdmin()" class="ml-3">
+    <mat-checkbox name="isAdmin" [(ngModel)]="updateUser.isAdmin" [disabled]="isUser()">Admin</mat-checkbox>
+    </p>
+
+
     <p>
     <button *ngIf="isAdmin()" mat-raised-button type="submit" color="primary" class="col" [disabled]="!userForm.valid">Update User</button>
     </p>

@@ -94,7 +94,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .sdColor-bg{
-    background-color: rgb(149, 168, 97);
+    background-color: #7888A7 !important;
 }
 
 .selColor-bg{

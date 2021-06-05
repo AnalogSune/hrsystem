@@ -16,7 +16,7 @@
   </p>
 
   <p>
-    <mat-form-field>
+    <mat-form-field style="width: 300px;">
     <mat-label>Date</mat-label>
     <input required [(ngModel)]="meetingCreationModel.date" name="date" matInput type="datetime-local">
     </mat-form-field>
@@ -30,7 +30,7 @@
 
   <p>
     <mat-radio-group [(ngModel)]="meetingCreationModel.meetingType" name="meetingType" aria-label="Select an option">
-    <mat-radio-button style="margin-right: 10px;" [value]=0 >Training</mat-radio-button>
+    <mat-radio-button style="margin-right: 10px" [value]=0 >Training</mat-radio-button>
     <mat-radio-button [value]=1 >Meeting</mat-radio-button>
     </mat-radio-group>
   </p>

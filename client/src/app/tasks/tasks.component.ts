@@ -86,12 +86,18 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  addSubtask(text: string, task: Task) {
-    let st: SubTaskCreationDto = {description: text, tasksId: task.id};
-
+  addSubtask(text: any, task: Task) {
+    if (!text.value || text.value === "")
+    {
+      this.alertifyService.error("You cannot add an empty subtask!");
+      return;
+    }
+    let st: SubTaskCreationDto = {description: text.value, tasksId: task.id};
+    text.value = "";
     this.taskService.addSubTask(st).subscribe(subtask => {
       this.alertifyService.success("Subtask Created!");
       task.subTasks.push(subtask);
+      
     }, error => {
       this.alertifyService.error("Unable to create subtask!", error);
     })
