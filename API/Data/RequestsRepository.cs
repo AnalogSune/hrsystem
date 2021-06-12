@@ -51,8 +51,8 @@ namespace API.Data
         {
             return await _context.Requests
                 .Where(u => u.EmployeeId == id)
-                .Where(s => (status == null ? true : s.Status == status))
-                .Where(t => (type == null ? true : t.requestType == type))
+                .Where(s => (status == null || s.Status == status))
+                .Where(t => (type == null || t.requestType == type))
                 .Select(u => _mapper.Map<RequestsDto>(u))
                 .ToListAsync();
         }
@@ -64,9 +64,9 @@ namespace API.Data
         public async Task<ICollection<RequestsDto>> GetRequests(RequestSearchDto searchDto)
         {
             return await _context.Requests
-                .Where(u => (searchDto.EmployeeId == null ? true : u.EmployeeId == searchDto.EmployeeId))
-                .Where(s => (searchDto.requestStatus == null ? true : s.Status == searchDto.requestStatus))
-                .Where(t => (searchDto.requestType == null ? true : t.requestType == searchDto.requestType))
+                .Where(u => (searchDto.EmployeeId == null || u.EmployeeId == searchDto.EmployeeId))
+                .Where(s => (searchDto.requestStatus == null || s.Status == searchDto.requestStatus))
+                .Where(t => (searchDto.requestType == null || t.requestType == searchDto.requestType))
                 .Select(u => _mapper.Map<RequestsDto>(u))
                 .ToListAsync();
         }

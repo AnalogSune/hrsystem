@@ -42,8 +42,8 @@ namespace API.Data
         public async Task<IEnumerable<Meeting>> GetMeetings(MeetingSearchDto meetingSearch)
         {
             return await _context.Meetings
-                .Where(m => meetingSearch.DepartmentId == null? true: m.DepartmentId == meetingSearch.DepartmentId )
-                .Where(m => meetingSearch.MeetingType == null? true: m.MeetingType == (MeetingType)meetingSearch.MeetingType )
+                .Where(m => meetingSearch.DepartmentId == null || m.DepartmentId == meetingSearch.DepartmentId )
+                .Where(m => meetingSearch.MeetingType == null || m.MeetingType == (MeetingType)meetingSearch.MeetingType )
                 .ToListAsync();
         }
     }

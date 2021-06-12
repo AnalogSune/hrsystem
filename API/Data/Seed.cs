@@ -3,7 +3,7 @@ using System.Linq;
 using API.Data;
 using API.Entities;
 
-namespace DatingApp.API.Data
+namespace API.Data
 {
     public class Seed
     {

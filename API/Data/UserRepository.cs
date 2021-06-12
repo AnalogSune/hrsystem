@@ -97,8 +97,8 @@ namespace API.Data
         public async Task<MemberDto> UpdateUser(int id, UserUpdateDto userEdit)
         {
             var user = _context.Users
-                .Where(u => u.Id ==id)
-                .FirstOrDefault();
+                .FirstOrDefault(u => u.Id ==id);
+            
             var u = _context.Entry(user);
             _mapper.Map(userEdit, user);
                         
@@ -111,8 +111,7 @@ namespace API.Data
         public async Task<bool> ChangeImage(int id, string url, string publicId)
         {
             var user = _context.Users
-                .Where(u => u.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefault(u => u.Id == id);
 
             user.PictureId = publicId;
             user.PictureUrl = url;

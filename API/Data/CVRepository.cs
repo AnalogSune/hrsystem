@@ -35,8 +35,7 @@ namespace API.Data
         public async Task<bool> UpdateCVEntry(UpdateCVDto updateCVDto)
         {
             var cvEntry = _context.CVs
-                .Where(i => i.Id == updateCVDto.Id)
-                .FirstOrDefault();
+                .FirstOrDefault(i => i.Id == updateCVDto.Id);
 
             cvEntry.AdminNote = updateCVDto.AdminNotes;
 
@@ -46,8 +45,7 @@ namespace API.Data
         public async Task<bool> DeleteCVEntry(int id)
         {
             var cvEntry = _context.CVs
-                .Where(i => i.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefault(i => i.Id == id);
 
             await _fileService.DeleteFileAsync(cvEntry.FileId, CloudinaryDotNet.Actions.ResourceType.Image);
 

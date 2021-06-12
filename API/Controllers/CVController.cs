@@ -42,7 +42,7 @@ namespace API.Controllers
             return Unauthorized("You don't have the rights to do this!");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCV(int id)
         {
             if (User.IsAdmin())

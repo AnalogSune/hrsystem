@@ -23,14 +23,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEntry(CalendarEntryDto calendarEntry)
         {
-            if(User.IsAdmin())
-            {
-                if (await _calendarRepository.AddEntry(calendarEntry))
-                    return Ok();
-                return BadRequest("Unable to to add the entry to the calendar!");
-            }
+            if (!User.IsAdmin()) return Unauthorized("You dont have rights to do this!");
             
-            return Unauthorized("You dont have rights to do this!");
+            if (await _calendarRepository.AddEntry(calendarEntry))
+                return Ok();
+            return BadRequest("Unable to to add the entry to the calendar!");
+
         }
 
         [HttpPost("get")]

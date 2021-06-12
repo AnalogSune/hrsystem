@@ -52,9 +52,9 @@ namespace API.Data
         {
            return await _context.Tasks
             .Include(t => t.SubTasks)
-            .Where(t => taskDto.employeeId == null? true: t.EmployeeId == taskDto.employeeId)
-            .Where(t => taskDto.taskId == null? true: t.Id == taskDto.taskId)
-            .Where(t => taskDto.status == null? true: t.Status == taskDto.status)
+            .Where(t => taskDto.employeeId == null || t.EmployeeId == taskDto.employeeId)
+            .Where(t => taskDto.taskId == null || t.Id == taskDto.taskId)
+            .Where(t => taskDto.status == null || t.Status == taskDto.status)
             .Where(t => taskDto.isOverdue == null? true:
                         taskDto.isOverdue == false? t.StartTime.AddDays(t.Duration) >= DateTime.Now:
                         t.StartTime.AddDays(t.Duration) < DateTime.Now
