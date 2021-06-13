@@ -13,27 +13,36 @@ namespace API.Services
 
     public class LogService : ILogService
     {
-        public async Task AcceptRequestLogFile(string user, RequestsDto requestsDto, string adminEmail)
+        private async Task AddLog(string filename, string log)
         {
             try {
 
-                string log = "Request by: " + user + ". Request for " + requestsDto.requestType + " at -> " + requestsDto.Date + 
-                ". Duration: " + requestsDto.Duration + " days." + (requestsDto.Status == 1?" Accepted":" Declined") + " by: " + adminEmail + " -> " + DateTime.Now;
+                var finalLog = log + " -> "+ DateTime.Now;
 
-                using StreamWriter file = new("logFiles/Requestslogs.txt", append: true);
+                await using StreamWriter file = new(filename, append: true);
                 await file.WriteLineAsync(log);
             } catch (IOException e)
             {
                 Console.WriteLine(e);
             }
         }
+        
+        public async Task AcceptRequestLogFile(string user, RequestsDto requestsDto, string adminEmail)
+        {
+            var log = "Request by: " + user + ". Request for " + requestsDto.requestType + " at -> " +
+                         requestsDto.Date +
+                         ". Duration: " + requestsDto.Duration + " days." +
+                         (requestsDto.Status == 1 ? " Accepted" : " Declined") + " by: " + adminEmail;
+
+            await AddLog("logFiles/Requestslogs.txt", log);
+        }
 
         public async Task LoginLogFile(LoginDto loginDto)
         {
             try {
-                string log = "User: " + loginDto.Email + " logged in -> " + DateTime.Now;
+                var log = "User: " + loginDto.Email + " logged in -> " + DateTime.Now;
 
-                using StreamWriter file = new("logFiles/Accesslogs.txt", append: true);
+                await using StreamWriter file = new("logFiles/Accesslogs.txt", append: true);
                 await file.WriteLineAsync(log);
             } catch (IOException e)
             {
@@ -44,10 +53,10 @@ namespace API.Services
         public async Task RegisterLogFile(RegisterDto registerDto, string adminEmail)
         {
             try {
-                string log = "User: " + registerDto.Email + " " + registerDto.FName + " " 
-                + registerDto.LName + " registered by: " + adminEmail + " -> " + DateTime.Now;
+                var log = "User: " + registerDto.Email + " " + registerDto.FName + " " 
+                          + registerDto.LName + " registered by: " + adminEmail + " -> " + DateTime.Now;
 
-                using StreamWriter file = new("logFiles/Registerlogs.txt", append: true);
+                await using StreamWriter file = new("logFiles/Registerlogs.txt", append: true);
                 await file.WriteLineAsync(log);
             } catch (IOException e)
             {
@@ -59,10 +68,10 @@ namespace API.Services
         {
             try {
 
-                string log = "Request made by: " + user + ". Request for " + requestsDto.requestType + " at -> " + requestsDto.Date + 
+                var log = "Request made by: " + user + ". Request for " + requestsDto.requestType + " at -> " + requestsDto.Date + 
                 ". Duration: " + requestsDto.Duration + " days. -> " + DateTime.Now;
 
-                using StreamWriter file = new("logFiles/Requestslogs.txt", append: true);
+                await using StreamWriter file = new("logFiles/Requestslogs.txt", append: true);
                 await file.WriteLineAsync(log);
             } catch (IOException e)
             {

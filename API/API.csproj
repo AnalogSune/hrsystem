@@ -16,13 +16,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
     <PackageReference Include="Quartz" Version="3.3.2" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.3.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.&#xD;&#xA;    &#xD;&#xA;    9.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
 </Project>

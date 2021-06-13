@@ -73,7 +73,7 @@ namespace API.Controllers
             return Ok(await _adminRepository.GetDepartments());
         }
 
-        [HttpDelete("department/{id}")]
+        [HttpDelete("department/{id:int}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
             if (User.IsAdmin())
