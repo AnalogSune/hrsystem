@@ -38,7 +38,8 @@ namespace API.Data
 
         public async Task<bool> AddEntry(CalendarEntryDto calendarEntry)
         {
-            await CorrectDates(calendarEntry);
+            if (calendarEntry.CreateNewEntry)
+                await FixDates(calendarEntry);
 
             var entries = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
@@ -70,7 +71,7 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
         
-        private async Task CorrectDates(CalendarEntryDto calendarEntry)
+        private async Task FixDates(CalendarEntryDto calendarEntry)
         {
             var prev = await _context.Calendar
                 .Where(c => c.EmployeeId == calendarEntry.EmployeeId)
@@ -124,7 +125,7 @@ namespace API.Data
             }
             else if (startOffset <= 0 && endOffset > 0)
             {
-                if (entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId)
+                if ((entry2.Type != entry1.Type || entry2.ShiftId != entry1.ShiftId) || !entry1.CreateNewEntry)
                     entry2.StartDate = entry1.EndDate.AddDays(1);
                 else
                 {
