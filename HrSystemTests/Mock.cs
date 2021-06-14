@@ -8,25 +8,48 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-public class Mock
+namespace HrSystemTests
 {
-    public DataContext DataContext { get; }
-    public IMapper Mapper { get; }
-
-    public Mock()
+    public class Mock
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-        string connectionString = config.GetConnectionString("DefaultConnection");
-        
-        var mappingConfig = new MapperConfiguration(mc =>
+        public DataContext DataContext { get; }
+        public IMapper Mapper { get; }
+
+        public Mock(DataContext data, IMapper mapper)
         {
-            mc.AddProfile(new AutoMapperProfiles());
-        });
-        Mapper = mappingConfig.CreateMapper();
-        DataContext = new DataContext(new DbContextOptionsBuilder<DataContext>()
-            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-            .Options);
+            DataContext = data;
+            Mapper = mapper;
+        }
+    }
+
+    public static class MockFactory
+    {
+        public static Mock CreateMemoryDb()
+        {
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new AutoMapperProfiles()); });
+
+            var mapper = mappingConfig.CreateMapper();
+
+            var options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase("InMemoryDb")
+                .Options;
+            var dbContext = new DataContext(options);
+            return new Mock(dbContext, mapper);
+        }
+
+        public static Mock CreateMySqlDb()
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+            string connectionString = config.GetConnectionString("DefaultConnection");
+
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new AutoMapperProfiles()); });
+            var mapper = mappingConfig.CreateMapper();
+            var dbContext = new DataContext(new DbContextOptionsBuilder<DataContext>()
+                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                .Options);
+            return new Mock(dbContext, mapper);
+        }
     }
 }

@@ -1,70 +1,132 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
-using API.Helper;
-using API.Interfaces;
+using Xunit;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Xunit;
 
 namespace HrSystemTests
 {
     public class UserRepositoryTests
     {
-        private IMapper Mapper { get; }
         private readonly UserRepository _repo;
-
+        private readonly Mock mock;
+        
         public UserRepositoryTests()
         {
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutoMapperProfiles());
-            });
-            
-            Mapper = mappingConfig.CreateMapper();
-            
-            var options = new DbContextOptionsBuilder<DataContext>()  
-                .UseInMemoryDatabase("InMemoryDb")  
-                .Options;  
-            var dbContext = new DataContext(options);
+            mock = MockFactory.CreateMemoryDb();
 
-            dbContext.Users.AddRangeAsync(
-                new AppUser() {Id = 1, Email = "sune_analog@yahoo.gr", FName = "Kostas", LName = "Ang"},
-                new AppUser() {Id = 2, Email = "user2", FName = "user2", LName = "user2"},
-                new AppUser() {Id = 3, Email = "user3", FName = "user3", LName = "user3"}
+            mock.DataContext.Users.AddRangeAsync(
+                Users()
             );
             
-            dbContext.SaveChangesAsync();
-            _repo = new UserRepository(dbContext, Mapper);
+            mock.DataContext.SaveChangesAsync();
+            _repo = new UserRepository(mock.DataContext, mock.Mapper);
         }
-        
-        [Fact]
-        public async Task getUser_ShouldReturnUser_IfExists()
-        {
-            //Arrange
 
-            var expectedUser = new MemberDto()
+        private static IEnumerable<AppUser> Users()
+        {
+            yield return new AppUser()
             {
-                Id = 2,
-                Email = "user2",
-                FName = "user2",
-                LName = "user2"
+                Email = "sune_analog@yahoo.gr", 
+                PictureUrl = String.Empty,
+                PictureId = String.Empty,
+                FName = "Kostas", 
+                LName = "Ang",
+                Address = "Agoratou 4",
+                Country = "Greece",
+                Nationality = "Greek",
+                PhoneNumber = "123456767",
+                DateOfBirth = new DateTime(2021, 05 ,5),
+                DaysOffLeft = 2.2d,
+                WorkedFromHome = 5,
+                IsAdmin = true
             };
             
-            //Act
+            yield return new AppUser()
+            {
+                Email = "user2@yahoo.gr", 
+                PictureUrl = String.Empty,
+                PictureId = String.Empty,
+                FName = "user2", 
+                LName = "user2",
+                Address = "user2",
+                Country = "user2",
+                Nationality = "user2",
+                PhoneNumber = "user2",
+                DateOfBirth = new DateTime(2021, 05 ,5),
+                DaysOffLeft = 2.2d,
+                WorkedFromHome = 5,
+                IsAdmin = true
+            };
+        }
+        
+        public static IEnumerable<object[]> Members()
+        {
+            yield return new object[]
+            {
+                new MemberDto() {
+                    Id = 1, 
+                    Email = "sune_analog@yahoo.gr", 
+                    PictureUrl = String.Empty,
+                    PictureId = String.Empty,
+                    FName = "Kostas", 
+                    LName = "Ang",
+                    Address = "Agoratou 4",
+                    Country = "Greece",
+                    Nationality = "Greek",
+                    PhoneNumber = "123456767",
+                    DateOfBirth = new DateTime(2021, 05 ,5),
+                    DaysOffLeft = 2.2d,
+                    IsAdmin = true}
+            };
+            
+            yield return new object[]
+            {
+                new MemberDto() {
+                    Id = 2, 
+                    Email = "user2@yahoo.gr", 
+                    PictureUrl = String.Empty,
+                    PictureId = String.Empty,
+                    FName = "user2", 
+                    LName = "user2",
+                    Address = "user2",
+                    Country = "user2",
+                    Nationality = "user2",
+                    PhoneNumber = "user2",
+                    DateOfBirth = new DateTime(2021, 05 ,5),
+                    DaysOffLeft = 2.2d,
+                    IsAdmin = true}
+            };
+        }
 
-            var result = await _repo.GetUser(2);
+        [Theory]
+        [MemberData(nameof(Members))]
+        public async Task getUser_ShouldReturnUser_IfExistsTheory(MemberDto expected)
+        {
+
+            var result = await _repo.GetUser(expected.Id);
             
             //Assert
             
             Assert.NotNull(result);
-            Assert.Equal(result, expectedUser);
+            Assert.Equal(result, expected);
+        }
+        
+        [Fact]
+        public async Task getUsers_ShouldReturnAllUsers()
+        {
+
+            var result = await _repo.GetUsers();
+            
+            //Assert
+            
+            Assert.NotNull(result);
+            Assert.Equal(result, Members().Select(o => o[0]));
         }
     }
 }

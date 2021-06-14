@@ -4,17 +4,17 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using HrSystemTests;
 using Xunit;
 
 public class CalendarTest
 {
-    private readonly Mock _mock;
     private readonly CalendarRepository _repo;
     
     public CalendarTest()
     {
-        _mock = new Mock();
-        _repo = new CalendarRepository(_mock.DataContext, _mock.Mapper);
+        var mock = MockFactory.CreateMySqlDb();
+        _repo = new CalendarRepository(mock.DataContext, mock.Mapper);
     }
 
     [Fact]
