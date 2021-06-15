@@ -13,7 +13,7 @@ public class CalendarTest
     
     public CalendarTest()
     {
-        var mock = MockFactory.CreateMySqlDb();
+        var mock = MockDependenciesFactory.CreateMySqlDb();
         _repo = new CalendarRepository(mock.DataContext, mock.Mapper);
     }
 

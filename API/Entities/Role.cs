@@ -1,4 +1,6 @@
 
+using System;
+
 namespace API.Entities
 {
     public class Role
@@ -8,6 +10,6 @@ namespace API.Entities
         public string RoleName { get; set; }
 
         public int DepartmentId { get; set; }
-
+        
     }
 }
