@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class SQLServer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,15 +12,15 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Fname = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Lname = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Email = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    CoverLetter = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    FileUrl = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    FileId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CoverLetter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    AdminNote = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    AdminNote = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,8 +32,8 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,12 +45,13 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DurationHours = table.Column<int>(type: "int", nullable: false),
-                    MeetingType = table.Column<int>(type: "int", nullable: false)
+                    MeetingType = table.Column<int>(type: "int", nullable: false),
+                    MeetingLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,9 +63,9 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -78,8 +78,8 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RoleName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -98,12 +98,12 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "Date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "Date", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    ShiftId = table.Column<int>(type: "int", nullable: false)
+                    ShiftId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,24 +121,24 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(type: "varchar(50) CHARACTER SET utf8mb4", maxLength: 50, nullable: true),
-                    PasswordHash = table.Column<byte[]>(type: "longblob", nullable: true),
-                    PasswordSalt = table.Column<byte[]>(type: "longblob", nullable: true),
-                    FName = table.Column<string>(type: "varchar(30) CHARACTER SET utf8mb4", maxLength: 30, nullable: true),
-                    LName = table.Column<string>(type: "varchar(30) CHARACTER SET utf8mb4", maxLength: 30, nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    FName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    LName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "varchar(12) CHARACTER SET utf8mb4", maxLength: 12, nullable: true),
-                    Address = table.Column<string>(type: "varchar(30) CHARACTER SET utf8mb4", maxLength: 30, nullable: true),
-                    Country = table.Column<string>(type: "varchar(20) CHARACTER SET utf8mb4", maxLength: 20, nullable: true),
-                    Nationality = table.Column<string>(type: "varchar(20) CHARACTER SET utf8mb4", maxLength: 20, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Nationality = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    PictureUrl = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    PictureId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    DaysOffLeft = table.Column<double>(type: "double", nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DaysOffLeft = table.Column<double>(type: "float", nullable: false),
                     WorkedFromHome = table.Column<int>(type: "int", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     DateStarted = table.Column<DateTime>(type: "Date", nullable: false),
                     DaysOffLastUpdated = table.Column<DateTime>(type: "Date", nullable: false)
                 },
@@ -155,8 +155,7 @@ namespace API.Data.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -164,11 +163,11 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PublisherId = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    TimeCreated = table.Column<DateTime>(type: "datetime(0)", precision: 0, nullable: false),
-                    isAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeCreated = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: false),
+                    isAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,12 +185,12 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FileOwnerId = table.Column<int>(type: "int", nullable: false),
-                    FileUrl = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    FileType = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    OriginalFileName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    FileId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -209,10 +208,10 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime(0)", precision: 0, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     requestType = table.Column<int>(type: "int", nullable: false)
@@ -233,9 +232,9 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartTime = table.Column<DateTime>(type: "Date", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
@@ -257,9 +256,9 @@ namespace API.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TasksId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -282,6 +281,13 @@ namespace API.Data.Migrations
                 name: "IX_Dashboards_PublisherId",
                 table: "Dashboards",
                 column: "PublisherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Departments_Name",
+                table: "Departments",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalFiles_FileOwnerId",

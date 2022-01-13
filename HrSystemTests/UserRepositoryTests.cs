@@ -84,5 +84,18 @@ namespace HrSystemTests
             Assert.NotNull(result);
             Assert.Equal(result, users.Select(o => o[0]));
         }
+        
+        [Fact]
+        public async Task GetUsersWithSingleParameters_Test()
+        {
+            UserData users = new UserData();
+
+            var result = await users._repo.GetUsersWithSingleParameters("Vivian");
+            
+            //Assert
+            
+            Assert.NotNull(result);
+            Assert.Equal(result, users.Select(o => o[0]));
+        }
     }
 }

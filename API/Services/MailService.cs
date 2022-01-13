@@ -11,13 +11,13 @@ namespace API.Services
         MailAddress _hrMail;
         public MailService()
         {
-            _hrMail = new MailAddress("kon.ag.hr@gmail.com", "HR Support");
+            _hrMail = new MailAddress("perkos.hr@gmail.com", "HR Support");
         }
         
         public async Task SendMessage(string subject, string body, string destination, string name)
         {
             var toAddress = new MailAddress(destination, name);
-            const string fromPassword = "wQMuAWK4T7gE";
+            const string fromPassword = "s7Uw37GNptire44";
 
             var smtp = new SmtpClient
             {

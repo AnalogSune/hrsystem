@@ -70,7 +70,7 @@ namespace API.Data
                 .HasOne(e => e.Role)
                 .WithMany()
                 .HasForeignKey(e => e.RoleId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<AppUser>()
                 .HasOne(e => e.InDepartment)
