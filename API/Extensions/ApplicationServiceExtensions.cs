@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Quartz;
 
 namespace API.Extensions
@@ -36,6 +35,8 @@ namespace API.Extensions
             services.AddSingleton<IMailService, MailService>();
             services.AddSwaggerGen(c =>
             {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Bearer Scheme",
@@ -67,8 +68,7 @@ namespace API.Extensions
             
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer("Server=DESKTOP-PSMGHEA\\SQLEXPRESS;Database=HrSystem;User Id=Analog;Password=aq2b4ugef;");
-                // options.UseMySql(config.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new System.Version(10, 4, 17)));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
 
             return services;
